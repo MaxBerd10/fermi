@@ -108,17 +108,26 @@ export default function Navbar() {
   useEffect(() => {
     // The dropdown portals are positioned from a one-time getBoundingClientRect() snapshot,
     // so they don't track the trigger as the page scrolls — close them instead of letting
-    // them float disconnected from their trigger.
-    function closeOnScroll() {
-      cancelClose();
-      setOpenMenu(null);
-      setOpenMenuRect(null);
-      setHoveredChild(null);
-      setHoveredChildRect(null);
-    }
-    window.addEventListener("scroll", closeOnScroll, { passive: true });
-    return () => window.removeEventListener("scroll", closeOnScroll);
-  }, []);
+    // them float disconnected from their trigger. Polling scrollY every frame (rather than
+    // a scroll/wheel event listener) is deliberate: it can't miss a scroll no matter which
+    // element or gesture produced it.
+    if (openMenu === null) return;
+    const startY = window.scrollY;
+    let raf = 0;
+    const check = () => {
+      if (window.scrollY !== startY) {
+        cancelClose();
+        setOpenMenu(null);
+        setOpenMenuRect(null);
+        setHoveredChild(null);
+        setHoveredChildRect(null);
+        return;
+      }
+      raf = requestAnimationFrame(check);
+    };
+    raf = requestAnimationFrame(check);
+    return () => cancelAnimationFrame(raf);
+  }, [openMenu]);
 
   // Light hero banners need dark frosted nav for readable contrast
   const solid = true;

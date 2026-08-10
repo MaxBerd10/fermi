@@ -1,6 +1,6 @@
 import { useNavigate, type NavigateFunction } from "react-router-dom";
 import { useLocation, useRoutes } from "react-router-dom";
-import { useEffect } from "react";
+import { createElement, Suspense, useEffect } from "react";
 import routes from "./config";
 
 let navigateResolver: (navigate: ReturnType<typeof useNavigate>) => void;
@@ -52,5 +52,7 @@ export function AppRoutes() {
     };
   }, [pathname, hash]);
 
-  return element;
+  // Route components are lazy-loaded (see ./config), so this Suspense boundary is what
+  // covers the gap while a page's chunk downloads on first visit to that route.
+  return createElement(Suspense, { fallback: null }, element);
 }
