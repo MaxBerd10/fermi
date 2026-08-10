@@ -1,0 +1,622 @@
+/* ── Talabalar — Bakalavriat (menu 29) ── */
+
+.student-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.student-hero {
+  position: relative;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 20px 50px -24px rgba(37, 99, 235, 0.24);
+}
+
+.student-hero__glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 85% 15%, rgba(255, 255, 255, 0.16) 0%, transparent 42%);
+  pointer-events: none;
+}
+
+.student-hero__inner {
+  position: relative;
+  padding: 1.5rem;
+  color: #ffffff;
+}
+
+@media (min-width: 768px) {
+  .student-hero__inner {
+    padding: 2rem 2.25rem;
+  }
+}
+
+.student-hero__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.875rem;
+}
+
+.student-hero__icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.14);
+  font-size: 1.25rem;
+}
+
+.student-hero__eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.student-hero__title {
+  margin: 0;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: clamp(1.35rem, 2.8vw, 1.875rem);
+  font-weight: 800;
+  line-height: 1.22;
+  letter-spacing: -0.03em;
+}
+
+.student-hero__intro {
+  margin: 1rem 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.88);
+  max-width: 68ch;
+}
+
+.student-hero--student-guide .student-hero__inner {
+  background: linear-gradient(135deg, #2563eb 0%, #0a1158 50%, #93c5fd 100%);
+}
+
+.student-hero--student-talented .student-hero__inner {
+  background: linear-gradient(135deg, #ca8a04 0%, #0a1158 48%, #fde047 100%);
+}
+
+.student-hero--student-tests .student-hero__inner {
+  background: linear-gradient(135deg, #059669 0%, #0a1158 50%, #6ee7b7 100%);
+}
+
+.student-hero--student-schedule .student-hero__inner {
+  background: linear-gradient(135deg, #0891b2 0%, #0a1158 52%, #67e8f9 100%);
+}
+
+.student-hero--student-dak .student-hero__inner {
+  background: linear-gradient(135deg, #7c3aed 0%, #0a1158 52%, #c4b5fd 100%);
+}
+
+.student-hero--student-status .student-hero__inner {
+  background: linear-gradient(135deg, #dc2626 0%, #0a1158 50%, #fca5a5 100%);
+}
+
+.student-hero--student-qualifications .student-hero__inner {
+  background: linear-gradient(135deg, #0d9488 0%, #0a1158 50%, #5eead4 100%);
+}
+
+.student-hero--student-dorm .student-hero__inner {
+  background: linear-gradient(135deg, #ea580c 0%, #0a1158 50%, #fdba74 100%);
+}
+
+.student-hero--student-grants .student-hero__inner {
+  background: linear-gradient(135deg, #4338ca 0%, #0a1158 52%, #a5b4fc 100%);
+}
+
+.student-hero--student-mag-guide .student-hero__inner {
+  background: linear-gradient(135deg, #7c3aed 0%, #0a1158 50%, #c4b5fd 100%);
+}
+
+.student-hero--student-mag-dissertation .student-hero__inner {
+  background: linear-gradient(135deg, #4338ca 0%, #0a1158 52%, #818cf8 100%);
+}
+
+.student-hero--student-mag-criteria .student-hero__inner {
+  background: linear-gradient(135deg, #0891b2 0%, #0a1158 50%, #67e8f9 100%);
+}
+
+.student-hero--student-mag-yda .student-hero__inner {
+  background: linear-gradient(135deg, #059669 0%, #0a1158 48%, #6ee7b7 100%);
+}
+
+.student-hero--student-mag-status .student-hero__inner {
+  background: linear-gradient(135deg, #dc2626 0%, #0a1158 50%, #fca5a5 100%);
+}
+
+.student-hero--student-mag-grants .student-hero__inner {
+  background: linear-gradient(135deg, #b45309 0%, #0a1158 48%, #fcd34d 100%);
+}
+
+.student-page--magistratura-student .cms-admission-cta {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.08) 0%, rgba(10, 17, 88, 0.04) 100%);
+  border-color: rgba(124, 58, 237, 0.22);
+}
+
+.student-page--magistratura-student .cms-admission-cta__icon {
+  background: #7c3aed;
+}
+
+.student-page--magistratura-student .cms-science-btn--primary {
+  background: #7c3aed;
+  border-color: #7c3aed;
+}
+
+.student-page--magistratura-student .cms-student__badge {
+  background: rgba(124, 58, 237, 0.08);
+  border-color: rgba(124, 58, 237, 0.14);
+  color: #7c3aed;
+}
+
+.student-page--magistratura-student .cms-student-doc__icon {
+  background: rgba(124, 58, 237, 0.08);
+  color: #7c3aed;
+}
+
+.student-hero--student-ord-guide .student-hero__inner {
+  background: linear-gradient(135deg, #0d9488 0%, #0a1158 50%, #5eead4 100%);
+}
+
+.student-hero--student-ord-stipendiya .student-hero__inner {
+  background: linear-gradient(135deg, #ca8a04 0%, #0a1158 48%, #fde047 100%);
+}
+
+.student-hero--student-ord-exams .student-hero__inner {
+  background: linear-gradient(135deg, #dc2626 0%, #0a1158 50%, #fca5a5 100%);
+}
+
+.student-page--ordinatura-student .cms-admission-cta {
+  background: linear-gradient(135deg, rgba(13, 148, 136, 0.08) 0%, rgba(10, 17, 88, 0.04) 100%);
+  border-color: rgba(13, 148, 136, 0.22);
+}
+
+.student-page--ordinatura-student .cms-admission-cta__icon {
+  background: #0d9488;
+}
+
+.student-page--ordinatura-student .cms-science-btn--primary {
+  background: #0d9488;
+  border-color: #0d9488;
+}
+
+.student-page--ordinatura-student .cms-student__badge {
+  background: rgba(13, 148, 136, 0.08);
+  border-color: rgba(13, 148, 136, 0.14);
+  color: #0d9488;
+}
+
+.student-page--ordinatura-student .cms-student-doc__icon {
+  background: rgba(13, 148, 136, 0.08);
+  color: #0d9488;
+}
+
+.student-hero--student-intl-dept .student-hero__inner {
+  background: linear-gradient(135deg, #2563eb 0%, #0a1158 50%, #93c5fd 100%);
+}
+
+.student-hero--student-intl-contract .student-hero__inner {
+  background: linear-gradient(135deg, #059669 0%, #0a1158 48%, #fcd34d 100%);
+}
+
+.student-hero--student-intl-dorm .student-hero__inner {
+  background: linear-gradient(135deg, #7c3aed 0%, #0a1158 50%, #c4b5fd 100%);
+}
+
+.student-hero--student-intl-safety .student-hero__inner {
+  background: linear-gradient(135deg, #e11d48 0%, #0a1158 50%, #fda4af 100%);
+}
+
+.student-page--xorijiy-student .cms-admission-cta {
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.08) 0%, rgba(10, 17, 88, 0.04) 100%);
+  border-color: rgba(37, 99, 235, 0.22);
+}
+
+.student-page--xorijiy-student .cms-admission-cta__icon {
+  background: #2563eb;
+}
+
+.student-page--xorijiy-student .cms-science-btn--primary {
+  background: #2563eb;
+  border-color: #2563eb;
+}
+
+.student-page--xorijiy-student .cms-student__badge {
+  background: rgba(37, 99, 235, 0.08);
+  border-color: rgba(37, 99, 235, 0.14);
+  color: #2563eb;
+}
+
+.student-page--xorijiy-student .cms-student-doc__icon {
+  background: rgba(37, 99, 235, 0.08);
+  color: #2563eb;
+}
+
+.student-hero--student-iq-yutuqlar .student-hero__inner {
+  background: linear-gradient(135deg, #d97706 0%, #0a1158 50%, #fcd34d 100%);
+}
+
+.student-hero--student-iq-respublika .student-hero__inner {
+  background: linear-gradient(135deg, #0284c7 0%, #0a1158 48%, #7dd3fc 100%);
+}
+
+.student-hero--student-iq-xalqaro .student-hero__inner {
+  background: linear-gradient(135deg, #059669 0%, #0a1158 50%, #6ee7b7 100%);
+}
+
+.student-hero--student-iq-sertifikat .student-hero__inner {
+  background: linear-gradient(135deg, #9333ea 0%, #0a1158 48%, #d8b4fe 100%);
+}
+
+.student-hero--student-iq-anjuman .student-hero__inner {
+  background: linear-gradient(135deg, #4f46e5 0%, #0a1158 50%, #a5b4fc 100%);
+}
+
+.student-page--iqtidorli-student .cms-admission-cta {
+  background: linear-gradient(135deg, rgba(217, 119, 6, 0.08) 0%, rgba(10, 17, 88, 0.04) 100%);
+  border-color: rgba(217, 119, 6, 0.22);
+}
+
+.student-page--iqtidorli-student .cms-admission-cta__icon {
+  background: #d97706;
+}
+
+.student-page--iqtidorli-student .cms-science-btn--primary {
+  background: #d97706;
+  border-color: #d97706;
+}
+
+.student-page--iqtidorli-student .cms-student__badge {
+  background: rgba(217, 119, 6, 0.08);
+  border-color: rgba(217, 119, 6, 0.14);
+  color: #d97706;
+}
+
+.student-page--iqtidorli-student .cms-student-doc__icon {
+  background: rgba(217, 119, 6, 0.08);
+  color: #d97706;
+}
+
+.student-hero--student-kf-videos .student-hero__inner {
+  background: linear-gradient(135deg, #0891b2 0%, #0a1158 50%, #67e8f9 100%);
+}
+
+.student-hero--student-kf-step1 .student-hero__inner {
+  background: linear-gradient(135deg, #ea580c 0%, #0a1158 48%, #fdba74 100%);
+}
+
+.student-page--klinik-fikrlash-student .cms-admission-cta {
+  background: linear-gradient(135deg, rgba(8, 145, 178, 0.08) 0%, rgba(10, 17, 88, 0.04) 100%);
+  border-color: rgba(8, 145, 178, 0.22);
+}
+
+.student-page--klinik-fikrlash-student .cms-admission-cta__icon {
+  background: #0891b2;
+}
+
+.student-page--klinik-fikrlash-student .cms-science-btn--primary {
+  background: #0891b2;
+  border-color: #0891b2;
+}
+
+.student-page--klinik-fikrlash-student .cms-student__badge {
+  background: rgba(8, 145, 178, 0.08);
+  border-color: rgba(8, 145, 178, 0.14);
+  color: #0891b2;
+}
+
+.student-page--klinik-fikrlash-student .cms-student-doc__icon {
+  background: rgba(8, 145, 178, 0.08);
+  color: #0891b2;
+}
+
+.cms-student-info__list {
+  margin: 0 0 1.25rem;
+  padding-left: 1.25rem;
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: #475569;
+}
+
+.cms-student-info__list li + li {
+  margin-top: 0.5rem;
+}
+
+.cms-student__note {
+  margin: 0;
+  padding: 1rem;
+  border-radius: 0.875rem;
+  background: rgba(13, 148, 136, 0.06);
+  border: 1px solid rgba(13, 148, 136, 0.12);
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: #475569;
+  text-align: center;
+}
+
+.student-page--bakalavriat-student .cms-admission-cta {
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.08) 0%, rgba(10, 17, 88, 0.04) 100%);
+  border-color: rgba(37, 99, 235, 0.22);
+}
+
+.student-page--bakalavriat-student .cms-admission-cta__icon {
+  background: #2563eb;
+}
+
+.student-page--bakalavriat-student .cms-science-btn--primary {
+  background: #2563eb;
+  border-color: #2563eb;
+}
+
+.cms-student__lead {
+  margin: 0 0 1.25rem;
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: #475569;
+  text-align: center;
+}
+
+.cms-student__cover {
+  margin: 0 0 1.25rem;
+  border-radius: 0.875rem;
+  overflow: hidden;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+}
+
+.cms-student__cover img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 280px;
+  object-fit: cover;
+}
+
+.cms-student-search {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.875rem;
+  background: rgba(10, 17, 88, 0.04);
+  border: 1px solid rgba(10, 17, 88, 0.08);
+  color: #64748b;
+}
+
+.cms-student-search__input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 0.9375rem;
+  color: #0a1158;
+  outline: none;
+}
+
+.cms-student__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.cms-student__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.08);
+  border: 1px solid rgba(37, 99, 235, 0.14);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #2563eb;
+}
+
+.cms-student__count {
+  font-size: 0.8125rem;
+  color: #64748b;
+}
+
+.cms-student-docs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.cms-student-doc {
+  display: flex;
+  gap: 0.875rem;
+  padding: 1rem 1.125rem;
+  border-radius: 0.875rem;
+  background: #fff;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+}
+
+.cms-student-doc__icon {
+  width: 2.25rem;
+  height: 2.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.625rem;
+  background: rgba(37, 99, 235, 0.08);
+  color: #2563eb;
+  flex-shrink: 0;
+}
+
+.cms-student-doc__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.cms-student-doc__num {
+  display: inline-block;
+  margin-bottom: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #94a3b8;
+}
+
+.cms-student-doc__title {
+  margin: 0 0 0.625rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.55;
+  color: #0a1158;
+}
+
+.cms-student-doc__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.cms-student-test__groups {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.cms-student-test__list {
+  display: grid;
+  gap: 0.625rem;
+}
+
+.cms-student-test__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #2563eb;
+}
+
+.cms-student-test__preview {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: none;
+  border-radius: 0.5rem;
+  background: rgba(37, 99, 235, 0.1);
+  color: #2563eb;
+  cursor: pointer;
+}
+
+.cms-student__cta {
+  margin-bottom: 1.25rem;
+}
+
+.cms-student__deadline {
+  margin-bottom: 1.25rem;
+}
+
+.cms-student__pdf,
+.cms-student-gallery__pdf-head {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(10, 17, 88, 0.08);
+}
+
+.cms-student-gallery__pdf-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+  margin-bottom: 1rem;
+}
+
+.cms-student-gallery__pdf-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0a1158;
+}
+
+.cms-student-status {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.cms-student-status__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.08);
+  border: 1px solid rgba(37, 99, 235, 0.14);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #2563eb;
+}
+
+.cms-student-status__text {
+  margin: 0.875rem 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: #64748b;
+}
+
+.cms-student-related__title {
+  margin: 0 0 0.875rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0a1158;
+}
+
+.cms-article--student table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+}
+
+.cms-article--student table th,
+.cms-article--student table td {
+  border: 1px solid rgba(10, 17, 88, 0.12);
+  padding: 0.5rem 0.625rem;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.cms-article--student table th {
+  background: rgba(37, 99, 235, 0.06);
+  color: #0a1158;
+  font-weight: 700;
+}
+
+.cms-article--student .cms-admission-video,
+.cms-article--student iframe {
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 16 / 9;
+  border: none;
+  border-radius: 0.875rem;
+}
+
+.cms-article--student img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+}
+
+@media (max-width: 767px) {
+  .cms-article--student .cms-admission-docs-table__wrap,
+  .cms-article--student table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}

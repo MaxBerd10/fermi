@@ -1,0 +1,1785 @@
+/* ── Bakalavriat qabul sahifalari (menu 99) ── */
+
+.admission-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.admission-hero {
+  position: relative;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 20px 50px -24px rgba(180, 83, 9, 0.28);
+}
+
+.admission-hero__glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 85% 15%, rgba(255, 255, 255, 0.16) 0%, transparent 42%);
+  pointer-events: none;
+}
+
+.admission-hero__inner {
+  position: relative;
+  padding: 1.5rem;
+  color: #ffffff;
+}
+
+@media (min-width: 768px) {
+  .admission-hero__inner {
+    padding: 2rem 2.25rem;
+  }
+}
+
+.admission-hero__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.875rem;
+}
+
+.admission-hero__icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.14);
+  font-size: 1.25rem;
+}
+
+.admission-hero__eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.admission-hero__title {
+  margin: 0;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: clamp(1.35rem, 2.8vw, 1.875rem);
+  font-weight: 800;
+  line-height: 1.22;
+  letter-spacing: -0.03em;
+}
+
+.admission-hero__intro {
+  margin: 1rem 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.88);
+  max-width: 68ch;
+}
+
+.admission-hero--admission-register .admission-hero__inner {
+  background: linear-gradient(135deg, #b45309 0%, #0a1158 52%, #f59e0b 100%);
+}
+
+.admission-hero--admission-test .admission-hero__inner {
+  background: linear-gradient(135deg, #0369a1 0%, #0a1158 50%, #38bdf8 100%);
+}
+
+.admission-hero--admission-rules .admission-hero__inner {
+  background: linear-gradient(135deg, #4338ca 0%, #0a1158 52%, #6366f1 100%);
+}
+
+.admission-hero--admission-quota .admission-hero__inner {
+  background: linear-gradient(135deg, #b45309 0%, #92400e 48%, #0a1158 100%);
+}
+
+.admission-hero--admission-subjects .admission-hero__inner {
+  background: linear-gradient(135deg, #059669 0%, #0a1158 50%, #34d399 100%);
+}
+
+.admission-hero--admission-news .admission-hero__inner {
+  background: linear-gradient(135deg, #dc2626 0%, #0a1158 52%, #f97316 100%);
+}
+
+.admission-hero--admission-contact .admission-hero__inner {
+  background: linear-gradient(135deg, #0d9488 0%, #0a1158 50%, #2dd4bf 100%);
+}
+
+.admission-hero--admission-docs .admission-hero__inner {
+  background: linear-gradient(135deg, #7c3aed 0%, #0a1158 52%, #a78bfa 100%);
+}
+
+.admission-hero--admission-directions .admission-hero__inner {
+  background: linear-gradient(135deg, #2563eb 0%, #0a1158 50%, #60a5fa 100%);
+}
+
+.admission-hero--admission-guide .admission-hero__inner {
+  background: linear-gradient(135deg, #0891b2 0%, #0a1158 52%, #22d3ee 100%);
+}
+
+.admission-hero--admission-grant .admission-hero__inner {
+  background: linear-gradient(135deg, #ca8a04 0%, #0a1158 48%, #facc15 100%);
+}
+
+.admission-hero--admission-history .admission-hero__inner {
+  background: linear-gradient(135deg, #475569 0%, #0a1158 50%, #94a3b8 100%);
+}
+
+.admission-hero--admission-join .admission-hero__inner {
+  background: linear-gradient(135deg, #059669 0%, #0a1158 52%, #10b981 100%);
+}
+
+.admission-hero--admission-dorm .admission-hero__inner {
+  background: linear-gradient(135deg, #ea580c 0%, #0a1158 50%, #fb923c 100%);
+}
+
+/* ── Article typography ── */
+
+.cms-article--admission {
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: #334155;
+}
+
+.cms-article--admission .cms-admission-section-title {
+  margin: 1.75rem 0 0.875rem;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  font-weight: 700;
+  line-height: 1.35;
+  color: #0a1158;
+}
+
+.cms-article--admission .cms-admission-section-title:first-child {
+  margin-top: 0;
+}
+
+.cms-article--admission .cms-admission-text {
+  margin: 0 0 0.875rem;
+}
+
+.cms-article--admission .cms-admission-list {
+  margin: 0 0 1.25rem;
+  padding-left: 1.35rem;
+}
+
+.cms-article--admission .cms-admission-list li {
+  margin-bottom: 0.45rem;
+}
+
+.cms-article--admission .cms-admission-link {
+  color: #b45309;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.cms-article--admission .cms-admission-link:hover {
+  color: #92400e;
+}
+
+.cms-article--admission .cms-admission-divider {
+  margin: 1.5rem 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(10, 17, 88, 0.12), transparent);
+}
+
+.cms-article--admission .cms-admission-video {
+  position: relative;
+  margin: 1.25rem 0;
+  padding-bottom: 56.25%;
+  border-radius: 0.875rem;
+  overflow: hidden;
+  background: #0f172a;
+  box-shadow: 0 12px 32px -16px rgba(10, 17, 88, 0.35);
+}
+
+.cms-article--admission .cms-admission-video iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.cms-article--admission .cms-admission-figure {
+  margin: 1.25rem 0;
+}
+
+.cms-article--admission .cms-admission-img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.875rem;
+  box-shadow: 0 8px 24px -12px rgba(10, 17, 88, 0.25);
+}
+
+.cms-article--admission .cms-admission-table-wrap {
+  margin: 1rem 0 1.25rem;
+  overflow-x: auto;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+}
+
+.cms-article--admission .cms-admission-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.cms-article--admission .cms-admission-table th,
+.cms-article--admission .cms-admission-table td {
+  padding: 0.65rem 0.875rem;
+  border-bottom: 1px solid rgba(10, 17, 88, 0.08);
+  text-align: left;
+}
+
+.cms-article--admission .cms-admission-table th {
+  background: rgba(10, 17, 88, 0.04);
+  font-weight: 700;
+  color: #0a1158;
+}
+
+/* ── External CTA ── */
+
+.cms-admission-cta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1.125rem 1.25rem;
+  border-radius: 1rem;
+  background: linear-gradient(135deg, rgba(180, 83, 9, 0.08) 0%, rgba(10, 17, 88, 0.04) 100%);
+  border: 1px solid rgba(180, 83, 9, 0.2);
+  color: inherit;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.cms-admission-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 32px -20px rgba(180, 83, 9, 0.45);
+  border-color: rgba(180, 83, 9, 0.35);
+}
+
+.cms-admission-cta__icon {
+  width: 3rem;
+  height: 3rem;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.875rem;
+  background: #b45309;
+  color: #fff;
+  font-size: 1.35rem;
+}
+
+.cms-admission-cta__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.cms-admission-cta__title {
+  display: block;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0a1158;
+}
+
+.cms-admission-cta__url {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.8125rem;
+  color: #64748b;
+  word-break: break-all;
+}
+
+.cms-admission-cta__arrow {
+  flex-shrink: 0;
+  font-size: 1.25rem;
+  color: #b45309;
+}
+
+/* ── Quota gallery ── */
+
+.cms-admission-gallery {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .cms-admission-gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.cms-admission-gallery__item {
+  margin: 0;
+  border-radius: 0.875rem;
+  overflow: hidden;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+  background: #fff;
+}
+
+.cms-admission-gallery__img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.cms-admission-gallery__pdf {
+  margin-top: 0.5rem;
+}
+
+.cms-admission-gallery__pdf-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.cms-admission-gallery__pdf-title {
+  margin: 0;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0a1158;
+}
+
+/* ── Contact ── */
+
+.cms-admission-contact__banner {
+  margin: 0 0 1.25rem;
+  border-radius: 0.875rem;
+  overflow: hidden;
+}
+
+.cms-admission-contact__banner img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.cms-admission-contact__grid {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .cms-admission-contact__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.cms-admission-contact__card {
+  display: flex;
+  gap: 0.875rem;
+  padding: 1rem 1.125rem;
+  border-radius: 0.875rem;
+  background: rgba(10, 17, 88, 0.03);
+  border: 1px solid rgba(10, 17, 88, 0.08);
+}
+
+.cms-admission-contact__icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  background: rgba(13, 148, 136, 0.12);
+  color: #0d9488;
+  font-size: 1.15rem;
+}
+
+.cms-admission-contact__label {
+  margin: 0 0 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.cms-admission-contact__value {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: #0f172a;
+}
+
+.cms-admission-contact__phones {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.cms-admission-contact__phone {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #0a1158;
+  text-decoration: none;
+}
+
+.cms-admission-contact__phone:hover {
+  color: #b45309;
+}
+
+.cms-admission-contact__map {
+  margin: 1.25rem 0;
+  border-radius: 0.875rem;
+  overflow: hidden;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+  aspect-ratio: 16 / 9;
+}
+
+.cms-admission-contact__map iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* ── Placeholder ── */
+
+.cms-admission-status {
+  margin-bottom: 1.5rem;
+  padding: 1.25rem 1.35rem;
+  border-radius: 0.875rem;
+  background: rgba(180, 83, 9, 0.06);
+  border: 1px dashed rgba(180, 83, 9, 0.25);
+}
+
+.cms-admission-status__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #b45309;
+}
+
+.cms-admission-status__text {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: #475569;
+}
+
+.cms-admission-related__title {
+  margin: 0 0 0.875rem;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0a1158;
+}
+
+.cms-science--admission-intro .cms-admission-intro__text {
+  margin-bottom: 1.5rem;
+}
+
+.cms-admission-cta__pdf {
+  margin-top: 1.5rem;
+}
+
+/* ── Magistratura hero accents (indigo theme) ── */
+
+.admission-hero--magistratura-register .admission-hero__inner {
+  background: linear-gradient(135deg, #4338ca 0%, #0a1158 50%, #818cf8 100%);
+}
+
+.admission-hero--magistratura-rules .admission-hero__inner {
+  background: linear-gradient(135deg, #3730a3 0%, #0a1158 52%, #6366f1 100%);
+}
+
+.admission-hero--magistratura-quota .admission-hero__inner {
+  background: linear-gradient(135deg, #5b21b6 0%, #0a1158 48%, #a78bfa 100%);
+}
+
+.admission-hero--magistratura-docs .admission-hero__inner {
+  background: linear-gradient(135deg, #6d28d9 0%, #0a1158 52%, #c4b5fd 100%);
+}
+
+.admission-hero--magistratura-subjects .admission-hero__inner {
+  background: linear-gradient(135deg, #2563eb 0%, #0a1158 50%, #60a5fa 100%);
+}
+
+.admission-hero--magistratura-contact .admission-hero__inner {
+  background: linear-gradient(135deg, #0d9488 0%, #0a1158 50%, #2dd4bf 100%);
+}
+
+.admission-hero--magistratura-results .admission-hero__inner {
+  background: linear-gradient(135deg, #047857 0%, #0a1158 52%, #34d399 100%);
+}
+
+.admission-hero--magistratura-grant .admission-hero__inner {
+  background: linear-gradient(135deg, #7c3aed 0%, #0a1158 48%, #ddd6fe 100%);
+}
+
+.admission-page--magistratura .cms-admission-cta {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(10, 17, 88, 0.04) 100%);
+  border-color: rgba(99, 102, 241, 0.22);
+}
+
+.admission-page--magistratura .cms-admission-cta__icon {
+  background: #4338ca;
+}
+
+.admission-page--magistratura .cms-admission-cta__arrow {
+  color: #4338ca;
+}
+
+/* ── Documents checklist ── */
+
+.cms-admission-docs__headline {
+  margin: 0 0 1rem;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: clamp(1.05rem, 2vw, 1.2rem);
+  font-weight: 700;
+  line-height: 1.45;
+  color: #0a1158;
+}
+
+.cms-admission-docs__intro,
+.cms-admission-docs__note {
+  margin: 0 0 0.875rem;
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: #475569;
+}
+
+.cms-admission-docs__portal {
+  margin-bottom: 1.5rem;
+}
+
+.cms-admission-docs__highlights {
+  display: grid;
+  gap: 0.875rem;
+  margin: 0 0 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .cms-admission-docs__highlights {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.cms-admission-docs__highlight {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 0.875rem;
+  background: rgba(99, 102, 241, 0.06);
+  border: 1px solid rgba(99, 102, 241, 0.14);
+}
+
+.cms-admission-docs__highlight-icon {
+  width: 2.25rem;
+  height: 2.25rem;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.625rem;
+  background: rgba(67, 56, 202, 0.12);
+  color: #4338ca;
+  font-size: 1.1rem;
+}
+
+.cms-admission-docs__highlight-text {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: #334155;
+}
+
+.cms-admission-docs__section {
+  margin: 1.5rem 0;
+}
+
+.cms-admission-docs__section-title {
+  margin: 0 0 1rem;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: #0a1158;
+}
+
+.cms-admission-docs__checklist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.cms-admission-docs__checklist-item {
+  display: flex;
+  gap: 0.875rem;
+  align-items: flex-start;
+  padding: 1rem 1.125rem;
+  border-radius: 0.875rem;
+  background: #fff;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+  box-shadow: 0 4px 16px -12px rgba(10, 17, 88, 0.25);
+}
+
+.cms-admission-docs__checklist-num {
+  width: 1.75rem;
+  height: 1.75rem;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: #4338ca;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.cms-admission-docs__checklist-text {
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: #334155;
+}
+
+.cms-admission-docs__deadline {
+  display: flex;
+  gap: 0.875rem;
+  align-items: flex-start;
+  margin: 1.25rem 0;
+  padding: 1rem 1.125rem;
+  border-radius: 0.875rem;
+  background: rgba(180, 83, 9, 0.08);
+  border: 1px solid rgba(180, 83, 9, 0.2);
+  color: #92400e;
+}
+
+.cms-admission-docs__deadline i {
+  font-size: 1.35rem;
+  margin-top: 0.1rem;
+}
+
+.cms-admission-docs__deadline-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+.cms-admission-docs__deadline-value {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #0a1158;
+}
+
+.cms-admission-docs__pdf {
+  margin-top: 1.75rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(10, 17, 88, 0.08);
+}
+
+.cms-admission-docs__pdf-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.cms-article--admission .cms-admission-list-item-text {
+  display: block;
+  font-size: 0.9375rem;
+  line-height: 1.65;
+}
+
+/* ── Ordinatura theme ── */
+
+.admission-hero--ordinatura-docs .admission-hero__inner,
+.admission-hero--ordinatura-submit .admission-hero__inner {
+  background: linear-gradient(135deg, #047857 0%, #0a1158 50%, #34d399 100%);
+}
+
+.admission-hero--ordinatura-reminder .admission-hero__inner {
+  background: linear-gradient(135deg, #0d9488 0%, #0a1158 52%, #2dd4bf 100%);
+}
+
+.admission-hero--ordinatura-rules .admission-hero__inner {
+  background: linear-gradient(135deg, #065f46 0%, #0a1158 50%, #10b981 100%);
+}
+
+.admission-hero--ordinatura-mandat .admission-hero__inner {
+  background: linear-gradient(135deg, #059669 0%, #0a1158 48%, #6ee7b7 100%);
+}
+
+.admission-hero--ordinatura-news .admission-hero__inner {
+  background: linear-gradient(135deg, #dc2626 0%, #0a1158 52%, #f97316 100%);
+}
+
+.admission-hero--ordinatura-locations .admission-hero__inner {
+  background: linear-gradient(135deg, #0891b2 0%, #0a1158 50%, #22d3ee 100%);
+}
+
+.admission-hero--ordinatura-permit .admission-hero__inner {
+  background: linear-gradient(135deg, #b45309 0%, #0a1158 50%, #fbbf24 100%);
+}
+
+.admission-page--ordinatura .cms-admission-cta {
+  background: linear-gradient(135deg, rgba(5, 150, 105, 0.08) 0%, rgba(10, 17, 88, 0.04) 100%);
+  border-color: rgba(5, 150, 105, 0.22);
+}
+
+.admission-page--ordinatura .cms-admission-cta__icon {
+  background: #047857;
+}
+
+.admission-page--ordinatura .cms-admission-cta__arrow {
+  color: #047857;
+}
+
+.cms-admission-docs-table__head {
+  margin-bottom: 1.25rem;
+  text-align: center;
+}
+
+.cms-admission-docs-table__subtitle {
+  margin: 0 0 0.35rem;
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.cms-admission-docs-table__title {
+  margin: 0;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #0a1158;
+}
+
+.cms-admission-docs-table__wrap {
+  overflow-x: auto;
+  border-radius: 0.875rem;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+  margin-bottom: 1.25rem;
+}
+
+.cms-admission-docs-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.cms-admission-docs-table th,
+.cms-admission-docs-table td {
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid rgba(10, 17, 88, 0.08);
+  text-align: left;
+  vertical-align: top;
+}
+
+.cms-admission-docs-table th {
+  background: rgba(4, 120, 87, 0.08);
+  font-weight: 700;
+  color: #047857;
+}
+
+.cms-admission-docs-table__type {
+  font-weight: 600;
+  color: #0a1158;
+  min-width: 12rem;
+}
+
+.cms-admission-docs-table__footnote {
+  margin: 0 0 0.65rem;
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: #475569;
+}
+
+.cms-admission-docs-table__phones {
+  margin: 1.25rem 0;
+  padding: 1rem 1.125rem;
+  border-radius: 0.875rem;
+  background: rgba(10, 17, 88, 0.03);
+  border: 1px solid rgba(10, 17, 88, 0.08);
+}
+
+.cms-admission-docs-table__phones-label {
+  margin: 0 0 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #64748b;
+}
+
+.cms-admission-locations__banner,
+.cms-ordinatura-reminder__banner {
+  margin: 0 0 1.25rem;
+  border-radius: 0.875rem;
+  overflow: hidden;
+}
+
+.cms-admission-locations__banner img,
+.cms-ordinatura-reminder__banner img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.cms-admission-locations__intro,
+.cms-admission-locations__heading {
+  margin: 0 0 1rem;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: #334155;
+}
+
+.cms-admission-locations__heading {
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-weight: 700;
+  color: #dc2626;
+}
+
+.cms-admission-locations__grid {
+  display: grid;
+  gap: 0.875rem;
+  margin-bottom: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .cms-admission-locations__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.cms-admission-locations__card {
+  padding: 1rem 1.125rem;
+  border-radius: 0.875rem;
+  background: #fff;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+  box-shadow: 0 4px 16px -12px rgba(10, 17, 88, 0.25);
+}
+
+.cms-admission-locations__region {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #047857;
+}
+
+.cms-admission-locations__venue {
+  margin: 0 0 0.35rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #0a1158;
+}
+
+.cms-admission-locations__address {
+  margin: 0 0 0.65rem;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: #475569;
+}
+
+.cms-admission-locations__map {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #0891b2;
+  text-decoration: none;
+}
+
+.cms-admission-locations__map:hover {
+  color: #0e7490;
+}
+
+.cms-admission-locations__alert {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 0.875rem;
+  padding: 1rem 1.125rem;
+  border-radius: 0.875rem;
+  background: rgba(220, 38, 38, 0.06);
+  border: 1px solid rgba(220, 38, 38, 0.16);
+  color: #991b1b;
+}
+
+.cms-admission-locations__alert i {
+  flex-shrink: 0;
+  font-size: 1.25rem;
+  margin-top: 0.1rem;
+}
+
+.cms-admission-locations__alert p {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.65;
+}
+
+.cms-admission-locations__portal {
+  margin-top: 0.5rem;
+}
+
+.cms-ordinatura-reminder__title {
+  margin: 0 0 1.25rem;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #0a1158;
+}
+
+.cms-ordinatura-reminder__sections {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .cms-ordinatura-reminder__sections {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.cms-ordinatura-reminder__section {
+  padding: 1rem 1.125rem;
+  border-radius: 0.875rem;
+  background: rgba(4, 120, 87, 0.05);
+  border: 1px solid rgba(4, 120, 87, 0.12);
+}
+
+.cms-ordinatura-reminder__section-title {
+  margin: 0 0 0.65rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #047857;
+}
+
+.cms-ordinatura-reminder__list {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.cms-ordinatura-reminder__list li {
+  margin-bottom: 0.4rem;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: #334155;
+}
+
+/* ── Qo'shma ta'lim theme ── */
+
+.admission-hero--qoshma-contract .admission-hero__inner,
+.admission-hero--qoshma-quota .admission-hero__inner {
+  background: linear-gradient(135deg, #b45309 0%, #0a1158 48%, #fbbf24 100%);
+}
+
+.admission-hero--qoshma-contact .admission-hero__inner {
+  background: linear-gradient(135deg, #0d9488 0%, #0a1158 50%, #2dd4bf 100%);
+}
+
+.admission-hero--qoshma-docs .admission-hero__inner {
+  background: linear-gradient(135deg, #7c3aed 0%, #0a1158 52%, #c4b5fd 100%);
+}
+
+.admission-page--qoshma .cms-admission-cta {
+  background: linear-gradient(135deg, rgba(180, 83, 9, 0.08) 0%, rgba(10, 17, 88, 0.04) 100%);
+  border-color: rgba(180, 83, 9, 0.22);
+}
+
+.admission-page--qoshma .cms-admission-cta__icon {
+  background: #b45309;
+}
+
+.cms-qoshma-program__banner,
+.cms-qoshma-docs__banner {
+  margin: 0 0 1.25rem;
+  border-radius: 0.875rem;
+  overflow: hidden;
+}
+
+.cms-qoshma-program__banner img,
+.cms-qoshma-docs__banner img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.cms-qoshma-program__head {
+  margin-bottom: 1.25rem;
+  text-align: center;
+}
+
+.cms-qoshma-program__title {
+  margin: 0 0 0.35rem;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  font-weight: 800;
+  line-height: 1.35;
+  color: #0a1158;
+}
+
+.cms-qoshma-program__subtitle {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.cms-qoshma-program__partner {
+  display: flex;
+  gap: 0.65rem;
+  align-items: flex-start;
+  margin: 0 0 1rem;
+  padding: 1rem;
+  border-radius: 0.875rem;
+  background: rgba(13, 148, 136, 0.06);
+  border: 1px solid rgba(13, 148, 136, 0.14);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: #0f766e;
+}
+
+.cms-qoshma-program__partner i {
+  flex-shrink: 0;
+  font-size: 1.25rem;
+  margin-top: 0.1rem;
+}
+
+.cms-qoshma-program__name {
+  margin-bottom: 1.25rem;
+  padding: 1rem 1.125rem;
+  border-radius: 0.875rem;
+  background: rgba(10, 17, 88, 0.04);
+  border: 1px solid rgba(10, 17, 88, 0.08);
+}
+
+.cms-qoshma-program__name-label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.cms-qoshma-program__name-value {
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0a1158;
+}
+
+.cms-qoshma-program__stats {
+  display: grid;
+  gap: 0.875rem;
+}
+
+@media (min-width: 640px) {
+  .cms-qoshma-program__stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .cms-qoshma-program__stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.cms-qoshma-program__stat {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 0.875rem;
+  background: #fff;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+  box-shadow: 0 4px 16px -12px rgba(10, 17, 88, 0.25);
+}
+
+.cms-qoshma-program__stat-icon {
+  width: 2.25rem;
+  height: 2.25rem;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.625rem;
+  background: rgba(180, 83, 9, 0.12);
+  color: #b45309;
+  font-size: 1.1rem;
+}
+
+.cms-qoshma-program__stat-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.cms-qoshma-program__stat-value {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #0a1158;
+}
+
+.cms-qoshma-docs__intro {
+  margin: 0 0 0.875rem;
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: #475569;
+  text-align: center;
+}
+
+.cms-qoshma-docs__contact-grid {
+  display: grid;
+  gap: 1rem;
+  margin: 1.25rem 0;
+}
+
+@media (min-width: 768px) {
+  .cms-qoshma-docs__contact-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.cms-qoshma-docs__schedule {
+  margin: 0.5rem 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: #64748b;
+}
+
+.cms-qoshma-docs__address {
+  margin-bottom: 1rem;
+}
+
+/* ── O'qishni ko'chirish theme ── */
+
+.admission-hero--kochirish-restore .admission-hero__inner {
+  background: linear-gradient(135deg, #0369a1 0%, #0a1158 48%, #38bdf8 100%);
+}
+
+.admission-hero--kochirish-results .admission-hero__inner {
+  background: linear-gradient(135deg, #059669 0%, #0a1158 50%, #6ee7b7 100%);
+}
+
+.admission-hero--kochirish-specialties .admission-hero__inner {
+  background: linear-gradient(135deg, #7c3aed 0%, #0a1158 52%, #c4b5fd 100%);
+}
+
+.admission-hero--kochirish-faq .admission-hero__inner {
+  background: linear-gradient(135deg, #dc2626 0%, #0a1158 50%, #fca5a5 100%);
+}
+
+.admission-page--kochirish .cms-admission-cta {
+  background: linear-gradient(135deg, rgba(3, 105, 161, 0.08) 0%, rgba(10, 17, 88, 0.04) 100%);
+  border-color: rgba(3, 105, 161, 0.22);
+}
+
+.admission-page--kochirish .cms-admission-cta__icon {
+  background: #0369a1;
+}
+
+.cms-kochirish-restore__banner,
+.cms-admission-faq__banner {
+  margin: 0 0 1.25rem;
+  border-radius: 0.875rem;
+  overflow: hidden;
+}
+
+.cms-kochirish-restore__banner img,
+.cms-admission-faq__banner img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.cms-kochirish-restore__headline {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  font-weight: 800;
+  line-height: 1.35;
+  color: #0a1158;
+  text-align: center;
+}
+
+.cms-kochirish-restore__intro {
+  margin: 0 0 1.25rem;
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: #475569;
+  text-align: justify;
+}
+
+.cms-kochirish-restore__portals {
+  display: grid;
+  gap: 0.875rem;
+  margin-bottom: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .cms-kochirish-restore__portals {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.cms-kochirish-restore__deadline {
+  margin-bottom: 1.25rem;
+}
+
+.cms-kochirish-restore__video,
+.cms-admission-faq__video {
+  margin: 1.25rem 0;
+  border-radius: 0.875rem;
+  overflow: hidden;
+}
+
+.cms-kochirish-restore__rejections {
+  margin-top: 1.5rem;
+}
+
+.cms-admission-faq__list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.cms-admission-faq__item {
+  border-radius: 0.875rem;
+  border: 1px solid rgba(10, 17, 88, 0.1);
+  background: #fff;
+  overflow: hidden;
+}
+
+.cms-admission-faq__question {
+  display: flex;
+  gap: 0.65rem;
+  align-items: flex-start;
+  padding: 1rem 1.125rem;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  line-height: 1.5;
+  color: #0a1158;
+  cursor: pointer;
+  list-style: none;
+}
+
+.cms-admission-faq__question::-webkit-details-marker {
+  display: none;
+}
+
+.cms-admission-faq__question i {
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+  color: #dc2626;
+  font-size: 1.1rem;
+}
+
+.cms-admission-faq__answer {
+  padding: 0 1.125rem 1rem 2.85rem;
+  font-size: 0.875rem;
+  line-height: 1.75;
+  color: #475569;
+  white-space: pre-line;
+}
+
+.cms-admission-faq__map {
+  margin-top: 1.25rem;
+}
+
+/* ── Doktorantura theme ── */
+
+.admission-hero--doc-exam .admission-hero__inner {
+  background: linear-gradient(135deg, #4338ca 0%, #0a1158 48%, #a5b4fc 100%);
+}
+
+.admission-hero--doc-mandat .admission-hero__inner {
+  background: linear-gradient(135deg, #b45309 0%, #0a1158 50%, #fcd34d 100%);
+}
+
+.admission-page--doktorantura .cms-science-btn--primary {
+  background: #4338ca;
+  border-color: #4338ca;
+}
+
+.cms-admission-doc-exam__head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  text-align: center;
+}
+
+.cms-admission-doc-exam__code {
+  display: inline-flex;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(67, 56, 202, 0.1);
+  border: 1px solid rgba(67, 56, 202, 0.2);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #4338ca;
+}
+
+.cms-admission-doc-exam__title {
+  margin: 0;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: clamp(1.05rem, 2vw, 1.3rem);
+  font-weight: 800;
+  line-height: 1.35;
+  color: #0a1158;
+}
+
+.cms-admission-doc-exam__pdf,
+.cms-admission-doc-mandat__pdf {
+  margin-bottom: 1.5rem;
+}
+
+.cms-admission-doc-exam__related,
+.cms-admission-doc-mandat__specialties {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(10, 17, 88, 0.08);
+}
+
+.cms-admission-doc-mandat__intro {
+  margin: 0 0 1.25rem;
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: #475569;
+  text-align: center;
+}
+
+.cms-admission-doc-mandat__specialties-lead {
+  margin: 0 0 1rem;
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: #64748b;
+}
+
+.admission-page--doktorantura .cms-doc-specialty--link:hover {
+  border-color: rgba(67, 56, 202, 0.35);
+  background: rgba(67, 56, 202, 0.04);
+}
+
+.admission-page--doktorantura .cms-doc-specialty__code {
+  background: rgba(67, 56, 202, 0.1);
+  color: #4338ca;
+}
+
+/* ── Internatura theme ── */
+
+.admission-hero--internatura-contact .admission-hero__inner {
+  background: linear-gradient(135deg, #0d9488 0%, #0a1158 48%, #5eead4 100%);
+}
+
+.admission-hero--internatura-submit .admission-hero__inner {
+  background: linear-gradient(135deg, #2563eb 0%, #0a1158 50%, #93c5fd 100%);
+}
+
+.admission-hero--internatura-distribution .admission-hero__inner {
+  background: linear-gradient(135deg, #7c3aed 0%, #0a1158 52%, #c4b5fd 100%);
+}
+
+.admission-hero--internatura-mandat .admission-hero__inner {
+  background: linear-gradient(135deg, #b45309 0%, #0a1158 50%, #fcd34d 100%);
+}
+
+.admission-page--internatura .cms-admission-cta {
+  background: linear-gradient(135deg, rgba(13, 148, 136, 0.08) 0%, rgba(10, 17, 88, 0.04) 100%);
+  border-color: rgba(13, 148, 136, 0.22);
+}
+
+.admission-page--internatura .cms-admission-cta__icon {
+  background: #0d9488;
+}
+
+.admission-page--internatura .cms-science-btn--primary {
+  background: #0d9488;
+  border-color: #0d9488;
+}
+
+.cms-admission-internatura__lead {
+  margin: 0 0 1.25rem;
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: #475569;
+  text-align: center;
+}
+
+.cms-admission-internatura__deadline {
+  margin-bottom: 1.25rem;
+}
+
+.cms-admission-internatura__block {
+  margin-bottom: 1.25rem;
+}
+
+.cms-admission-internatura__text {
+  margin: 0 0 0.75rem;
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: #475569;
+  text-align: justify;
+}
+
+.cms-admission-internatura__portals {
+  display: grid;
+  gap: 0.875rem;
+  margin-top: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .cms-admission-internatura__portals {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.cms-admission-internatura__pdf {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(10, 17, 88, 0.08);
+}
+
+.admission-page--internatura .cms-admission-internatura__related {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(10, 17, 88, 0.08);
+}
+
+/* ── Xorijiy qabul theme ── */
+
+.admission-hero--foreign-bachelor .admission-hero__inner {
+  background: linear-gradient(135deg, #1d4ed8 0%, #0a1158 48%, #60a5fa 100%);
+}
+
+.admission-hero--foreign-ordinatura .admission-hero__inner {
+  background: linear-gradient(135deg, #0f766e 0%, #0a1158 50%, #2dd4bf 100%);
+}
+
+.admission-hero--foreign-docs .admission-hero__inner {
+  background: linear-gradient(135deg, #7c3aed 0%, #0a1158 52%, #c4b5fd 100%);
+}
+
+.admission-hero--foreign-contract .admission-hero__inner {
+  background: linear-gradient(135deg, #b45309 0%, #0a1158 50%, #fcd34d 100%);
+}
+
+.admission-hero--foreign-mandat .admission-hero__inner {
+  background: linear-gradient(135deg, #dc2626 0%, #0a1158 50%, #fca5a5 100%);
+}
+
+.admission-page--xorijiy .cms-admission-cta {
+  background: linear-gradient(135deg, rgba(29, 78, 216, 0.08) 0%, rgba(10, 17, 88, 0.04) 100%);
+  border-color: rgba(29, 78, 216, 0.22);
+}
+
+.admission-page--xorijiy .cms-admission-cta__icon {
+  background: #1d4ed8;
+}
+
+.admission-page--xorijiy .cms-science-btn--primary {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+}
+
+.cms-admission-foreign__badge {
+  display: inline-flex;
+  margin: 0 auto 1rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(29, 78, 216, 0.1);
+  border: 1px solid rgba(29, 78, 216, 0.2);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #1d4ed8;
+  text-align: center;
+}
+
+.cms-science--foreign-bachelor .cms-admission-foreign__badge {
+  display: flex;
+  justify-content: center;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cms-admission-foreign__greeting {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #0a1158;
+  text-align: center;
+}
+
+.cms-admission-foreign__text,
+.cms-admission-foreign__lead,
+.cms-admission-foreign__note,
+.cms-admission-foreign__notice {
+  margin: 0 0 1rem;
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: #475569;
+  text-align: justify;
+}
+
+.cms-admission-foreign__lead {
+  text-align: center;
+}
+
+.cms-admission-foreign__note {
+  margin-top: 1.25rem;
+  padding: 1rem;
+  border-radius: 0.875rem;
+  background: rgba(29, 78, 216, 0.06);
+  border: 1px solid rgba(29, 78, 216, 0.12);
+  text-align: center;
+}
+
+.cms-admission-foreign__cta {
+  margin-bottom: 1.25rem;
+}
+
+.cms-admission-foreign__deadline {
+  margin-bottom: 0.875rem;
+}
+
+.cms-admission-foreign__languages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.65rem;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 0.875rem 1rem;
+  border-radius: 0.875rem;
+  background: rgba(10, 17, 88, 0.04);
+  font-size: 0.875rem;
+}
+
+.cms-admission-foreign__languages-label {
+  font-weight: 700;
+  color: #0a1158;
+}
+
+.cms-admission-foreign__docs-link {
+  margin-bottom: 1.25rem;
+}
+
+.cms-admission-foreign__programs {
+  margin-top: 1.25rem;
+}
+
+.cms-admission-foreign__program-cards {
+  display: grid;
+  gap: 0.875rem;
+}
+
+@media (min-width: 640px) {
+  .cms-admission-foreign__program-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.cms-admission-foreign__program {
+  padding: 1rem 1.125rem;
+  border-radius: 0.875rem;
+  background: #fff;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+}
+
+.cms-admission-foreign__program h4 {
+  margin: 0 0 0.5rem;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #0a1158;
+}
+
+.cms-admission-foreign__program p {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: #64748b;
+}
+
+.cms-admission-foreign__contract-section {
+  margin-bottom: 1.5rem;
+}
+
+.cms-admission-foreign__contract-subtitle {
+  margin: 0 0 0.875rem;
+  font-size: 0.8125rem;
+  color: #64748b;
+}
+
+.cms-admission-foreign__contract-table th,
+.cms-admission-foreign__contract-table td {
+  white-space: nowrap;
+}
+
+.cms-admission-foreign__contract-table td:nth-child(2) {
+  white-space: normal;
+  min-width: 10rem;
+}
+
+.cms-admission-internatura__related,
+.cms-admission-foreign__related {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(10, 17, 88, 0.08);
+}
+
+/* ── Texnikum bitiruvchilari theme ── */
+
+.admission-hero--texnikum-online .admission-hero__inner {
+  background: linear-gradient(135deg, #059669 0%, #0a1158 48%, #6ee7b7 100%);
+}
+
+.admission-hero--texnikum-news .admission-hero__inner {
+  background: linear-gradient(135deg, #2563eb 0%, #0a1158 50%, #93c5fd 100%);
+}
+
+.admission-hero--texnikum-nizom .admission-hero__inner {
+  background: linear-gradient(135deg, #7c3aed 0%, #0a1158 52%, #c4b5fd 100%);
+}
+
+.admission-hero--texnikum-callcenter .admission-hero__inner {
+  background: linear-gradient(135deg, #0891b2 0%, #0a1158 50%, #67e8f9 100%);
+}
+
+.admission-hero--texnikum-appeal .admission-hero__inner {
+  background: linear-gradient(135deg, #ea580c 0%, #0a1158 50%, #fdba74 100%);
+}
+
+.admission-hero--texnikum-hub .admission-hero__inner {
+  background: linear-gradient(135deg, #0d9488 0%, #0a1158 50%, #5eead4 100%);
+}
+
+.admission-page--texnikum .cms-admission-cta {
+  background: linear-gradient(135deg, rgba(5, 150, 105, 0.08) 0%, rgba(10, 17, 88, 0.04) 100%);
+  border-color: rgba(5, 150, 105, 0.22);
+}
+
+.admission-page--texnikum .cms-admission-cta__icon {
+  background: #059669;
+}
+
+.admission-page--texnikum .cms-science-btn--primary {
+  background: #059669;
+  border-color: #059669;
+}
+
+.cms-admission-texnikum__headline {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #0a1158;
+  text-align: center;
+}
+
+.cms-admission-texnikum__text,
+.cms-admission-texnikum__lead,
+.cms-admission-texnikum__note,
+.cms-admission-texnikum__notice {
+  margin: 0 0 1rem;
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: #475569;
+  text-align: justify;
+}
+
+.cms-admission-texnikum__lead {
+  text-align: center;
+}
+
+.cms-admission-texnikum__note {
+  margin-top: 1.25rem;
+  padding: 1rem;
+  border-radius: 0.875rem;
+  background: rgba(5, 150, 105, 0.06);
+  border: 1px solid rgba(5, 150, 105, 0.12);
+  text-align: center;
+}
+
+.cms-admission-texnikum__notice {
+  padding: 0.875rem 1rem;
+  border-radius: 0.875rem;
+  background: rgba(234, 88, 12, 0.06);
+  border: 1px solid rgba(234, 88, 12, 0.12);
+  text-align: center;
+}
+
+.cms-admission-texnikum__cta {
+  margin-bottom: 1.25rem;
+}
+
+.cms-admission-texnikum__deadline {
+  margin-bottom: 0.875rem;
+}
+
+.cms-admission-texnikum__summary {
+  margin: 0 0 1.25rem;
+  padding-left: 1.25rem;
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: #475569;
+}
+
+.cms-admission-texnikum__summary li + li {
+  margin-top: 0.5rem;
+}
+
+.cms-admission-texnikum__colleges {
+  margin-top: 1.5rem;
+}
+
+.cms-admission-texnikum__college-list {
+  display: grid;
+  gap: 0.625rem;
+}
+
+@media (min-width: 640px) {
+  .cms-admission-texnikum__college-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.cms-admission-texnikum__pdf {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(10, 17, 88, 0.08);
+}
+
+.cms-admission-texnikum__related {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(10, 17, 88, 0.08);
+}

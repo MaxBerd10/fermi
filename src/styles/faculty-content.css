@@ -1,0 +1,593 @@
+/* ── Fakultet sahifalari ── */
+
+.faculty-page {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.faculty-page__section-title {
+  margin: 0 0 1.25rem;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0a1158;
+  letter-spacing: -0.02em;
+}
+
+/* Hero */
+.faculty-hero {
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 20px 50px -24px rgba(10, 17, 88, 0.28);
+}
+
+.faculty-hero__inner {
+  padding: 1.5rem;
+  color: #ffffff;
+}
+
+@media (min-width: 768px) {
+  .faculty-hero__inner {
+    padding: 2rem;
+  }
+}
+
+.faculty-hero--clinical .faculty-hero__inner {
+  background: linear-gradient(135deg, #0a1158 0%, #1e1b4b 45%, #7f1d1d 100%);
+}
+
+.faculty-hero--preventive .faculty-hero__inner {
+  background: linear-gradient(135deg, #064e3b 0%, #0a1158 50%, #0f766e 100%);
+}
+
+.faculty-hero--international .faculty-hero__inner {
+  background: linear-gradient(135deg, #312e81 0%, #0a1158 50%, #4338ca 100%);
+}
+
+.faculty-hero--pediatric .faculty-hero__inner {
+  background: linear-gradient(135deg, #9a3412 0%, #0a1158 48%, #be185d 100%);
+}
+
+.faculty-hero__brand {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+@media (min-width: 640px) {
+  .faculty-hero__brand {
+    flex-direction: row;
+    align-items: center;
+    gap: 1.25rem;
+  }
+}
+
+.faculty-hero__logo-wrap {
+  flex-shrink: 0;
+  width: 5.5rem;
+  height: 5.5rem;
+  padding: 0.625rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .faculty-hero__logo-wrap {
+    width: 6.5rem;
+    height: 6.5rem;
+  }
+}
+
+.faculty-hero__logo {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.faculty-hero__eyebrow {
+  display: block;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.faculty-hero__title {
+  margin: 0.35rem 0 0;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: clamp(1.375rem, 2.8vw, 2rem);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+}
+
+.faculty-hero__intro {
+  margin: 1.25rem 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.82);
+  max-width: 62ch;
+}
+
+.faculty-hero__mission {
+  margin: 1rem 0 0;
+  padding: 0.875rem 0 0.875rem 1rem;
+  border-left: 3px solid #ffd600;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.92);
+  font-style: normal;
+}
+
+.faculty-hero__stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.625rem;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 640px) {
+  .faculty-hero__stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.faculty-hero__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.75rem 0.875rem;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.faculty-hero__stat i {
+  font-size: 1.125rem;
+  color: #ffd600;
+  margin-bottom: 0.15rem;
+}
+
+.faculty-hero__stat-value {
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: 1.125rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.faculty-hero__stat-label {
+  font-size: 0.6875rem;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.68);
+}
+
+/* Leaders */
+.faculty-page__leader-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .faculty-page__leader-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .faculty-dean {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Dean card */
+.faculty-dean {
+  border-radius: 1rem;
+  background: #ffffff;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+  overflow: hidden;
+  box-shadow: 0 12px 32px -20px rgba(10, 17, 88, 0.15);
+}
+
+.faculty-dean__hero {
+  display: grid;
+  gap: 1.25rem;
+  padding: 1.25rem;
+  background: linear-gradient(135deg, rgba(10, 17, 88, 0.03) 0%, #ffffff 100%);
+}
+
+@media (min-width: 768px) {
+  .faculty-dean__hero {
+    grid-template-columns: 180px minmax(0, 1fr);
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
+}
+
+.faculty-dean__portrait {
+  border-radius: 0.875rem;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  max-height: 240px;
+  background: #f1f5f9;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+}
+
+.faculty-dean__photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 12%;
+}
+
+.faculty-dean__photo-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-size: 3rem;
+  color: #94a3b8;
+}
+
+.faculty-dean__badge {
+  display: inline-flex;
+  padding: 0.3rem 0.65rem;
+  border-radius: 9999px;
+  background: #0a1158;
+  color: #ffd600;
+  font-size: 0.625rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.faculty-dean--education .faculty-dean__badge { background: #2563eb; color: #fff; }
+.faculty-dean--youth .faculty-dean__badge { background: #7c3aed; color: #fff; }
+.faculty-dean--international .faculty-dean__badge { background: #4338ca; color: #fff; }
+
+.faculty-dean__name {
+  margin: 0.625rem 0 0;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0a1158;
+  line-height: 1.3;
+}
+
+.faculty-dean__position {
+  margin: 0.35rem 0 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #64748b;
+}
+
+.faculty-dean__contacts {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+@media (min-width: 640px) {
+  .faculty-dean__contacts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.faculty-dean__toggle,
+.faculty-deputy__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  border-top: 1px solid rgba(10, 17, 88, 0.08);
+  background: #f8fafc;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #0a1158;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.faculty-dean__toggle:hover,
+.faculty-deputy__toggle:hover {
+  background: #f1f5f9;
+}
+
+.faculty-dean__panels,
+.faculty-deputy__panels {
+  display: grid;
+  gap: 0;
+  border-top: 1px solid rgba(10, 17, 88, 0.08);
+}
+
+@media (min-width: 768px) {
+  .faculty-dean__panels:not(.faculty-dean__panels--single),
+  .faculty-deputy__panels:not(.faculty-deputy__panels--single) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.faculty-dean__panel,
+.faculty-deputy__panel {
+  padding: 1rem 1.25rem 1.25rem;
+  background: #f8fafc;
+}
+
+.faculty-dean__panel + .faculty-dean__panel,
+.faculty-deputy__panel + .faculty-deputy__panel {
+  border-left: 1px solid rgba(10, 17, 88, 0.08);
+}
+
+.faculty-dean__panel-title,
+.faculty-deputy__panel-title {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #0a1158;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.faculty-dean__panel-scroll,
+.faculty-deputy__panel-scroll {
+  max-height: 320px;
+  overflow-y: auto;
+  padding-right: 0.35rem;
+}
+
+/* Deputy cards */
+.faculty-deputy {
+  border-radius: 0.875rem;
+  background: #ffffff;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.faculty-deputy--open {
+  border-color: rgba(10, 17, 88, 0.16);
+  box-shadow: 0 12px 32px -20px rgba(10, 17, 88, 0.18);
+}
+
+.faculty-deputy__header {
+  display: flex;
+  gap: 0.875rem;
+  padding: 1rem;
+}
+
+.faculty-deputy__portrait {
+  flex-shrink: 0;
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background: #f1f5f9;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+}
+
+.faculty-deputy__photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 12%;
+}
+
+.faculty-deputy__photo-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-size: 1.75rem;
+  color: #94a3b8;
+}
+
+.faculty-deputy__badge {
+  display: inline-flex;
+  padding: 0.2rem 0.5rem;
+  border-radius: 9999px;
+  background: rgba(10, 17, 88, 0.08);
+  color: #0a1158;
+  font-size: 0.5625rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.faculty-deputy--education .faculty-deputy__badge { background: rgba(37, 99, 235, 0.12); color: #2563eb; }
+.faculty-deputy--youth .faculty-deputy__badge { background: rgba(124, 58, 237, 0.12); color: #7c3aed; }
+.faculty-deputy--international .faculty-deputy__badge { background: rgba(67, 56, 202, 0.12); color: #4338ca; }
+
+.faculty-deputy__name {
+  margin: 0.45rem 0 0;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #0a1158;
+  line-height: 1.35;
+}
+
+.faculty-deputy__position {
+  margin: 0.2rem 0 0;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: #64748b;
+}
+
+.faculty-deputy__contacts {
+  display: grid;
+  gap: 0.35rem;
+  margin-top: 0.625rem;
+}
+
+/* Contact pills */
+.faculty-pill {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.5rem 0.625rem;
+  border-radius: 0.625rem;
+  background: rgba(10, 17, 88, 0.04);
+  border: 1px solid rgba(10, 17, 88, 0.06);
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.2s ease;
+}
+
+a.faculty-pill:hover {
+  background: rgba(10, 17, 88, 0.07);
+}
+
+.faculty-pill i {
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+  font-size: 0.9375rem;
+  color: #6366f1;
+}
+
+.faculty-pill__label {
+  display: block;
+  font-size: 0.625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #94a3b8;
+}
+
+.faculty-pill__value {
+  display: block;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: #334155;
+  word-break: break-word;
+}
+
+/* About article */
+.faculty-page__article {
+  padding: 1.25rem 1.5rem;
+  border-radius: 1rem;
+  background: #ffffff;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+}
+
+@media (min-width: 768px) {
+  .faculty-page__article {
+    padding: 1.5rem 1.75rem;
+  }
+}
+
+.faculty-page--clinical .faculty-page__article { border-top: 3px solid #dc2626; }
+.faculty-page--preventive .faculty-page__article { border-top: 3px solid #059669; }
+.faculty-page--international .faculty-page__article { border-top: 3px solid #6366f1; }
+.faculty-page--pediatric .faculty-page__article { border-top: 3px solid #ea580c; }
+
+.faculty-cms-mission {
+  margin: 0 0 1.25rem;
+  padding: 1rem 1.125rem;
+  border-radius: 0.75rem;
+  border-left: 4px solid #ffd600;
+  background: linear-gradient(135deg, rgba(10, 17, 88, 0.04) 0%, rgba(10, 17, 88, 0.02) 100%);
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: #0a1158;
+  font-style: normal;
+}
+
+.faculty-cms-p {
+  margin: 0 0 1rem;
+  font-size: 1rem;
+  line-height: 1.75;
+  color: #334155;
+  text-align: justify;
+}
+
+.faculty-cms-strong {
+  color: #0a1158;
+  font-weight: 700;
+}
+
+.faculty-cms-list {
+  margin: 0 0 1.25rem;
+  padding-left: 0;
+  list-style: none;
+}
+
+.faculty-cms-list--ordered {
+  counter-reset: faculty-counter;
+}
+
+.faculty-cms-item {
+  position: relative;
+  margin-bottom: 0.625rem;
+  padding: 0.75rem 0.875rem 0.75rem 2rem;
+  border-radius: 0.625rem;
+  background: #f8fafc;
+  border: 1px solid rgba(10, 17, 88, 0.06);
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: #334155;
+  text-align: justify;
+}
+
+.faculty-cms-list--ordered .faculty-cms-item {
+  counter-increment: faculty-counter;
+}
+
+.faculty-cms-list--ordered .faculty-cms-item::before {
+  content: counter(faculty-counter);
+  position: absolute;
+  left: 0.75rem;
+  top: 0.8rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 9999px;
+  background: #0a1158;
+  color: #ffd600;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.faculty-cms-list:not(.faculty-cms-list--ordered) .faculty-cms-item::before {
+  content: "";
+  position: absolute;
+  left: 0.875rem;
+  top: 1.125rem;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 9999px;
+  background: #6366f1;
+}
+
+.faculty-page__article table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.875rem;
+}
+
+.faculty-page__article td,
+.faculty-page__article th {
+  border: 1px solid rgba(10, 17, 88, 0.1);
+  padding: 0.5rem 0.75rem;
+}
+
+.menu-sidebar--fakultet .cms-sidebar__link--active {
+  border-left: 3px solid #8b5cf6;
+  padding-left: calc(1.25rem - 3px);
+}

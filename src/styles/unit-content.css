@@ -1,0 +1,913 @@
+/* ── Institut bo'limlari (menu 75) ── */
+
+.unit-page {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.unit-page__section-title {
+  margin: 0 0 1.25rem;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0a1158;
+  letter-spacing: -0.02em;
+}
+
+/* Hero */
+.unit-hero {
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 20px 50px -24px rgba(10, 17, 88, 0.28);
+}
+
+.unit-hero__inner {
+  padding: 1.5rem;
+  color: #ffffff;
+}
+
+@media (min-width: 768px) {
+  .unit-hero__inner {
+    padding: 2rem;
+  }
+}
+
+.unit-hero--admin .unit-hero__inner {
+  background: linear-gradient(135deg, #1e3a8a 0%, #0a1158 52%, #2563eb 100%);
+}
+
+.unit-hero--hr .unit-hero__inner {
+  background: linear-gradient(135deg, #065f46 0%, #0a1158 50%, #059669 100%);
+}
+
+.unit-hero--tech .unit-hero__inner {
+  background: linear-gradient(135deg, #155e75 0%, #0a1158 50%, #0284c7 100%);
+}
+
+.unit-hero--youth .unit-hero__inner {
+  background: linear-gradient(135deg, #5b21b6 0%, #0a1158 50%, #7c3aed 100%);
+}
+
+.unit-hero--records .unit-hero__inner {
+  background: linear-gradient(135deg, #334155 0%, #0a1158 50%, #475569 100%);
+}
+
+.unit-hero--compliance .unit-hero__inner {
+  background: linear-gradient(135deg, #7f1d1d 0%, #0a1158 48%, #b91c1c 100%);
+}
+
+.unit-hero--accounting .unit-hero__inner {
+  background: linear-gradient(135deg, #92400e 0%, #0a1158 50%, #d97706 100%);
+}
+
+.unit-hero--marketing .unit-hero__inner {
+  background: linear-gradient(135deg, #c2410c 0%, #0a1158 50%, #ea580c 100%);
+}
+
+.unit-hero--planning .unit-hero__inner {
+  background: linear-gradient(135deg, #3730a3 0%, #0a1158 50%, #4f46e5 100%);
+}
+
+.unit-hero--digital .unit-hero__inner {
+  background: linear-gradient(135deg, #0e7490 0%, #0a1158 50%, #06b6d4 100%);
+}
+
+.unit-hero--library .unit-hero__inner {
+  background: linear-gradient(135deg, #1d4ed8 0%, #0a1158 50%, #3b82f6 100%);
+}
+
+.unit-hero--youthUnion .unit-hero__inner {
+  background: linear-gradient(135deg, #6d28d9 0%, #0a1158 50%, #8b5cf6 100%);
+}
+
+.unit-hero--women .unit-hero__inner {
+  background: linear-gradient(135deg, #9d174d 0%, #0a1158 50%, #db2777 100%);
+}
+
+.unit-hero--quality .unit-hero__inner {
+  background: linear-gradient(135deg, #047857 0%, #0a1158 50%, #10b981 100%);
+}
+
+.unit-hero--academic .unit-hero__inner {
+  background: linear-gradient(135deg, #1e40af 0%, #0a1158 50%, #2563eb 100%);
+}
+
+.unit-hero--graduate .unit-hero__inner {
+  background: linear-gradient(135deg, #4338ca 0%, #0a1158 50%, #6366f1 100%);
+}
+
+.unit-hero--international .unit-hero__inner {
+  background: linear-gradient(135deg, #0369a1 0%, #0a1158 50%, #0ea5e9 100%);
+}
+
+.unit-hero--research .unit-hero__inner {
+  background: linear-gradient(135deg, #4c1d95 0%, #0a1158 50%, #7c3aed 100%);
+}
+
+.unit-hero--talent .unit-hero__inner {
+  background: linear-gradient(135deg, #b45309 0%, #0a1158 50%, #f59e0b 100%);
+}
+
+.unit-hero__eyebrow {
+  display: block;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.unit-hero__title {
+  margin: 0.35rem 0 0;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: clamp(1.25rem, 2.6vw, 1.75rem);
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.03em;
+}
+
+.unit-hero__intro {
+  margin: 1.25rem 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.82);
+  max-width: 62ch;
+}
+
+/* Bo'lim boshlig'i */
+.unit-head {
+  border-radius: 0.875rem;
+  background: #ffffff;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+  overflow: hidden;
+  box-shadow: 0 8px 24px -18px rgba(10, 17, 88, 0.14);
+}
+
+.unit-head--open {
+  border-color: rgba(10, 17, 88, 0.14);
+}
+
+.unit-head__summary {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas: "photo info" "toggle toggle";
+  gap: 0.75rem 1rem;
+  padding: 1rem 1.125rem;
+  align-items: start;
+}
+
+@media (min-width: 640px) {
+  .unit-head__summary {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas: "photo info toggle";
+    align-items: center;
+  }
+}
+
+.unit-head__portrait {
+  grid-area: photo;
+  width: 4rem;
+  height: 4.75rem;
+  border-radius: 0.625rem;
+  overflow: hidden;
+  background: #f1f5f9;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+}
+
+.unit-head__photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.unit-head__photo-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-size: 1.5rem;
+  color: #94a3b8;
+}
+
+.unit-head__info {
+  grid-area: info;
+  min-width: 0;
+}
+
+.unit-head__badge {
+  display: inline-flex;
+  padding: 0.15rem 0.45rem;
+  border-radius: 0.375rem;
+  background: rgba(8, 145, 178, 0.1);
+  color: #0e7490;
+  font-size: 0.625rem;
+  font-weight: 700;
+}
+
+.unit-head__name {
+  margin: 0.35rem 0 0;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #0a1158;
+  line-height: 1.35;
+}
+
+.unit-head__role {
+  margin: 0.15rem 0 0;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #475569;
+  line-height: 1.45;
+}
+
+.unit-head__pending {
+  margin: 0.35rem 0 0;
+  padding: 0.35rem 0.625rem;
+  border-radius: 0.5rem;
+  background: rgba(217, 119, 6, 0.1);
+  border: 1px dashed rgba(217, 119, 6, 0.35);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #b45309;
+  line-height: 1.45;
+}
+
+.unit-head__contacts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.unit-head__contact {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+  background: rgba(10, 17, 88, 0.04);
+  font-size: 0.6875rem;
+  color: #334155;
+  text-decoration: none;
+  word-break: break-word;
+}
+
+a.unit-head__contact:hover {
+  background: rgba(10, 17, 88, 0.07);
+}
+
+.unit-head__contact--plain {
+  cursor: default;
+}
+
+.unit-head__contact i {
+  color: #0891b2;
+}
+
+.unit-head__toggle {
+  grid-area: toggle;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(10, 17, 88, 0.12);
+  background: #f8fafc;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #0a1158;
+  cursor: pointer;
+  justify-self: start;
+}
+
+@media (min-width: 640px) {
+  .unit-head__toggle {
+    justify-self: end;
+  }
+}
+
+.unit-head__panels {
+  display: grid;
+  border-top: 1px solid rgba(10, 17, 88, 0.08);
+  background: #f8fafc;
+}
+
+@media (min-width: 768px) {
+  .unit-head__panels:not(.unit-head__panels--single) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.unit-head__panel {
+  padding: 0.875rem 1rem 1rem;
+}
+
+.unit-head__panel + .unit-head__panel {
+  border-top: 1px solid rgba(10, 17, 88, 0.06);
+}
+
+@media (min-width: 768px) {
+  .unit-head__panels:not(.unit-head__panels--single) .unit-head__panel + .unit-head__panel {
+    border-top: none;
+    border-left: 1px solid rgba(10, 17, 88, 0.06);
+  }
+}
+
+.unit-head__panel-title {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #0a1158;
+}
+
+.unit-head__panel-scroll {
+  max-height: 14rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: #475569;
+}
+
+.unit-head__detail-list {
+  margin: 0;
+  display: grid;
+  gap: 0.625rem;
+}
+
+.unit-head__detail-list dt {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.unit-head__detail-list dd {
+  margin: 0.15rem 0 0;
+  font-size: 0.875rem;
+  color: #0a1158;
+}
+
+.unit-head__detail-list a {
+  color: #0891b2;
+  text-decoration: none;
+}
+
+.unit-head__detail-list a:hover {
+  text-decoration: underline;
+}
+
+.unit-head__empty-note {
+  margin: 1rem 0 0;
+  padding: 0.625rem 0.75rem;
+  border-radius: 0.5rem;
+  background: rgba(10, 17, 88, 0.04);
+  font-size: 0.75rem;
+  line-height: 1.55;
+  color: #64748b;
+}
+
+/* About article */
+.unit-page__article {
+  padding: 1.25rem 1.5rem;
+  border-radius: 1rem;
+  background: #ffffff;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+}
+
+@media (min-width: 768px) {
+  .unit-page__article {
+    padding: 1.5rem 1.75rem;
+  }
+}
+
+.unit-page--admin .unit-page__article { border-top: 3px solid #2563eb; }
+.unit-page--hr .unit-page__article { border-top: 3px solid #059669; }
+.unit-page--tech .unit-page__article { border-top: 3px solid #0284c7; }
+.unit-page--youth .unit-page__article { border-top: 3px solid #7c3aed; }
+.unit-page--records .unit-page__article { border-top: 3px solid #475569; }
+.unit-page--compliance .unit-page__article { border-top: 3px solid #dc2626; }
+.unit-page--accounting .unit-page__article { border-top: 3px solid #d97706; }
+.unit-page--marketing .unit-page__article { border-top: 3px solid #ea580c; }
+.unit-page--planning .unit-page__article { border-top: 3px solid #4f46e5; }
+.unit-page--digital .unit-page__article { border-top: 3px solid #06b6d4; }
+.unit-page--library .unit-page__article { border-top: 3px solid #3b82f6; }
+.unit-page--youthUnion .unit-page__article { border-top: 3px solid #8b5cf6; }
+.unit-page--women .unit-page__article { border-top: 3px solid #db2777; }
+.unit-page--quality .unit-page__article { border-top: 3px solid #10b981; }
+.unit-page--academic .unit-page__article { border-top: 3px solid #2563eb; }
+.unit-page--graduate .unit-page__article { border-top: 3px solid #6366f1; }
+.unit-page--international .unit-page__article { border-top: 3px solid #0ea5e9; }
+.unit-page--research .unit-page__article { border-top: 3px solid #7c3aed; }
+.unit-page--talent .unit-page__article { border-top: 3px solid #f59e0b; }
+
+/* CMS typography */
+.unit-cms-p {
+  margin: 0 0 0.875rem;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: #334155;
+  text-align: justify;
+}
+
+.unit-cms-section-title {
+  margin: 1.5rem 0 0.75rem;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: #0a1158;
+  line-height: 1.35;
+  text-align: left !important;
+  text-transform: none;
+}
+
+.unit-cms-section-title:first-child {
+  margin-top: 0;
+}
+
+.unit-cms-strong {
+  color: #0a1158;
+  font-weight: 700;
+}
+
+.unit-cms-list {
+  margin: 0 0 1.25rem;
+  padding-left: 0;
+  list-style: none;
+}
+
+.unit-cms-list--ordered {
+  counter-reset: unit-counter;
+}
+
+.unit-cms-item {
+  position: relative;
+  margin-bottom: 0.5rem;
+  padding: 0.625rem 0.75rem 0.625rem 1.75rem;
+  border-radius: 0.5rem;
+  background: #f8fafc;
+  border: 1px solid rgba(10, 17, 88, 0.06);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: #334155;
+  text-align: justify;
+}
+
+.unit-cms-list--ordered .unit-cms-item {
+  counter-increment: unit-counter;
+}
+
+.unit-page--admin .unit-cms-list--ordered .unit-cms-item::before {
+  content: counter(unit-counter);
+  position: absolute;
+  left: 0.75rem;
+  top: 0.8rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 9999px;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.unit-page--hr .unit-cms-list--ordered .unit-cms-item::before {
+  content: counter(unit-counter);
+  position: absolute;
+  left: 0.75rem;
+  top: 0.8rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 9999px;
+  background: #059669;
+  color: #ffffff;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.unit-page--tech .unit-cms-list--ordered .unit-cms-item::before,
+.unit-page--youth .unit-cms-list--ordered .unit-cms-item::before,
+.unit-page--records .unit-cms-list--ordered .unit-cms-item::before,
+.unit-page--compliance .unit-cms-list--ordered .unit-cms-item::before {
+  content: counter(unit-counter);
+  position: absolute;
+  left: 0.75rem;
+  top: 0.8rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 9999px;
+  background: #0891b2;
+  color: #ffffff;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.unit-cms-list:not(.unit-cms-list--ordered) .unit-cms-item::before {
+  content: "";
+  position: absolute;
+  left: 0.875rem;
+  top: 1.125rem;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 9999px;
+  background: #0891b2;
+}
+
+.unit-page--admin .unit-cms-list:not(.unit-cms-list--ordered) .unit-cms-item::before { background: #2563eb; }
+.unit-page--hr .unit-cms-list:not(.unit-cms-list--ordered) .unit-cms-item::before { background: #059669; }
+.unit-page--compliance .unit-cms-list:not(.unit-cms-list--ordered) .unit-cms-item::before { background: #dc2626; }
+.unit-page--accounting .unit-cms-list--ordered .unit-cms-item::before,
+.unit-page--accounting .unit-cms-list:not(.unit-cms-list--ordered) .unit-cms-item::before { background: #d97706; }
+.unit-page--marketing .unit-cms-list--ordered .unit-cms-item::before,
+.unit-page--marketing .unit-cms-list:not(.unit-cms-list--ordered) .unit-cms-item::before { background: #ea580c; }
+.unit-page--planning .unit-cms-list--ordered .unit-cms-item::before,
+.unit-page--planning .unit-cms-list:not(.unit-cms-list--ordered) .unit-cms-item::before { background: #4f46e5; }
+.unit-page--digital .unit-cms-list--ordered .unit-cms-item::before,
+.unit-page--digital .unit-cms-list:not(.unit-cms-list--ordered) .unit-cms-item::before { background: #06b6d4; }
+.unit-page--library .unit-cms-list--ordered .unit-cms-item::before,
+.unit-page--library .unit-cms-list:not(.unit-cms-list--ordered) .unit-cms-item::before { background: #3b82f6; }
+.unit-page--youthUnion .unit-cms-list--ordered .unit-cms-item::before,
+.unit-page--youthUnion .unit-cms-list:not(.unit-cms-list--ordered) .unit-cms-item::before { background: #8b5cf6; }
+.unit-page--women .unit-cms-list--ordered .unit-cms-item::before,
+.unit-page--women .unit-cms-list:not(.unit-cms-list--ordered) .unit-cms-item::before { background: #db2777; }
+.unit-page--quality .unit-cms-list--ordered .unit-cms-item::before,
+.unit-page--quality .unit-cms-list:not(.unit-cms-list--ordered) .unit-cms-item::before { background: #10b981; }
+.unit-page--academic .unit-cms-list--ordered .unit-cms-item::before,
+.unit-page--academic .unit-cms-list:not(.unit-cms-list--ordered) .unit-cms-item::before { background: #2563eb; }
+.unit-page--graduate .unit-cms-list--ordered .unit-cms-item::before,
+.unit-page--graduate .unit-cms-list:not(.unit-cms-list--ordered) .unit-cms-item::before { background: #6366f1; }
+.unit-page--international .unit-cms-list--ordered .unit-cms-item::before,
+.unit-page--international .unit-cms-list:not(.unit-cms-list--ordered) .unit-cms-item::before { background: #0ea5e9; }
+.unit-page--research .unit-cms-list--ordered .unit-cms-item::before,
+.unit-page--research .unit-cms-list:not(.unit-cms-list--ordered) .unit-cms-item::before { background: #7c3aed; }
+.unit-page--talent .unit-cms-list--ordered .unit-cms-item::before,
+.unit-page--talent .unit-cms-list:not(.unit-cms-list--ordered) .unit-cms-item::before { background: #f59e0b; }
+
+.unit-cms-img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0.75rem auto;
+  border-radius: 0.625rem;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+}
+
+/* PDF download */
+.unit-page__doc {
+  margin-top: -0.5rem;
+}
+
+.unit-page__doc-link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-radius: 0.875rem;
+  background: #ffffff;
+  border: 1px solid rgba(10, 17, 88, 0.1);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.unit-page__doc-link:hover {
+  border-color: rgba(10, 17, 88, 0.18);
+  box-shadow: 0 8px 24px -18px rgba(10, 17, 88, 0.2);
+}
+
+.unit-page__doc-link > i:first-child {
+  flex-shrink: 0;
+  font-size: 1.75rem;
+  color: #dc2626;
+}
+
+.unit-page__doc-link strong {
+  display: block;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #0a1158;
+}
+
+.unit-page__doc-link small {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.unit-page__doc-icon {
+  margin-left: auto;
+  font-size: 1.25rem;
+  color: #0891b2;
+}
+
+/* ── Tibbiyot texnikumlari (menu 337) ── */
+
+.unit-hero--texnikum .unit-hero__inner {
+  background: linear-gradient(135deg, #047857 0%, #0a1158 50%, #10b981 100%);
+}
+
+.unit-hero--tx-fergana-city .unit-hero__inner {
+  background: linear-gradient(135deg, #0e7490 0%, #0a1158 50%, #0891b2 100%);
+}
+
+.unit-hero--tx-margilan-1 .unit-hero__inner {
+  background: linear-gradient(135deg, #047857 0%, #0a1158 50%, #059669 100%);
+}
+
+.unit-hero--tx-margilan-2 .unit-hero__inner {
+  background: linear-gradient(135deg, #0f766e 0%, #0a1158 50%, #0d9488 100%);
+}
+
+.unit-hero--tx-qoqon .unit-hero__inner {
+  background: linear-gradient(135deg, #1e40af 0%, #0a1158 50%, #2563eb 100%);
+}
+
+.unit-hero--tx-quva .unit-hero__inner {
+  background: linear-gradient(135deg, #5b21b6 0%, #0a1158 50%, #7c3aed 100%);
+}
+
+.unit-hero--tx-buvayda .unit-hero__inner {
+  background: linear-gradient(135deg, #b45309 0%, #0a1158 50%, #d97706 100%);
+}
+
+.unit-hero--tx-fergana-district .unit-hero__inner {
+  background: linear-gradient(135deg, #0369a1 0%, #0a1158 50%, #0284c7 100%);
+}
+
+.unit-hero--tx-rishton .unit-hero__inner {
+  background: linear-gradient(135deg, #4338ca 0%, #0a1158 50%, #6366f1 100%);
+}
+
+.unit-hero--tx-beshariq .unit-hero__inner {
+  background: linear-gradient(135deg, #be123c 0%, #0a1158 50%, #e11d48 100%);
+}
+
+.unit-page--texnikum .unit-page__article,
+.unit-page--tx-fergana-city .unit-page__article { border-top: 3px solid #0891b2; }
+.unit-page--tx-margilan-1 .unit-page__article { border-top: 3px solid #059669; }
+.unit-page--tx-margilan-2 .unit-page__article { border-top: 3px solid #0d9488; }
+.unit-page--tx-qoqon .unit-page__article { border-top: 3px solid #2563eb; }
+.unit-page--tx-quva .unit-page__article { border-top: 3px solid #7c3aed; }
+.unit-page--tx-buvayda .unit-page__article { border-top: 3px solid #d97706; }
+.unit-page--tx-fergana-district .unit-page__article { border-top: 3px solid #0284c7; }
+.unit-page--tx-rishton .unit-page__article { border-top: 3px solid #6366f1; }
+.unit-page--tx-beshariq .unit-page__article { border-top: 3px solid #e11d48; }
+
+.unit-page--tx-fergana-city .unit-cms-list--ordered .unit-cms-item::before,
+.unit-page--tx-fergana-city .unit-cms-list:not(.unit-cms-list--ordered) .unit-cms-item::before { background: #0891b2; }
+.unit-page--tx-margilan-1 .unit-cms-list--ordered .unit-cms-item::before,
+.unit-page--tx-margilan-1 .unit-cms-list:not(.unit-cms-list--ordered) .unit-cms-item::before { background: #059669; }
+.unit-page--tx-margilan-2 .unit-cms-list--ordered .unit-cms-item::before,
+.unit-page--tx-margilan-2 .unit-cms-list:not(.unit-cms-list--ordered) .unit-cms-item::before { background: #0d9488; }
+.unit-page--tx-qoqon .unit-cms-list--ordered .unit-cms-item::before,
+.unit-page--tx-qoqon .unit-cms-list:not(.unit-cms-list--ordered) .unit-cms-item::before { background: #2563eb; }
+.unit-page--tx-quva .unit-cms-list--ordered .unit-cms-item::before,
+.unit-page--tx-quva .unit-cms-list:not(.unit-cms-list--ordered) .unit-cms-item::before { background: #7c3aed; }
+.unit-page--tx-buvayda .unit-cms-list--ordered .unit-cms-item::before,
+.unit-page--tx-buvayda .unit-cms-list:not(.unit-cms-list--ordered) .unit-cms-item::before { background: #d97706; }
+.unit-page--tx-fergana-district .unit-cms-list--ordered .unit-cms-item::before,
+.unit-page--tx-fergana-district .unit-cms-list:not(.unit-cms-list--ordered) .unit-cms-item::before { background: #0284c7; }
+.unit-page--tx-rishton .unit-cms-list--ordered .unit-cms-item::before,
+.unit-page--tx-rishton .unit-cms-list:not(.unit-cms-list--ordered) .unit-cms-item::before { background: #6366f1; }
+.unit-page--tx-beshariq .unit-cms-list--ordered .unit-cms-item::before,
+.unit-page--tx-beshariq .unit-cms-list:not(.unit-cms-list--ordered) .unit-cms-item::before { background: #e11d48; }
+
+/* ── Karyera markazi (menu 367) ── */
+
+.unit-hero--career .unit-hero__inner {
+  background: linear-gradient(135deg, #0f766e 0%, #0a1158 50%, #14b8a6 100%);
+}
+
+.unit-hero--cr-about .unit-hero__inner {
+  background: linear-gradient(135deg, #0f766e 0%, #0a1158 50%, #14b8a6 100%);
+}
+
+.unit-hero--cr-docs .unit-hero__inner {
+  background: linear-gradient(135deg, #1e3a8a 0%, #0a1158 50%, #3b82f6 100%);
+}
+
+.unit-hero--cr-regions .unit-hero__inner {
+  background: linear-gradient(135deg, #0369a1 0%, #0a1158 50%, #0284c7 100%);
+}
+
+.unit-hero--cr-graduates .unit-hero__inner {
+  background: linear-gradient(135deg, #4338ca 0%, #0a1158 50%, #6366f1 100%);
+}
+
+.unit-hero--cr-schools .unit-hero__inner {
+  background: linear-gradient(135deg, #047857 0%, #0a1158 50%, #10b981 100%);
+}
+
+.unit-hero--cr-employment .unit-hero__inner {
+  background: linear-gradient(135deg, #b45309 0%, #0a1158 50%, #f59e0b 100%);
+}
+
+.unit-hero--cr-faq .unit-hero__inner {
+  background: linear-gradient(135deg, #0e7490 0%, #0a1158 50%, #06b6d4 100%);
+}
+
+.unit-hero--cr-employers .unit-hero__inner {
+  background: linear-gradient(135deg, #5b21b6 0%, #0a1158 50%, #8b5cf6 100%);
+}
+
+.unit-hero--cr-event .unit-hero__inner {
+  background: linear-gradient(135deg, #be123c 0%, #0a1158 50%, #f43f5e 100%);
+}
+
+.unit-hero--cr-contracts .unit-hero__inner {
+  background: linear-gradient(135deg, #334155 0%, #0a1158 50%, #64748b 100%);
+}
+
+.unit-page--career .unit-page__article,
+.unit-page--cr-about .unit-page__article { border-top: 3px solid #14b8a6; }
+.unit-page--cr-docs .unit-page__article { border-top: 3px solid #3b82f6; }
+.unit-page--cr-regions .unit-page__article { border-top: 3px solid #0284c7; }
+.unit-page--cr-graduates .unit-page__article { border-top: 3px solid #6366f1; }
+.unit-page--cr-schools .unit-page__article { border-top: 3px solid #10b981; }
+.unit-page--cr-employment .unit-page__article { border-top: 3px solid #f59e0b; }
+.unit-page--cr-faq .unit-page__article { border-top: 3px solid #06b6d4; }
+.unit-page--cr-employers .unit-page__article { border-top: 3px solid #8b5cf6; }
+.unit-page--cr-event .unit-page__article { border-top: 3px solid #f43f5e; }
+.unit-page--cr-contracts .unit-page__article { border-top: 3px solid #64748b; }
+
+.unit-cms-table-wrap {
+  overflow-x: auto;
+  margin: 1rem 0 1.25rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+}
+
+.unit-cms-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+}
+
+.unit-cms-table th,
+.unit-cms-table td {
+  padding: 0.625rem 0.75rem;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+  text-align: left;
+  vertical-align: top;
+  color: #334155;
+}
+
+.unit-cms-table th {
+  background: #f1f5f9;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-weight: 700;
+  color: #0a1158;
+}
+
+.unit-cms-table tr:nth-child(even) td {
+  background: #f8fafc;
+}
+
+.unit-cms-faq-q {
+  margin: 1.25rem 0 0.5rem !important;
+  padding: 0.75rem 1rem !important;
+  border-radius: 0.625rem;
+  background: rgba(6, 182, 212, 0.08);
+  border-left: 3px solid #06b6d4;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: 0.9375rem !important;
+  font-weight: 700 !important;
+  color: #0a1158 !important;
+  text-align: left !important;
+}
+
+.unit-cms-faq-q:first-child {
+  margin-top: 0 !important;
+}
+
+.unit-cms-faq-a {
+  margin: 0 0 1rem !important;
+  padding: 0 0 0 1rem !important;
+  border-left: 2px solid rgba(10, 17, 88, 0.08);
+  font-size: 0.875rem !important;
+  color: #475569 !important;
+}
+
+.unit-cms-faq-block {
+  margin-bottom: 0.75rem;
+}
+
+.unit-cms-contact-card {
+  margin-bottom: 0.875rem;
+  padding: 0.875rem 1rem;
+  border-radius: 0.625rem;
+  background: #f8fafc;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: #334155;
+}
+
+.unit-cms-contact-card strong,
+.unit-cms-contact-card b {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: 0.9375rem;
+  color: #0a1158;
+}
+
+.unit-page__article--faq .unit-cms-p:not(.unit-cms-faq-q):not(.unit-cms-faq-a) {
+  font-size: 0.875rem;
+}
+
+.unit-page__article--documents .unit-cms-table-wrap {
+  box-shadow: 0 4px 16px -8px rgba(10, 17, 88, 0.12);
+}
+
+/* ── Matbuot xizmati (menu 514) ── */
+
+.unit-hero--press .unit-hero__inner,
+.unit-hero--press-main .unit-hero__inner {
+  background: linear-gradient(135deg, #0e7490 0%, #0a1158 50%, #0891b2 100%);
+}
+
+.unit-page--press .unit-page__article,
+.unit-page--press-main .unit-page__article {
+  border-top: 3px solid #0891b2;
+}
+
+.unit-page--press-main .unit-cms-list--ordered .unit-cms-item::before,
+.unit-page--press-main .unit-cms-list:not(.unit-cms-list--ordered) .unit-cms-item::before {
+  background: #0891b2;
+}
+
+/* ── Registrator ofisi (menu 530) ── */
+
+.unit-hero--registrar .unit-hero__inner,
+.unit-hero--registrar-main .unit-hero__inner {
+  background: linear-gradient(135deg, #4338ca 0%, #0a1158 50%, #6366f1 100%);
+}
+
+.unit-page--registrar .unit-page__article,
+.unit-page--registrar-main .unit-page__article {
+  border-top: 3px solid #6366f1;
+}
+
+.unit-page--registrar-main .unit-cms-list--ordered .unit-cms-item::before,
+.unit-page--registrar-main .unit-cms-list:not(.unit-cms-list--ordered) .unit-cms-item::before {
+  background: #6366f1;
+}
+
+.unit-page__team {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.unit-page__team--multi {
+  display: grid;
+  gap: 0.875rem;
+}
+
+@media (min-width: 768px) {
+  .unit-page__team--multi {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .unit-page__team--multi {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.unit-page__team--multi .unit-head__summary {
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas: "photo info" "toggle toggle";
+}
+
+.unit-page__team--multi .unit-head__toggle {
+  justify-self: start;
+}
+
+@media (min-width: 640px) {
+  .unit-page__team--multi .unit-head__summary {
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas: "photo info" "toggle toggle";
+  }
+}

@@ -1,0 +1,1535 @@
+/* ── Ilmiy faoliyat (menu 48) ── */
+
+.science-section__intro {
+  margin-bottom: 1.5rem;
+  padding: 0 0.25rem;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: #475569;
+}
+
+.science-sidebar .cms-sidebar__link--active {
+  border-left: 3px solid #059669;
+  padding-left: calc(1.25rem - 3px);
+}
+
+.faoliyat-sidebar .cms-sidebar__link--active {
+  border-left: 3px solid #059669;
+  padding-left: calc(1.25rem - 3px);
+}
+
+/* ── Faoliyat page layout + hero ── */
+
+.faoliyat-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.faoliyat-hero {
+  position: relative;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 20px 50px -24px rgba(10, 17, 88, 0.28);
+}
+
+.faoliyat-hero__glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 85% 15%, rgba(255, 255, 255, 0.14) 0%, transparent 42%);
+  pointer-events: none;
+}
+
+.faoliyat-hero__inner {
+  position: relative;
+  padding: 1.5rem;
+  color: #ffffff;
+}
+
+@media (min-width: 768px) {
+  .faoliyat-hero__inner {
+    padding: 2rem 2.25rem;
+  }
+}
+
+.faoliyat-hero__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.875rem;
+}
+
+.faoliyat-hero__icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.14);
+  font-size: 1.25rem;
+}
+
+.faoliyat-hero__eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.faoliyat-hero__title {
+  margin: 0;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: clamp(1.35rem, 2.8vw, 1.875rem);
+  font-weight: 800;
+  line-height: 1.22;
+  letter-spacing: -0.03em;
+}
+
+.faoliyat-hero__intro {
+  margin: 1rem 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.86);
+  max-width: 68ch;
+}
+
+.faoliyat-hero--intl .faoliyat-hero__inner,
+.faoliyat-hero--intl-edu .faoliyat-hero__inner {
+  background: linear-gradient(135deg, #0369a1 0%, #0a1158 48%, #0ea5e9 100%);
+}
+
+.faoliyat-hero--intl-projects .faoliyat-hero__inner {
+  background: linear-gradient(135deg, #0f766e 0%, #0a1158 48%, #14b8a6 100%);
+}
+
+.faoliyat-hero--intl-partners .faoliyat-hero__inner {
+  background: linear-gradient(135deg, #1d4ed8 0%, #0a1158 48%, #3b82f6 100%);
+}
+
+.faoliyat-hero--intl-climate .faoliyat-hero__inner {
+  background: linear-gradient(135deg, #15803d 0%, #0a1158 48%, #22c55e 100%);
+}
+
+.faoliyat-hero--intl-thumbay .faoliyat-hero__inner {
+  background: linear-gradient(135deg, #7c2d12 0%, #0a1158 48%, #ea580c 100%);
+}
+
+.faoliyat-hero--finance .faoliyat-hero__inner {
+  background: linear-gradient(135deg, #92400e 0%, #0a1158 50%, #d97706 100%);
+}
+
+.faoliyat-hero--finance-contract .faoliyat-hero__inner {
+  background: linear-gradient(135deg, #b45309 0%, #0a1158 48%, #f59e0b 100%);
+}
+
+.faoliyat-hero--finance-currency .faoliyat-hero__inner {
+  background: linear-gradient(135deg, #047857 0%, #0a1158 48%, #10b981 100%);
+}
+
+.faoliyat-hero--finance-quarter .faoliyat-hero__inner {
+  background: linear-gradient(135deg, #1d4ed8 0%, #0a1158 48%, #3b82f6 100%);
+}
+
+.faoliyat-hero--finance-budget .faoliyat-hero__inner {
+  background: linear-gradient(135deg, #92400e 0%, #0a1158 50%, #ea580c 100%);
+}
+
+.faoliyat-hero--finance-property .faoliyat-hero__inner {
+  background: linear-gradient(135deg, #475569 0%, #0a1158 48%, #64748b 100%);
+}
+
+.faoliyat-hero--finance-travel .faoliyat-hero__inner {
+  background: linear-gradient(135deg, #0e7490 0%, #0a1158 48%, #06b6d4 100%);
+}
+
+.faoliyat-hero--finance-procurement .faoliyat-hero__inner {
+  background: linear-gradient(135deg, #7c3aed 0%, #0a1158 48%, #a78bfa 100%);
+}
+
+.faoliyat-hero--finance-commission .faoliyat-hero__inner {
+  background: linear-gradient(135deg, #be123c 0%, #0a1158 48%, #f43f5e 100%);
+}
+
+.faoliyat-page--finance .cms-science__badge,
+.faoliyat-page--finance .cms-finance-docs__badge {
+  background: rgba(217, 119, 6, 0.1);
+  color: #b45309;
+}
+
+.faoliyat-page--finance .cms-science-btn--primary {
+  background: #92400e;
+  border-color: #92400e;
+}
+
+.faoliyat-page--finance .cms-science-btn--primary:hover {
+  background: #78350f;
+  border-color: #78350f;
+}
+
+.faoliyat-page--finance .cms-science-doc__icon,
+.faoliyat-page--finance .cms-finance-doc__icon {
+  background: rgba(217, 119, 6, 0.1);
+  color: #b45309;
+}
+
+.faoliyat-hero--culture .faoliyat-hero__inner {
+  background: linear-gradient(135deg, #9d174d 0%, #0a1158 50%, #db2777 100%);
+}
+
+.faoliyat-hero--culture-support .faoliyat-hero__inner {
+  background: linear-gradient(135deg, #be185d 0%, #0a1158 48%, #ec4899 100%);
+}
+
+.faoliyat-page--culture .cms-science__badge {
+  background: rgba(219, 39, 119, 0.1);
+  color: #be185d;
+}
+
+.faoliyat-hero--academic .faoliyat-hero__inner {
+  background: linear-gradient(135deg, #1e40af 0%, #0a1158 50%, #2563eb 100%);
+}
+
+.faoliyat-hero--faculty .faoliyat-hero__inner {
+  background: linear-gradient(135deg, #5b21b6 0%, #0a1158 50%, #8b5cf6 100%);
+}
+
+.faoliyat-hero--faculty-pediatric .faoliyat-hero__inner {
+  background: linear-gradient(135deg, #c2410c 0%, #0a1158 48%, #f97316 100%);
+}
+
+.faoliyat-page--faculty .cms-science-btn--primary {
+  background: #ea580c;
+  border-color: #ea580c;
+}
+
+.faoliyat-page--faculty .cms-science-btn--primary:hover {
+  background: #c2410c;
+  border-color: #c2410c;
+}
+
+.faoliyat-hero--compliance .faoliyat-hero__inner {
+  background: linear-gradient(135deg, #7f1d1d 0%, #0a1158 48%, #b91c1c 100%);
+}
+
+.faoliyat-hero--projects .faoliyat-hero__inner {
+  background: linear-gradient(135deg, #3730a3 0%, #0a1158 50%, #6366f1 100%);
+}
+
+.faoliyat-hero--projects-fundamental .faoliyat-hero__inner {
+  background: linear-gradient(135deg, #4338ca 0%, #0a1158 48%, #818cf8 100%);
+}
+
+.faoliyat-page--projects .cms-science-btn--primary {
+  background: #4338ca;
+  border-color: #4338ca;
+}
+
+.faoliyat-page--projects .cms-science-btn--primary:hover {
+  background: #3730a3;
+  border-color: #3730a3;
+}
+
+.faoliyat-hero--doctorate .faoliyat-hero__inner {
+  background: linear-gradient(135deg, #4338ca 0%, #0a1158 50%, #6366f1 100%);
+}
+
+.faoliyat-hero--doctorate-info .faoliyat-hero__inner {
+  background: linear-gradient(135deg, #3730a3 0%, #0a1158 48%, #6366f1 100%);
+}
+
+.faoliyat-hero--doctorate-autoreferat .faoliyat-hero__inner {
+  background: linear-gradient(135deg, #1e40af 0%, #0a1158 48%, #3b82f6 100%);
+}
+
+.faoliyat-hero--doctorate-dissertation .faoliyat-hero__inner {
+  background: linear-gradient(135deg, #312e81 0%, #0a1158 48%, #4f46e5 100%);
+}
+
+.faoliyat-hero--doctorate-monograph .faoliyat-hero__inner {
+  background: linear-gradient(135deg, #5b21b6 0%, #0a1158 48%, #8b5cf6 100%);
+}
+
+.faoliyat-hero--doctorate-exams .faoliyat-hero__inner {
+  background: linear-gradient(135deg, #0e7490 0%, #0a1158 48%, #06b6d4 100%);
+}
+
+.faoliyat-page--doctorate .cms-science__badge,
+.faoliyat-page--doctorate .cms-doc-badge {
+  background: rgba(99, 102, 241, 0.1);
+  color: #4338ca;
+}
+
+.faoliyat-page--doctorate .cms-science-btn--primary {
+  background: #4338ca;
+  border-color: #4338ca;
+}
+
+.faoliyat-page--doctorate .cms-science-btn--primary:hover {
+  background: #3730a3;
+  border-color: #3730a3;
+}
+
+.faoliyat-placeholder {
+  padding: 1.25rem 1.375rem;
+  border-radius: 0.875rem;
+  border: 1px dashed rgba(10, 17, 88, 0.16);
+  background: linear-gradient(135deg, rgba(5, 150, 105, 0.05) 0%, #f8fafc 100%);
+}
+
+.faoliyat-placeholder__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(5, 150, 105, 0.1);
+  color: #047857;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.faoliyat-placeholder__text {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: #475569;
+}
+
+.faoliyat-placeholder__links-title {
+  margin: 1.25rem 0 0.75rem;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #0a1158;
+}
+
+.faoliyat-page__body {
+  margin: 0;
+}
+
+.cms-science {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.cms-science__cover,
+.cms-science-journal__cover {
+  margin: 0;
+  border-radius: 1rem;
+  overflow: hidden;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+  box-shadow: 0 16px 40px -24px rgba(10, 17, 88, 0.22);
+}
+
+.cms-science__cover img,
+.cms-science-journal__cover img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.cms-science__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.cms-science__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(5, 150, 105, 0.08);
+  color: #047857;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.cms-science__count {
+  font-size: 0.8125rem;
+  color: #64748b;
+}
+
+.cms-science-decisions,
+.cms-science-docs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.cms-science-decision,
+.cms-science-doc {
+  display: flex;
+  gap: 0.875rem;
+  padding: 1rem 1.125rem;
+  border-radius: 0.875rem;
+  background: #ffffff;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cms-science-decision:hover,
+.cms-science-doc:hover {
+  border-color: rgba(10, 17, 88, 0.16);
+  box-shadow: 0 12px 32px -20px rgba(10, 17, 88, 0.18);
+}
+
+.cms-science-decision__num,
+.cms-science-doc__num {
+  flex-shrink: 0;
+  width: 1.75rem;
+  height: 1.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  background: rgba(10, 17, 88, 0.06);
+  color: #0a1158;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.cms-science-doc__icon {
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.625rem;
+  background: rgba(5, 150, 105, 0.08);
+  color: #047857;
+  font-size: 1.25rem;
+}
+
+.cms-science-decision__body,
+.cms-science-doc__body {
+  min-width: 0;
+  flex: 1;
+}
+
+.cms-science-decision__title,
+.cms-science-doc__title {
+  margin: 0 0 0.625rem;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  line-height: 1.5;
+  color: #0f172a;
+}
+
+.cms-science-decision__title {
+  text-decoration: none;
+}
+
+a.cms-science-decision__title:hover {
+  color: #059669;
+}
+
+.cms-science-decision__actions,
+.cms-science-doc__actions,
+.cms-science-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.cms-science-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 0.875rem;
+  border-radius: 0.625rem;
+  border: 1px solid rgba(10, 17, 88, 0.12);
+  background: #ffffff;
+  color: #0a1158;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.cms-science-btn:hover {
+  background: #f8fafc;
+  border-color: rgba(10, 17, 88, 0.2);
+}
+
+.cms-science-btn--primary {
+  background: #0a1158;
+  border-color: #0a1158;
+  color: #ffffff;
+}
+
+.cms-science-btn--primary:hover {
+  background: #060a3d;
+  border-color: #060a3d;
+}
+
+.cms-science-preamble {
+  display: grid;
+  gap: 0.875rem;
+}
+
+.cms-science-preamble__text {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: #475569;
+}
+
+.cms-science__preview,
+.cms-science__primary {
+  padding: 1rem;
+  border-radius: 0.875rem;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+  background: #f8fafc;
+}
+
+.cms-science__preview-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.875rem;
+}
+
+.cms-science__preview-title,
+.cms-science__primary-title {
+  margin: 0 0 0.875rem;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0a1158;
+}
+
+.cms-science__preview-close {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.625rem;
+  border: none;
+  border-radius: 0.5rem;
+  background: transparent;
+  color: #64748b;
+  cursor: pointer;
+}
+
+.cms-science__empty {
+  text-align: center;
+  padding: 2rem 1rem;
+  border-radius: 0.875rem;
+  border: 1px dashed rgba(10, 17, 88, 0.14);
+  background: #f8fafc;
+}
+
+.cms-science__empty--soft {
+  background: linear-gradient(135deg, rgba(5, 150, 105, 0.04) 0%, #ffffff 100%);
+}
+
+.cms-science__empty-icon {
+  font-size: 2rem;
+  color: #059669;
+  margin-bottom: 0.75rem;
+}
+
+.cms-science__empty-title {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #0a1158;
+}
+
+.cms-science__empty-text {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: #64748b;
+  max-width: 36rem;
+  margin-inline: auto;
+}
+
+.cms-science-journal__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.cms-science-journal__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  background: #0a1158;
+  color: #ffffff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.cms-science-journal__cta--secondary {
+  background: #ffffff;
+  color: #0a1158;
+  border: 1px solid rgba(10, 17, 88, 0.12);
+}
+
+.cms-science-dissertation__links {
+  display: grid;
+  gap: 0.75rem;
+}
+
+@media (min-width: 768px) {
+  .cms-science-dissertation__links {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.cms-science-dissertation__link {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 0.875rem;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+  background: #ffffff;
+  color: #0a1158;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.45;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cms-science-dissertation__link:hover {
+  border-color: rgba(5, 150, 105, 0.35);
+  box-shadow: 0 12px 32px -20px rgba(5, 150, 105, 0.25);
+}
+
+.cms-science-dissertation__link i {
+  color: #059669;
+  font-size: 1.125rem;
+}
+
+.cms-article--science {
+  font-family: var(--font-body, "Source Sans 3", system-ui, sans-serif);
+  font-size: 1rem;
+  line-height: 1.75;
+  color: #334155;
+}
+
+.cms-article--science .cms-science-hero {
+  margin: 0 0 1.25rem;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.cms-article--science .cms-science-hero__img,
+.cms-article--science .cms-science-inline-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+}
+
+.cms-article--science .cms-science-section-title {
+  margin: 1.5rem 0 0.75rem;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #0a1158;
+}
+
+.cms-article--science .cms-science-text,
+.cms-article--science .cms-science-step {
+  margin: 0 0 1rem;
+}
+
+.cms-article--science .cms-science-step {
+  padding-left: 0.25rem;
+}
+
+.cms-article--science .cms-science-list {
+  margin: 0 0 1rem;
+  padding-left: 1.25rem;
+}
+
+.cms-article--science .cms-science-table-wrap {
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+.cms-article--science .cms-science-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+}
+
+.cms-article--science .cms-science-table td,
+.cms-article--science .cms-science-table th {
+  border: 1px solid rgba(10, 17, 88, 0.1);
+  padding: 0.625rem 0.75rem;
+}
+
+.cms-article--science a {
+  color: #0a1158;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.cms-science--autoreferat .cms-autoreferat-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.cms-science--autoreferat .cms-science-card__actions {
+  margin-top: auto;
+  padding-top: 0.875rem;
+}
+
+/* ── Moliyaviy faoliyat (menu 50) ── */
+
+.cms-science--finance-pdf,
+.cms-science--finance-docs,
+.cms-science--finance-intro {
+  gap: 1rem;
+}
+
+.cms-finance-pdf__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  border-radius: 0.875rem;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+  background: #fffbeb;
+}
+
+.cms-finance-pdf__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #92400e;
+}
+
+.cms-finance-file {
+  display: flex;
+  gap: 1rem;
+  padding: 1.25rem;
+  border-radius: 0.875rem;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.08) 0%, #ffffff 100%);
+}
+
+.cms-finance-file__icon {
+  flex-shrink: 0;
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  background: rgba(217, 119, 6, 0.12);
+  color: #b45309;
+  font-size: 1.5rem;
+}
+
+.cms-finance-file__title {
+  margin: 0 0 0.375rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0a1158;
+}
+
+.cms-finance-file__text {
+  margin: 0 0 0.875rem;
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: #64748b;
+}
+
+.cms-finance-docs__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.cms-finance-docs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.cms-finance-doc {
+  display: flex;
+  gap: 0.875rem;
+  padding: 1rem 1.125rem;
+  border-radius: 0.875rem;
+  background: #ffffff;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cms-finance-doc:hover {
+  border-color: rgba(146, 64, 14, 0.2);
+  box-shadow: 0 12px 32px -20px rgba(146, 64, 14, 0.18);
+}
+
+.cms-finance-doc__icon {
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.625rem;
+  background: rgba(217, 119, 6, 0.1);
+  color: #b45309;
+  font-size: 1.25rem;
+}
+
+.cms-finance-doc__body {
+  min-width: 0;
+  flex: 1;
+}
+
+.cms-finance-doc__num {
+  display: inline-block;
+  margin-bottom: 0.375rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #92400e;
+}
+
+.cms-finance-doc__title {
+  margin: 0 0 0.625rem;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  line-height: 1.5;
+  color: #0f172a;
+}
+
+.cms-finance-doc__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.cms-finance-intro__text {
+  padding: 1rem 1.125rem;
+  border-radius: 0.875rem;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+  background: #f8fafc;
+}
+
+/* ── Kam ta'minlangan talabalar (menu 51) ── */
+
+.cms-science--kam-taminlangan {
+  gap: 1.5rem;
+}
+
+.cms-kam-intro {
+  margin: 0;
+  padding: 1rem 1.125rem;
+  border-radius: 0.875rem;
+  border: 1px solid rgba(190, 24, 93, 0.12);
+  background: linear-gradient(135deg, rgba(236, 72, 153, 0.06) 0%, #ffffff 100%);
+  font-size: 0.9375rem;
+  line-height: 1.8;
+  color: #334155;
+}
+
+.cms-kam-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+@media (min-width: 768px) {
+  .cms-kam-stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .cms-kam-stats {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+.cms-kam-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  padding: 1rem;
+  border-radius: 0.875rem;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+  background: #ffffff;
+  box-shadow: 0 10px 28px -22px rgba(190, 24, 93, 0.35);
+}
+
+.cms-kam-stat__icon {
+  width: 2.25rem;
+  height: 2.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.625rem;
+  background: rgba(219, 39, 119, 0.1);
+  color: #be185d;
+  font-size: 1.125rem;
+}
+
+.cms-kam-stat__value {
+  display: block;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: 1.375rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: #0a1158;
+}
+
+.cms-kam-stat__label {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: #64748b;
+}
+
+.cms-kam-sections__title {
+  margin: 0;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: 1.0625rem;
+  font-weight: 800;
+  color: #0a1158;
+}
+
+.cms-kam-sections__grid {
+  display: grid;
+  gap: 0.875rem;
+}
+
+@media (min-width: 768px) {
+  .cms-kam-sections__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.cms-kam-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.125rem 1.25rem;
+  border-radius: 0.875rem;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+  background: #ffffff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cms-kam-section:hover {
+  border-color: rgba(190, 24, 93, 0.22);
+  box-shadow: 0 14px 36px -24px rgba(190, 24, 93, 0.28);
+}
+
+.cms-kam-section__head {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.cms-kam-section__icon {
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.625rem;
+  background: rgba(219, 39, 119, 0.1);
+  color: #be185d;
+  font-size: 1.125rem;
+}
+
+.cms-kam-section__title {
+  margin: 0;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  line-height: 1.45;
+  color: #0a1158;
+}
+
+.cms-kam-section__body {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.75;
+  color: #475569;
+}
+
+/* ── Pediatriya fakulteti faoliyati (menu 409) ── */
+
+.cms-science--pediatriya-faoliyat {
+  gap: 1.5rem;
+}
+
+.cms-ped-faoliyat-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.cms-ped-faoliyat-stat {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  border-radius: 0.875rem;
+  border: 1px solid rgba(234, 88, 12, 0.14);
+  background: linear-gradient(135deg, rgba(249, 115, 22, 0.06) 0%, #ffffff 100%);
+}
+
+.cms-ped-faoliyat-stat__icon {
+  width: 2.25rem;
+  height: 2.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.625rem;
+  background: rgba(234, 88, 12, 0.12);
+  color: #ea580c;
+  font-size: 1.125rem;
+}
+
+.cms-ped-faoliyat-stat__value {
+  display: block;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: 1.125rem;
+  font-weight: 800;
+  color: #0a1158;
+}
+
+.cms-ped-faoliyat-stat__label {
+  display: block;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.cms-ped-faoliyat-grid {
+  display: grid;
+  gap: 0.875rem;
+}
+
+@media (min-width: 768px) {
+  .cms-ped-faoliyat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.cms-ped-faoliyat-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  padding: 1.125rem 1.25rem;
+  border-radius: 0.875rem;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+  background: #ffffff;
+  box-shadow: 0 12px 32px -24px rgba(234, 88, 12, 0.25);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cms-ped-faoliyat-card:hover {
+  border-color: rgba(234, 88, 12, 0.22);
+  box-shadow: 0 16px 40px -24px rgba(234, 88, 12, 0.32);
+}
+
+.cms-ped-faoliyat-card__head {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.cms-ped-faoliyat-card__icon {
+  flex-shrink: 0;
+  width: 2.375rem;
+  height: 2.375rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.625rem;
+  background: rgba(234, 88, 12, 0.1);
+  color: #ea580c;
+  font-size: 1.125rem;
+}
+
+.cms-ped-faoliyat-card__title {
+  margin: 0;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: 0.9375rem;
+  font-weight: 800;
+  line-height: 1.4;
+  color: #0a1158;
+}
+
+.cms-ped-faoliyat-card__body {
+  margin: 0;
+  flex: 1;
+  font-size: 0.875rem;
+  line-height: 1.75;
+  color: #475569;
+}
+
+.cms-ped-faoliyat-card__doc {
+  padding-top: 0.875rem;
+  border-top: 1px solid rgba(10, 17, 88, 0.08);
+}
+
+.cms-ped-faoliyat-card__doc-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #ea580c;
+}
+
+.cms-ped-faoliyat-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* ── Fundamental loyiha hub (menu 581) ── */
+
+.cms-science--fundamental-hub {
+  gap: 1.5rem;
+}
+
+.cms-fundamental-status {
+  padding: 1rem 1.125rem;
+  border-radius: 0.875rem;
+  border: 1px dashed rgba(67, 56, 202, 0.22);
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.06) 0%, #ffffff 100%);
+}
+
+.cms-fundamental-status__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.625rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(99, 102, 241, 0.12);
+  color: #4338ca;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.cms-fundamental-status__text {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: #475569;
+}
+
+.cms-fundamental-block__title {
+  margin: 0 0 0.875rem;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: 1.0625rem;
+  font-weight: 800;
+  color: #0a1158;
+}
+
+.cms-fundamental-block__lead {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.8;
+  color: #475569;
+}
+
+.cms-fundamental-areas {
+  display: grid;
+  gap: 0.75rem;
+}
+
+@media (min-width: 768px) {
+  .cms-fundamental-areas {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.cms-fundamental-area {
+  padding: 1rem 1.125rem;
+  border-radius: 0.875rem;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+  background: #ffffff;
+}
+
+.cms-fundamental-area__icon {
+  display: inline-flex;
+  width: 2.25rem;
+  height: 2.25rem;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.625rem;
+  border-radius: 0.625rem;
+  background: rgba(99, 102, 241, 0.1);
+  color: #4338ca;
+  font-size: 1.125rem;
+}
+
+.cms-fundamental-area__title {
+  margin: 0 0 0.375rem;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #0a1158;
+}
+
+.cms-fundamental-area__text {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.65;
+  color: #64748b;
+}
+
+.cms-fundamental-tracks {
+  display: grid;
+  gap: 0.75rem;
+}
+
+@media (min-width: 768px) {
+  .cms-fundamental-tracks {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.cms-fundamental-track {
+  display: flex;
+  gap: 0.875rem;
+  padding: 1rem 1.125rem;
+  border-radius: 0.875rem;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+  background: #ffffff;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cms-fundamental-track--active:hover {
+  border-color: rgba(67, 56, 202, 0.24);
+  box-shadow: 0 14px 36px -24px rgba(67, 56, 202, 0.28);
+}
+
+.cms-fundamental-track--soon {
+  opacity: 0.72;
+  background: #f8fafc;
+}
+
+.cms-fundamental-track__icon {
+  flex-shrink: 0;
+  width: 2.375rem;
+  height: 2.375rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.625rem;
+  background: rgba(99, 102, 241, 0.1);
+  color: #4338ca;
+  font-size: 1.125rem;
+}
+
+.cms-fundamental-track__body {
+  min-width: 0;
+  flex: 1;
+}
+
+.cms-fundamental-track__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.375rem;
+}
+
+.cms-fundamental-track__title {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #0a1158;
+}
+
+.cms-fundamental-track__soon {
+  padding: 0.125rem 0.5rem;
+  border-radius: 999px;
+  background: rgba(100, 116, 139, 0.12);
+  color: #64748b;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.cms-fundamental-track__text {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.65;
+  color: #64748b;
+}
+
+.cms-fundamental-links {
+  display: grid;
+  gap: 0.625rem;
+}
+
+@media (min-width: 768px) {
+  .cms-fundamental-links {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.cms-fundamental-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  border-radius: 0.875rem;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+  background: #ffffff;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.cms-fundamental-link:hover {
+  border-color: rgba(67, 56, 202, 0.2);
+  background: #f8fafc;
+}
+
+.cms-fundamental-link__icon {
+  flex-shrink: 0;
+  width: 2.125rem;
+  height: 2.125rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.625rem;
+  background: rgba(99, 102, 241, 0.1);
+  color: #4338ca;
+  font-size: 1rem;
+}
+
+.cms-fundamental-link__body {
+  min-width: 0;
+  flex: 1;
+  display: grid;
+  gap: 0.125rem;
+}
+
+.cms-fundamental-link__title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #0a1158;
+}
+
+.cms-fundamental-link__desc {
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: #64748b;
+}
+
+.cms-fundamental-link__arrow {
+  flex-shrink: 0;
+  color: #94a3b8;
+  font-size: 1.125rem;
+}
+
+/* ── Doktorantura (menu 591) ── */
+
+.cms-science--doctorate-info,
+.cms-science--doctorate-exams,
+.cms-science--dissertation-hub {
+  gap: 1.5rem;
+}
+
+.cms-doc-intro {
+  margin: 0;
+  padding: 1rem 1.125rem;
+  border-radius: 0.875rem;
+  border: 1px solid rgba(99, 102, 241, 0.14);
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.06) 0%, #ffffff 100%);
+  font-size: 0.9375rem;
+  line-height: 1.8;
+  color: #334155;
+}
+
+.cms-doc-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.cms-doc-stat {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  border-radius: 0.875rem;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+  background: #ffffff;
+}
+
+.cms-doc-stat__icon {
+  width: 2.25rem;
+  height: 2.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.625rem;
+  background: rgba(99, 102, 241, 0.1);
+  color: #4338ca;
+  font-size: 1.125rem;
+}
+
+.cms-doc-stat__value {
+  display: block;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #0a1158;
+}
+
+.cms-doc-stat__label {
+  display: block;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.cms-doc-block__title {
+  margin: 0 0 0.625rem;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: 1.0625rem;
+  font-weight: 800;
+  color: #0a1158;
+}
+
+.cms-doc-block__lead {
+  margin: 0 0 1rem;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: #64748b;
+}
+
+.cms-doc-specialties {
+  display: grid;
+  gap: 0.625rem;
+}
+
+@media (min-width: 768px) {
+  .cms-doc-specialties {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.cms-doc-specialty {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  border-radius: 0.875rem;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+  background: #ffffff;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cms-doc-specialty--link:hover {
+  border-color: rgba(67, 56, 202, 0.22);
+  box-shadow: 0 12px 32px -24px rgba(67, 56, 202, 0.28);
+}
+
+.cms-doc-specialty__code {
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  background: rgba(99, 102, 241, 0.1);
+  color: #4338ca;
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.cms-doc-specialty__title {
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: #0f172a;
+}
+
+.cms-doc-specialty__soon {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #94a3b8;
+}
+
+.cms-doc-article {
+  padding: 1rem 1.125rem;
+  border-radius: 0.875rem;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+  background: #f8fafc;
+}
+
+.cms-doc-regulations {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.cms-doc-regulation {
+  padding: 1rem 1.125rem;
+  border-radius: 0.875rem;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+  background: #ffffff;
+}
+
+.cms-doc-regulation__title {
+  margin: 0 0 0.75rem;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  line-height: 1.5;
+  color: #0a1158;
+}
+
+.cms-doc-regulation__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.cms-doc-status__badge {
+  background: rgba(99, 102, 241, 0.12);
+  color: #4338ca;
+}

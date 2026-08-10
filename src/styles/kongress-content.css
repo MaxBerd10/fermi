@@ -1,0 +1,439 @@
+/* ── Kongress bo'limi (menu 362) ── */
+
+.kongress-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.kongress-hero {
+  position: relative;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 20px 50px -24px rgba(217, 119, 6, 0.32);
+}
+
+.kongress-hero__glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 88% 12%, rgba(255, 255, 255, 0.18) 0%, transparent 45%);
+  pointer-events: none;
+}
+
+.kongress-hero__inner {
+  position: relative;
+  padding: 1.5rem;
+  color: #ffffff;
+}
+
+@media (min-width: 768px) {
+  .kongress-hero__inner {
+    padding: 2rem 2.25rem;
+  }
+}
+
+.kongress-hero__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.875rem;
+}
+
+.kongress-hero__icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.14);
+  font-size: 1.25rem;
+}
+
+.kongress-hero__eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.kongress-hero__title {
+  margin: 0;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: clamp(1.35rem, 2.8vw, 1.875rem);
+  font-weight: 800;
+  line-height: 1.22;
+  letter-spacing: -0.03em;
+}
+
+.kongress-hero__intro {
+  margin: 1rem 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.88);
+  max-width: 68ch;
+}
+
+.kongress-hero--kongress-main .kongress-hero__inner {
+  background: linear-gradient(135deg, #d97706 0%, #0a1158 52%, #fcd34d 100%);
+}
+
+.cms-kongress {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.cms-kongress__hero-image {
+  margin: 0;
+  border-radius: 0.875rem;
+  overflow: hidden;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+  box-shadow: 0 16px 48px -28px rgba(10, 17, 88, 0.2);
+}
+
+.cms-kongress__hero-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 28rem;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.cms-kongress__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+}
+
+.cms-kongress__stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 9999px;
+  background: rgba(217, 119, 6, 0.1);
+  border: 1px solid rgba(217, 119, 6, 0.2);
+  color: #b45309;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.cms-kongress__featured {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cms-kongress__block {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(10, 17, 88, 0.08);
+}
+
+.cms-kongress__block:first-of-type {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.cms-kongress__block-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.625rem 1rem;
+}
+
+.cms-kongress__block-title {
+  margin: 0;
+  font-family: var(--font-heading, inherit);
+  font-size: 1.125rem;
+  font-weight: 800;
+  color: #0a1158;
+  line-height: 1.35;
+}
+
+.cms-kongress__block-year {
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  background: rgba(10, 17, 88, 0.06);
+  color: #475569;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.cms-kongress__banner {
+  margin: 0;
+  border-radius: 0.875rem;
+  overflow: hidden;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+  background: #f8fafc;
+}
+
+.cms-kongress__banner img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 22rem;
+  object-fit: cover;
+  object-position: center;
+}
+
+.cms-kongress__gallery {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.625rem;
+}
+
+@media (min-width: 768px) {
+  .cms-kongress__gallery {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+}
+
+.cms-kongress__gallery-item {
+  border-radius: 0.75rem;
+  overflow: hidden;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+  background: #f1f5f9;
+  aspect-ratio: 4 / 3;
+}
+
+.cms-kongress__gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.cms-kongress__gallery-item:hover img {
+  transform: scale(1.04);
+}
+
+.cms-kongress__videos {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .cms-kongress__videos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.cms-kongress__video {
+  position: relative;
+  border-radius: 0.875rem;
+  overflow: hidden;
+  background: #0a1158;
+  aspect-ratio: 16 / 9;
+  box-shadow: 0 12px 36px -20px rgba(10, 17, 88, 0.28);
+}
+
+.cms-kongress__video iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.cms-kongress__docs {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+@media (min-width: 768px) {
+  .cms-kongress__docs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.cms-kongress__doc {
+  display: flex;
+  gap: 0.875rem;
+  padding: 1rem 1.125rem;
+  border-radius: 0.75rem;
+  background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%);
+  border: 1px solid rgba(217, 119, 6, 0.14);
+  box-shadow: 0 4px 16px -8px rgba(10, 17, 88, 0.1);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cms-kongress__doc:hover {
+  border-color: rgba(217, 119, 6, 0.35);
+  box-shadow: 0 8px 24px -12px rgba(10, 17, 88, 0.14);
+}
+
+.cms-kongress__doc--featured {
+  background: linear-gradient(135deg, rgba(217, 119, 6, 0.12) 0%, #ffffff 100%);
+  border-color: rgba(217, 119, 6, 0.28);
+}
+
+.cms-kongress__doc-icon {
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.625rem;
+  background: rgba(217, 119, 6, 0.15);
+  color: #b45309;
+  font-size: 1.25rem;
+}
+
+.cms-kongress__doc-body {
+  min-width: 0;
+  flex: 1;
+}
+
+.cms-kongress__doc-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.375rem;
+}
+
+.cms-kongress__doc-year {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: #64748b;
+}
+
+.cms-kongress__doc-badge {
+  padding: 0.2rem 0.5rem;
+  border-radius: 9999px;
+  background: rgba(217, 119, 6, 0.15);
+  color: #b45309;
+  font-size: 0.6875rem;
+  font-weight: 700;
+}
+
+.cms-kongress__doc-title {
+  margin: 0 0 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: #0f172a;
+}
+
+.cms-kongress__doc-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.cms-kongress__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(10, 17, 88, 0.12);
+  background: #ffffff;
+  color: #0a1158;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.cms-kongress__btn:hover {
+  border-color: rgba(217, 119, 6, 0.4);
+  background: #fffbeb;
+}
+
+.cms-kongress__btn--primary {
+  background: #0a1158;
+  border-color: #0a1158;
+  color: #ffffff;
+}
+
+.cms-kongress__btn--primary:hover {
+  background: #060a3d;
+  border-color: #060a3d;
+}
+
+.cms-kongress__preview {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 0.875rem;
+  border: 1px solid rgba(10, 17, 88, 0.1);
+  background: #f8fafc;
+}
+
+.cms-kongress__preview--global {
+  margin-top: 0.5rem;
+}
+
+.cms-kongress__preview-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.875rem;
+}
+
+.cms-kongress__preview-title {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #0a1158;
+}
+
+.cms-kongress__preview-close {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(10, 17, 88, 0.12);
+  background: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #475569;
+  cursor: pointer;
+}
+
+.cms-kongress__empty {
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  border-radius: 0.875rem;
+  border: 1px dashed rgba(10, 17, 88, 0.15);
+  background: #f8fafc;
+}
+
+.cms-kongress__empty-icon {
+  font-size: 2.5rem;
+  color: #d97706;
+  opacity: 0.5;
+}
+
+.cms-kongress__empty-title {
+  margin: 0.75rem 0 0.375rem;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: #0a1158;
+}
+
+.cms-kongress__empty-text {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #64748b;
+  line-height: 1.65;
+}

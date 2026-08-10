@@ -1,0 +1,86 @@
+[
+  {
+    "id": "about",
+    "title": "Institut haqida",
+    "href": "/institut",
+    "tags": ["institut", "fjsti", "fermi", "tarix", "2020", "about"],
+    "text": "Farg'ona jamoat salomatligi tibbiyot instituti (FJSTI / FerMI) — 1992-yildan beri tibbiyot kadrlarini tayyorlaydigan davlat oliy o'quv yurti. Yo'nalish: jamoat salomatligi, klinik tibbiyot, profilaktika. Missiya: bilimli, insonparvar va innovatsion tibbiyot mutaxassislarini tayyorlash."
+  },
+  {
+    "id": "contact",
+    "title": "Aloqa va manzil",
+    "href": "/aloqa",
+    "tags": ["aloqa", "manzil", "telefon", "email", "address", "contact", "call"],
+    "text": "Manzil: Farg'ona sh., Yangi Turon, 2-a uy. Telefon: +998 95 062-23-45, +998 95 063-23-45. Email: info@fjsti.uz, fmioz@mail.ru. Ish vaqti: Dushanba–Shanba, 09:00–17:00. Aloqa formasi: /aloqa. Virtual qabulxona: /virtual-reception/17."
+  },
+  {
+    "id": "faculties",
+    "title": "Fakultetlar",
+    "href": "/#faculties-news",
+    "tags": ["fakultet", "davolash", "pediatriya", "profilaktika", "xalqaro", "faculty"],
+    "text": "Asosiy fakultetlar: 1) Davolash ishi — umumiy tibbiyot va klinik yo'nalish. 2) Tibbiy profilaktika va jamoat salomatligi — epidemiologiya, profilaktika, aholi sog'lig'i. 3) Xalqaro fakultet — xorijiy talabalar va xalqaro dasturlar. 4) Pediatriya fakulteti — bolalar salomatligi. Fakultetlar sahifasi: institut bo'limi va fakultet kartochkalari orqali."
+  },
+  {
+    "id": "faculty-advice",
+    "title": "Fakultet tanlash maslahati",
+    "href": "/#faculties-news",
+    "tags": ["bolalar", "children", "clinic", "public health", "international", "tanlash"],
+    "text": "Bolalar bilan ishlashni xohlasangiz → Pediatriya. Bemor bilan bevosita klinik ish → Davolash ishi. Profilaktika, epidemiologiya, jamoat salomatligi → Tibbiy profilaktika va jamoat salomatligi. Xalqaro muhit, almashinuv → Xalqaro fakultet. Aniqroq tanlash uchun PathFinder (#pathfinder) dan foydalaning."
+  },
+  {
+    "id": "qabul-general",
+    "title": "Qabul umumiy",
+    "href": "/qabul",
+    "tags": ["qabul", "admission", "abituriyent", "hujjat", "my.edu", "ro'yxat"],
+    "text": "Qabul sahifasi: /qabul. Onlayn ro'yxatdan o'tish: my.edu.uz (my.uzedu.uz). Bosqichlar: 1) onlayn ro'yxat 2) hujjatlarni yuklash (pasport, diplom, foto, tibbiy ma'lumotnoma) 3) test sinovlari 4) natija va institutda ro'yxatdan o'tish. Qabul bo'yicha ariza formasi /qabul sahifasida. Call-markaz: +998 95 062-23-45."
+  },
+  {
+    "id": "qabul-levels",
+    "title": "Ta'lim darajalari",
+    "href": "/qabul",
+    "tags": ["bakalavriat", "magistratura", "ordinatura", "doktorantura", "bachelor", "master"],
+    "text": "Bakalavriat — oliy ta'limning birinchi bosqichi, tibbiyot yo'nalishida chuqur tayyorgarlik (taxminan 5 yil). Magistratura — ilmiy-pedagogik ixtisoslashuv. Klinik ordinatura — shifokorlar uchun kasbiy qayta tayyorlash va malaka oshirish. Doktorantura — ilmiy tadqiqot yo'nalishi. Batafsil: /qabul."
+  },
+  {
+    "id": "hemis",
+    "title": "HEMIS",
+    "href": "http://hemis.fjsti.uz",
+    "tags": ["hemis", "lms", "masofaviy", "baholar", "jadval", "talaba", "kabinet"],
+    "text": "HEMIS — ta'limni boshqarish tizimi: http://hemis.fjsti.uz — baholar, jadval, kreditlar, o'quv materiallari va talaba shaxsiy kabineti. Kirish uchun institut login/paroli kerak."
+  },
+  {
+    "id": "virtual-reception",
+    "title": "Virtual qabulxona",
+    "href": "/virtual-reception/17",
+    "tags": ["virtual", "qabulxona", "murojaat", "rahbariyat", "ticket"],
+    "text": "Virtual qabulxona orqali rahbariyat va bo'limlarga rasmiy murojaat yuboriladi. Sahifa: /virtual-reception/17 yoki /virtual-qabulxona. Formada F.I.SH, viloyat/tuman, manzil, telefon, email, fakultet va murojaat matni kiritiladi. Javob belgilangan muddatda beriladi."
+  },
+  {
+    "id": "documents",
+    "title": "Hujjatlar va testlar",
+    "href": "/blog/29/mutaxassisliklar-boyicha-testlar-toplami",
+    "tags": ["hujjat", "document", "test", "ordinatura", "kafedra"],
+    "text": "Test baza va fanlardan test to'plamlari blog/hujjatlar bo'limida. Ordinatura va qabul hujjatlari haqida ma'lumot /qabul sahifasida va onlayn platformada (my.edu.uz). Kafedralar haqida: /departments/... yo'llari orqali. Saytdan qidiruv: /search?q=..."
+  },
+  {
+    "id": "leadership",
+    "title": "Rahbariyat",
+    "href": "/leader/35/rektor",
+    "tags": ["rektor", "prorektor", "rahbariyat", "leadership", "sidikov"],
+    "text": "Institut rektori va prorektorlar jamoasi /leader/35/rektor va /leader/35/prorektorlar sahifalarida. Rektorat ta'lim, yoshlar, klinik ish yo'nalishlarini muvofiqlashtiradi."
+  },
+  {
+    "id": "services",
+    "title": "Tezkor xizmatlar",
+    "href": "/",
+    "tags": ["scopus", "doctorium", "xizmat", "jcpm", "jurnal"],
+    "text": "Tezkor xizmatlar: Virtual qabulxona, HEMIS, Scopus, Doctorium. Ilmiy jurnal JCPM — jamoat salomatligi va klinik/profilaktik tibbiyot. Yangiliklar: /yangiliklar."
+  },
+  {
+    "id": "pathfinder",
+    "title": "PathFinder",
+    "href": "/#pathfinder",
+    "tags": ["pathfinder", "yo'nalish", "tavsiya", "qiziqish"],
+    "text": "PathFinder — 3 qadamda qiziqish (klinika / jamoat salomatligi / fan / xalqaro) va ta'lim darajasini tanlab shaxsiy tavsiya olish. Joylashuv: bosh sahifa #pathfinder. AI yordamida qiziqish matnidan ham tavsiya beriladi."
+  }
+]

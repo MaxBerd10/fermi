@@ -1,0 +1,126 @@
+/* ── Xorijiy talabalar (menu 6) ── */
+
+.xorijiy-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.xorijiy-hero {
+  position: relative;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 20px 50px -24px rgba(37, 99, 235, 0.28);
+}
+
+.xorijiy-hero__glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 85% 15%, rgba(255, 255, 255, 0.16) 0%, transparent 42%);
+  pointer-events: none;
+}
+
+.xorijiy-hero__inner {
+  position: relative;
+  padding: 1.5rem;
+  color: #ffffff;
+}
+
+@media (min-width: 768px) {
+  .xorijiy-hero__inner {
+    padding: 2rem 2.25rem;
+  }
+}
+
+.xorijiy-hero__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.875rem;
+}
+
+.xorijiy-hero__icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.14);
+  font-size: 1.25rem;
+}
+
+.xorijiy-hero__eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.xorijiy-hero__title {
+  margin: 0;
+  font-family: var(--font-heading, Manrope, system-ui, sans-serif);
+  font-size: clamp(1.35rem, 2.8vw, 1.875rem);
+  font-weight: 800;
+  line-height: 1.22;
+  letter-spacing: -0.03em;
+}
+
+.xorijiy-hero__intro {
+  margin: 1rem 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.88);
+  max-width: 68ch;
+}
+
+.xorijiy-hero--xorijiy-study .xorijiy-hero__inner {
+  background: linear-gradient(135deg, #2563eb 0%, #0a1158 50%, #93c5fd 100%);
+}
+
+.xorijiy-hero--xorijiy-abiturient .xorijiy-hero__inner {
+  background: linear-gradient(135deg, #7c3aed 0%, #0a1158 48%, #c4b5fd 100%);
+}
+
+.xorijiy-hero--xorijiy-events .xorijiy-hero__inner {
+  background: linear-gradient(135deg, #059669 0%, #0a1158 50%, #6ee7b7 100%);
+}
+
+.xorijiy-page--xorijiy .cms-admission-cta {
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.08) 0%, rgba(10, 17, 88, 0.04) 100%);
+  border-color: rgba(37, 99, 235, 0.22);
+}
+
+.xorijiy-page--xorijiy .cms-admission-cta__icon {
+  background: #2563eb;
+}
+
+.xorijiy-page--xorijiy .cms-science-btn--primary {
+  background: #2563eb;
+  border-color: #2563eb;
+}
+
+.cms-article--xorijiy hr {
+  margin: 1.5rem 0;
+  border: none;
+  border-top: 1px solid rgba(10, 17, 88, 0.08);
+}
+
+.cms-article--xorijiy ol {
+  margin: 0 0 1rem;
+  padding-left: 1.25rem;
+}
+
+.cms-article--xorijiy ol > li {
+  margin-bottom: 1rem;
+}
+
+.cms-article--xorijiy ul {
+  margin: 0.5rem 0 0;
+  padding-left: 1.25rem;
+}
+
+.cms-science--xorijiy-portal .cms-xorijiy__cta {
+  margin-bottom: 1.5rem;
+}

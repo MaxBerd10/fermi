@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /kirish
+Disallow: /royxatdan-otish
+Disallow: /parolni-tiklash
+Disallow: /search
+
+Sitemap: https://fjsti.uz/sitemap.xml
