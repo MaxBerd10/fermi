@@ -39,20 +39,20 @@ export default function EventsJournal() {
                   {e.day}
                 </span>
                 <span className="text-xs uppercase tracking-wider font-semibold text-foreground-500 sm:mt-1">
-                  {e.month}
+                  {t(`events.item${e.id}.month`)}
                 </span>
               </div>
 
               <div className="min-w-0">
                 <p className="text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-primary-600">
-                  {e.type}
+                  {t(`events.item${e.id}.type`)}
                 </p>
                 <h3 className="mt-1 font-heading text-base md:text-lg font-semibold text-foreground-950 leading-snug group-hover:text-primary-700 transition-colors">
-                  {e.title}
+                  {t(`events.item${e.id}.title`)}
                 </h3>
-                {"desc" in e && e.desc ? (
-                  <p className="mt-1.5 text-sm text-foreground-500 leading-relaxed line-clamp-2 max-w-xl">{e.desc}</p>
-                ) : null}
+                <p className="mt-1.5 text-sm text-foreground-500 leading-relaxed line-clamp-2 max-w-xl">
+                  {t(`events.item${e.id}.desc`)}
+                </p>
               </div>
 
               <div className="sm:text-right space-y-1 text-sm text-foreground-500 flex-shrink-0">
@@ -62,7 +62,7 @@ export default function EventsJournal() {
                 </div>
                 <div className="flex sm:justify-end items-center gap-2">
                   <i className="ri-map-pin-line text-secondary-600" />
-                  {e.place}
+                  {t(`events.item${e.id}.place`)}
                 </div>
               </div>
             </Link>

@@ -20,7 +20,7 @@ export default function Partners() {
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-          {partners.map((p) => (
+          {partners.map((p, i) => (
             <a
               key={p.name}
               href={p.href}
@@ -32,7 +32,7 @@ export default function Partners() {
                 <i className={`${p.icon} text-sm`} />
               </span>
               <span className="text-xs font-semibold text-[#0a0a0a] leading-snug line-clamp-2">
-                {p.name}
+                {t(`partners.item${i + 1}.name`)}
               </span>
             </a>
           ))}

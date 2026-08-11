@@ -10,6 +10,7 @@ import PageHeader from "@/components/shared/PageHeader";
 import { Reveal } from "@/components/Animation";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import AiPanel from "@/components/ai/AiPanel";
+import { translateRegionName } from "@/lib/regionNames";
 
 export default function VirtualQabulxonaPage() {
   const { t, i18n } = useTranslation();
@@ -156,7 +157,7 @@ export default function VirtualQabulxonaPage() {
                     <label className="block text-sm font-medium text-foreground-700 mb-1">{t("qabul.regionLabel")} <span className="text-red-500">*</span></label>
                     <select required value={regionId} onChange={(e) => setRegionId(e.target.value)} className="w-full h-10 px-3 page-input text-sm focus:outline-none focus:border-primary-500">
                       <option value="">{t("qabul.selectPlaceholder")}</option>
-                      {regions.map((r) => <option key={r.id} value={r.id}>{r.name}</option>)}
+                      {regions.map((r) => <option key={r.id} value={r.id}>{translateRegionName(r, t)}</option>)}
                     </select>
                   </div>
                   <div>
