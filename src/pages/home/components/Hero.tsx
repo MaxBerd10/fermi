@@ -194,7 +194,7 @@ export default function Hero() {
   }
 
   const isExternal = href.startsWith("http");
-  const students = counter?.students ?? 6238;
+  const students = Number(counter?.students) || 6238;
 
   const resolveValue = (v: number | "counter") => (v === "counter" ? students : v);
 
@@ -436,7 +436,7 @@ export default function Hero() {
                     <p className="hero-radar__word">{t(current.wordKey)}</p>
                     <p className="hero-radar__value">
                       <CountUp
-                        key={current.id + String(active)}
+                        key={current.id}
                         target={resolveValue(current.value)}
                         active={active || ready}
                       />

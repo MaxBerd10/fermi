@@ -254,6 +254,27 @@
   box-shadow: 0 4px 14px -4px rgba(10, 17, 88, 0.45);
 }
 
+.news-pagination__nav:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.news-pagination__nav:disabled:hover {
+  border-color: #e5e5e5;
+  background: rgba(255, 255, 255, 0.9);
+  color: #0a0a0a;
+}
+
+.news-pagination__dots {
+  min-width: 1.5rem;
+  height: 2.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #9a9a9a;
+  font-weight: 600;
+}
+
 /* Empty state */
 .news-empty {
   padding: 2.5rem 1.5rem;

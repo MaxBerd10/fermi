@@ -138,7 +138,7 @@ function parseSegment(segment: string, index: number): KongressEventBlock {
   const [bannerImage, ...galleryImages] = images;
 
   return {
-    id: meta.id,
+    id: `${meta.id}-${index}`, // index disambiguates segments that classify to the same category
     titleKey: meta.titleKey,
     year: meta.year,
     bannerImage: bannerImage ?? null,
