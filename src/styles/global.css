@@ -4412,99 +4412,6 @@ a.hero-chip {
   }
 }
 
-/* -- Accessibility (Maxsus imkoniyatlar) -- */
-:root {
-  --a11y-zoom: 1;
-}
-
-html.a11y-zoomed #a11y-content {
-  zoom: var(--a11y-zoom);
-}
-
-html.a11y-ls-1 #a11y-content {
-  letter-spacing: 0.06em;
-}
-html.a11y-ls-2 #a11y-content {
-  letter-spacing: 0.12em;
-}
-
-html.a11y-ws-1 #a11y-content {
-  word-spacing: 0.16em;
-}
-html.a11y-ws-2 #a11y-content {
-  word-spacing: 0.32em;
-}
-
-html.a11y-lh-1 #a11y-content {
-  line-height: 1.75;
-}
-html.a11y-lh-2 #a11y-content {
-  line-height: 2.05;
-}
-
-html.a11y-theme-grayscale #a11y-content {
-  filter: grayscale(1);
-}
-html.a11y-theme-invert #a11y-content {
-  filter: invert(1) hue-rotate(180deg);
-}
-html.a11y-theme-high #a11y-content {
-  filter: contrast(1.45) brightness(1.05);
-}
-
-html.a11y-theme-blue #a11y-content {
-  background: #d7efff !important;
-  color: #003366 !important;
-}
-html.a11y-theme-blue #a11y-content a {
-  color: #002244 !important;
-}
-
-html.a11y-theme-brown #a11y-content {
-  background: #f5e6c8 !important;
-  color: #3b2100 !important;
-}
-html.a11y-theme-brown #a11y-content a {
-  color: #5c3300 !important;
-}
-
-html.a11y-hide-images #a11y-content img,
-html.a11y-hide-images #a11y-content picture,
-html.a11y-hide-images #a11y-content video {
-  visibility: hidden !important;
-}
-
-html.a11y-underline-links #a11y-content a {
-  text-decoration: underline !important;
-  text-underline-offset: 3px;
-  font-weight: 600;
-}
-
-html.a11y-readable-font #a11y-content {
-  font-family: "Times New Roman", Times, Georgia, serif !important;
-}
-html.a11y-readable-font #a11y-content *:not(i):not([class^="ri-"]):not([class*=" ri-"]) {
-  font-family: inherit !important;
-}
-
-html.a11y-stop-animations #a11y-content *,
-html.a11y-stop-animations #a11y-content *::before,
-html.a11y-stop-animations #a11y-content *::after {
-  animation: none !important;
-  transition: none !important;
-  scroll-behavior: auto !important;
-}
-
-html.a11y-large-cursor,
-html.a11y-large-cursor * {
-  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' stroke='%23fff' stroke-width='1.2' d='M4 3l7 17 1.5-6.5L19 12z'/%3E%3C/svg%3E") 4 4, auto !important;
-}
-
-.a11y-panel,
-.a11y-fab {
-  filter: none !important;
-}
-
 /* ===== AI cards — brand navy + yellow animated gradient ===== */
 .ai-panel {
   position: relative;
@@ -4633,11 +4540,5 @@ html.a11y-large-cursor * {
   .ai-panel__glow {
     background-position: 40% 50%;
   }
-}
-
-html.a11y-stop-animations .ai-panel__glow,
-html.a11y-stop-animations .ai-panel__shine,
-html.a11y-stop-animations .ai-panel__icon i {
-  animation: none !important;
 }
 

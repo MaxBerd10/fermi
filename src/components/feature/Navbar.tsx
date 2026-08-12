@@ -6,7 +6,6 @@ import i18n from "../../i18n";
 import { useMenu } from "../../hooks/useMenu";
 import { useApi } from "../../hooks/useApi";
 import { getSettings } from "../../api/settings";
-import { useAccessibilityPanel } from "../../context/AccessibilityContext";
 import type { MenuNode } from "../../types/menu";
 import BrandMark from "../shared/BrandMark";
 import { normalizeYearLabels, normalizeMenuHref } from "@/lib/siteConstants";
@@ -43,7 +42,6 @@ export default function Navbar() {
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [visibleCount, setVisibleCount] = useState(0);
-  const { setOpen: setA11yOpen } = useAccessibilityPanel();
 
   const { menu } = useMenu();
   const { data: settings } = useApi(getSettings, []);
@@ -317,16 +315,6 @@ export default function Navbar() {
                 <i className="ri-search-line text-lg" />
               </button>
 
-              <button
-                type="button"
-                onClick={() => setA11yOpen(true)}
-                className={`hidden md:flex ${iconBtn(solid)}`}
-                aria-label={t("nav.accessibility")}
-                title={t("nav.accessibility")}
-              >
-                <i className="ri-eye-line text-lg" />
-              </button>
-
               <div className="relative">
                 <button
                   type="button"
@@ -452,17 +440,6 @@ export default function Navbar() {
                     </div>
                   </details>
                 ))}
-                <button
-                  type="button"
-                  onClick={() => {
-                    setMobileOpen(false);
-                    setA11yOpen(true);
-                  }}
-                  className="md:hidden w-full flex items-center gap-2 min-h-[44px] px-3 py-3 text-sm font-semibold text-foreground-800 hover:bg-primary-50/70 rounded-xl cursor-pointer"
-                >
-                  <i className="ri-eye-line text-lg" />
-                  {t("nav.accessibility")}
-                </button>
                 <Link
                   to="/qabul"
                   className="uni-btn-gold w-full mt-3 cursor-pointer"
