@@ -507,7 +507,10 @@ export default function Navbar() {
         createPortal(
           <div
             className="fixed z-[70] w-80 min-w-[20rem] max-w-[22rem]"
-            style={{ left: hoveredChildRect.right + 4, top: hoveredChildRect.top - 4 }}
+            // Pinned to the 2nd-level panel's own top (not the hovered row's) so it holds
+            // still while browsing rows within that panel, instead of chasing the cursor
+            // down the list — only its content swaps per hovered row.
+            style={{ left: hoveredChildRect.right + 4, top: openMenuRect?.bottom ? openMenuRect.bottom + 4 : hoveredChildRect.top - 4 }}
             onMouseEnter={cancelClose}
             onMouseLeave={scheduleClose}
           >
