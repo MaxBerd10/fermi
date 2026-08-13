@@ -96,6 +96,16 @@ export default defineConfig({
         changeOrigin: true,
         secure: true,
       },
+      // iMentor doesn't send CORS headers, so direct browser calls are blocked — the dev
+      // server does the actual fetch here instead, which sidesteps CORS entirely (only
+      // works for local dev/preview; the production static build needs iMentor to
+      // whitelist the domain, since there's no server to proxy through there).
+      "/imentor-api": {
+        target: "https://imentor.devflix.uz",
+        changeOrigin: true,
+        secure: true,
+        rewrite: (path) => path.replace(/^\/imentor-api/, "/api"),
+      },
     },
   },
 });

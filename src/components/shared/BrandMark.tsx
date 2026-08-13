@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 type BrandMarkProps = {
   className?: string;
   /** Visual size of the wordmark */
@@ -17,16 +19,18 @@ export default function BrandMark({
   showFull = false,
   layout = "stack",
 }: BrandMarkProps) {
+  const { t } = useTranslation();
+  const fullName = t("brand.full");
   return (
     <span
       className={`brand-fermi brand-fermi--${size} brand-fermi--${layout} ${className}`.trim()}
-      title="FerMI — Fergana Medical Institute"
+      title={`FerMI — ${fullName}`}
     >
-      <span className="brand-fermi__word" aria-label="FerMI — Fergana Medical Institute">
+      <span className="brand-fermi__word" aria-label={`FerMI — ${fullName}`}>
         <span className="brand-fermi__fer">Fer</span>
         <span className="brand-fermi__mi">MI</span>
       </span>
-      {showFull && <span className="brand-fermi__full">Fergana Medical Institute</span>}
+      {showFull && <span className="brand-fermi__full">{fullName}</span>}
     </span>
   );
 }

@@ -109,6 +109,16 @@
   }
 }
 
+/* At the desktop nav breakpoint (lg, matches Navbar's `lg:flex`), the logo's
+   subtitle competes with the priority-nav row for width — hiding it here
+   gives the nav more room to fit items directly instead of overflowing into
+   "Yana"/"Ещё", without shrinking the nav items themselves. */
+@media (min-width: 1024px) {
+  .brand-fermi--nav .brand-fermi__full {
+    display: none;
+  }
+}
+
 .section-pad {
   padding-top: var(--section-py);
   padding-bottom: var(--section-py);

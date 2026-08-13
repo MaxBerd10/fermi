@@ -11,6 +11,8 @@ interface ImportMetaEnv {
   readonly VITE_OPENAI_API_KEY?: string;
   readonly VITE_OPENAI_API_KEY_B64?: string;
   readonly VITE_OPENAI_MODEL: string;
+  readonly VITE_IMENTOR_API_BASE_URL?: string;
+  readonly VITE_IMENTOR_API_KEY_B64?: string;
 }
 
 interface ImportMeta {

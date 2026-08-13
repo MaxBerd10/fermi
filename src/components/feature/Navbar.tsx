@@ -203,6 +203,12 @@ export default function Navbar() {
   const visibleItems = menu.slice(0, visibleCount);
   const overflowItems = menu.slice(visibleCount);
 
+  // Nav-row-only shortening: drop a trailing "YYYY-YYYY" year range from long top-level
+  // labels (e.g. "Green university 2021-2026") so the tight-fitting priority nav can seat
+  // more items directly. Everywhere else — the "Ещё" dropdown, mobile menu, page content —
+  // keeps showing the full label with its year.
+  const navBarLabel = (title: string) => normalizeYearLabels(title.trim()).replace(/\s+\d{4}\s*-\s*\d{4}$/, "");
+
   const openItem =
     openMenu === MORE_ID
       ? ({ id: MORE_ID, title: "", urlType: "", urlValue: "", href: "#", children: overflowItems } as MenuNode)
@@ -230,7 +236,10 @@ export default function Navbar() {
               />
             </Link>
 
-            <nav ref={navContainerRef} className="hidden lg:flex items-center justify-end gap-px flex-1 min-w-0">
+            {/* justify-center: the menu is centered in the space between logo and icons —
+                any leftover width from a narrower item set (text lengths differ per language)
+                splits evenly on both sides instead of piling up on one edge. */}
+            <nav ref={navContainerRef} className="hidden lg:flex items-center justify-center gap-px flex-1 min-w-0">
               {visibleItems.map((item: MenuNode) => (
                 <div
                   key={item.id}
@@ -248,7 +257,7 @@ export default function Navbar() {
                 >
                   <NavLink
                     href={normalizeMenuHref(item.href)}
-                    className={`flex items-center gap-px px-1.5 py-1.5 font-heading text-[12px] font-semibold tracking-normal cursor-pointer whitespace-nowrap rounded-full transition-colors duration-200 ${
+                    className={`flex items-center gap-px px-1 py-1.5 font-heading text-[12px] font-semibold tracking-normal cursor-pointer whitespace-nowrap rounded-full transition-colors duration-200 ${
                       solid
                         ? "text-foreground-700 hover:text-primary-800 hover:bg-primary-50/70"
                         : "text-white/90 hover:text-white hover:bg-white/10"
@@ -260,7 +269,7 @@ export default function Navbar() {
                         : ""
                     }`}
                   >
-                    {normalizeYearLabels(item.title.trim())}
+                    {navBarLabel(item.title)}
                     {item.children.length > 0 && (
                       <i
                         className={`ri-arrow-down-s-line text-xs opacity-50 transition-transform duration-200 ${
@@ -288,7 +297,7 @@ export default function Navbar() {
                 >
                   <button
                     type="button"
-                    className={`flex items-center gap-px px-1.5 py-1.5 font-heading text-[12px] font-semibold tracking-normal cursor-pointer whitespace-nowrap rounded-full transition-colors duration-200 ${
+                    className={`flex items-center gap-px px-1 py-1.5 font-heading text-[12px] font-semibold tracking-normal cursor-pointer whitespace-nowrap rounded-full transition-colors duration-200 ${
                       solid
                         ? "text-foreground-700 hover:text-primary-800 hover:bg-primary-50/70"
                         : "text-white/90 hover:text-white hover:bg-white/10"
@@ -317,15 +326,15 @@ export default function Navbar() {
                 <span
                   key={item.id}
                   data-measure-item
-                  className="flex items-center gap-px px-1.5 py-1.5 font-heading text-[12px] font-semibold tracking-normal whitespace-nowrap"
+                  className="flex items-center gap-px px-1 py-1.5 font-heading text-[12px] font-semibold tracking-normal whitespace-nowrap"
                 >
-                  {normalizeYearLabels(item.title.trim())}
+                  {navBarLabel(item.title)}
                   {item.children.length > 0 && <i className="ri-arrow-down-s-line text-xs opacity-50" />}
                 </span>
               ))}
               <span
                 data-measure-more
-                className="flex items-center gap-px px-1.5 py-1.5 font-heading text-[12px] font-semibold tracking-normal whitespace-nowrap"
+                className="flex items-center gap-px px-1 py-1.5 font-heading text-[12px] font-semibold tracking-normal whitespace-nowrap"
               >
                 {t("nav.more")}
                 <i className="ri-arrow-down-s-line text-xs opacity-50" />
