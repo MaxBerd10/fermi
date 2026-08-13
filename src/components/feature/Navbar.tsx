@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -43,8 +43,21 @@ export default function Navbar() {
   const [searchQuery, setSearchQuery] = useState("");
   const [visibleCount, setVisibleCount] = useState(0);
 
-  const { menu } = useMenu();
+  const { menu: apiMenu } = useMenu();
   const { data: settings } = useApi(getSettings, []);
+
+  // Static top-level items that aren't part of the CMS-driven menu — appended
+  // after it so they slot into the same overflow ("Yana") handling as everything else.
+  // Memoized so the array reference is stable across renders (it feeds a
+  // ResizeObserver-setup effect keyed on it) instead of a new array every time.
+  const menu: MenuNode[] = useMemo(
+    () => [
+      ...apiMenu,
+      { id: -101, title: t("nav.test"), urlType: "", urlValue: "", href: "/test", children: [] },
+      { id: -102, title: t("nav.keyslar"), urlType: "", urlValue: "", href: "/keyslar", children: [] },
+    ],
+    [apiMenu, t]
+  );
 
   const navContainerRef = useRef<HTMLDivElement>(null);
   const navMeasureRef = useRef<HTMLDivElement>(null);

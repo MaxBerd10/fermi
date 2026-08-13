@@ -1519,6 +1519,8 @@ export default {
   "nav.menuSearchPlaceholder": "Search by page name...",
   "nav.searchSubmit": "Search",
   "nav.menu": "Menu",
+  "nav.test": "Test",
+  "nav.keyslar": "Case Studies",
   "nav.more": "More",
   "nav.loyihalarimiz": "Our projects",
   "nav.testBaza": "Test bank",

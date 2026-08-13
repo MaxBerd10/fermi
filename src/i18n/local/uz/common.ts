@@ -1519,6 +1519,8 @@ export default {
   "nav.menuSearchPlaceholder": "Sahifa nomi bo'yicha qidirish...",
   "nav.searchSubmit": "Qidirish",
   "nav.menu": "Menyu",
+  "nav.test": "Test",
+  "nav.keyslar": "Keyslar",
   "nav.more": "Yana",
   "nav.loyihalarimiz": "Loyihalarimiz",
   "nav.testBaza": "Test baza",

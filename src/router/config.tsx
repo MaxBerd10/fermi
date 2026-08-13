@@ -27,6 +27,8 @@ const VideoPage = lazy(() => import("../pages/video/page"));
 const SchedulePage = lazy(() => import("../pages/schedule/page"));
 const SearchPage = lazy(() => import("../pages/search/page"));
 const SitemapPage = lazy(() => import("../pages/sitemap/page"));
+const TestPage = lazy(() => import("../pages/test/page"));
+const KeyslarPage = lazy(() => import("../pages/keyslar/page"));
 const LoginPage = lazy(() => import("../pages/auth/login/page"));
 const SignupPage = lazy(() => import("../pages/auth/signup/page"));
 const PasswordResetPage = lazy(() => import("../pages/auth/password-reset/page"));
@@ -83,6 +85,8 @@ const routes: RouteObject[] = [
       { path: "/schedule", element: <SchedulePage /> },
       { path: "/search", element: <SearchPage /> },
       { path: "/sitemap", element: <SitemapPage /> },
+      { path: "/test", element: <TestPage /> },
+      { path: "/keyslar", element: <KeyslarPage /> },
 
       // Auth
       { path: "/kirish", element: <LoginPage /> },

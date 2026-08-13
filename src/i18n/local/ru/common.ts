@@ -1519,6 +1519,8 @@ export default {
   "nav.menuSearchPlaceholder": "Поиск по названию страницы...",
   "nav.searchSubmit": "Искать",
   "nav.menu": "Меню",
+  "nav.test": "Тест",
+  "nav.keyslar": "Кейсы",
   "nav.more": "Ещё",
   "nav.loyihalarimiz": "Наши проекты",
   "nav.testBaza": "База тестов",
