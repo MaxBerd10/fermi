@@ -61,6 +61,11 @@ export default function Navbar() {
 
   const navContainerRef = useRef<HTMLDivElement>(null);
   const navMeasureRef = useRef<HTMLDivElement>(null);
+  // The trigger elements behind the current dropdown/flyout rects, re-measured every frame
+  // while open (see the tracking effect below) so the fixed-position portals stay glued to
+  // them instead of the one-time snapshot going stale the moment the page scrolls.
+  const openMenuElRef = useRef<HTMLElement | null>(null);
+  const hoveredChildElRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     const container = navContainerRef.current;
@@ -112,31 +117,34 @@ export default function Navbar() {
       setOpenMenuRect(null);
       setHoveredChild(null);
       setHoveredChildRect(null);
+      openMenuElRef.current = null;
+      hoveredChildElRef.current = null;
     }, 280);
   };
   useEffect(() => () => cancelClose(), []);
 
   useEffect(() => {
-    // The dropdown portals are positioned from a one-time getBoundingClientRect() snapshot,
-    // so they don't track the trigger as the page scrolls — close them instead of letting
-    // them float disconnected from their trigger. Polling scrollY every frame (rather than
-    // a scroll/wheel event listener) is deliberate: it can't miss a scroll no matter which
-    // element or gesture produced it.
+    // The dropdown/flyout portals are `position: fixed`, sized from a rect captured once at
+    // hover time — with a non-sticky header, that snapshot goes stale the instant the page
+    // scrolls, leaving the panel floating over whatever content happens to be there now.
+    // Re-measure the actual trigger elements every frame instead, so the portals stay glued
+    // to them (scrolling along with a non-sticky trigger, same as any anchored popup would).
     if (openMenu === null) return;
-    const startY = window.scrollY;
+    const rectsEqual = (a: Rect | null, b: DOMRect) =>
+      !!a && a.left === b.left && a.top === b.top && a.right === b.right && a.bottom === b.bottom;
     let raf = 0;
-    const check = () => {
-      if (window.scrollY !== startY) {
-        cancelClose();
-        setOpenMenu(null);
-        setOpenMenuRect(null);
-        setHoveredChild(null);
-        setHoveredChildRect(null);
-        return;
+    const track = () => {
+      if (openMenuElRef.current) {
+        const rect = openMenuElRef.current.getBoundingClientRect();
+        setOpenMenuRect((prev) => (rectsEqual(prev, rect) ? prev : rect));
       }
-      raf = requestAnimationFrame(check);
+      if (hoveredChildElRef.current) {
+        const rect = hoveredChildElRef.current.getBoundingClientRect();
+        setHoveredChildRect((prev) => (rectsEqual(prev, rect) ? prev : rect));
+      }
+      raf = requestAnimationFrame(track);
     };
-    raf = requestAnimationFrame(check);
+    raf = requestAnimationFrame(track);
     return () => cancelAnimationFrame(raf);
   }, [openMenu]);
 
@@ -148,6 +156,8 @@ export default function Navbar() {
     setOpenMenuRect(null);
     setHoveredChild(null);
     setHoveredChildRect(null);
+    openMenuElRef.current = null;
+    hoveredChildElRef.current = null;
     setMobileOpen(false);
     setShowLangMenu(false);
     setShowSearch(false);
@@ -228,8 +238,10 @@ export default function Navbar() {
                   onMouseEnter={(e) => {
                     cancelClose();
                     setOpenMenu(item.id);
+                    openMenuElRef.current = e.currentTarget;
                     setOpenMenuRect(e.currentTarget.getBoundingClientRect());
                     setHoveredChild(null);
+                    hoveredChildElRef.current = null;
                     setHoveredChildRect(null);
                   }}
                   onMouseLeave={scheduleClose}
@@ -266,8 +278,10 @@ export default function Navbar() {
                   onMouseEnter={(e) => {
                     cancelClose();
                     setOpenMenu(MORE_ID);
+                    openMenuElRef.current = e.currentTarget;
                     setOpenMenuRect(e.currentTarget.getBoundingClientRect());
                     setHoveredChild(null);
+                    hoveredChildElRef.current = null;
                     setHoveredChildRect(null);
                   }}
                   onMouseLeave={scheduleClose}
@@ -484,6 +498,7 @@ export default function Navbar() {
                   onMouseEnter={(e) => {
                     cancelClose();
                     setHoveredChild(child.id);
+                    hoveredChildElRef.current = e.currentTarget;
                     setHoveredChildRect(e.currentTarget.getBoundingClientRect());
                   }}
                 >
