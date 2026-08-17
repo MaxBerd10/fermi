@@ -114,9 +114,7 @@ export default function NewsCategoryPage() {
 
       .finally(() => setLoading(false));
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-
-  }, [slug, menuId, page]);
+  }, [slug, menuId, page, resolvedMenuId, categoryConfig?.fallback, categoryConfig?.titleKey, t]);
 
 
 
@@ -217,5 +215,3 @@ export default function NewsCategoryPage() {
   );
 
 }
-
-

@@ -5,6 +5,7 @@ import { getHomeData } from "@/api/home";
 import { getSettings } from "@/api/settings";
 import type { Counter } from "@/types/content";
 import { FOUNDED_YEAR } from "@/lib/siteConstants";
+import { stripHtml } from "@/lib/html";
 import { CountUp, useInViewOnce, usePrefersReducedMotion } from "@/components/Animation";
 
 const FALLBACK_TITLE = "Farg'ona jamoat salomatligi tibbiyot instituti";

@@ -1,13 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
+import type { TFunction } from "i18next";
 import { useTranslation } from "react-i18next";
 import { parseBuildingGallery, type BuildingPhoto } from "@/lib/parseBuildingGallery";
 
-function resolveCaption(caption: string, t: (key: string, opts?: object) => string): string {
+function resolveCaption(caption: string, t: TFunction): string {
   if (caption.startsWith("buildings.caption.photo|")) {
     const num = caption.split("|")[1];
-    return t("buildings.caption.photo", { number: num });
+    return String(t("buildings.caption.photo", { number: num }));
   }
-  if (caption.startsWith("buildings.caption.")) return t(caption);
+  if (caption.startsWith("buildings.caption.")) return String(t(caption));
   return caption;
 }
 

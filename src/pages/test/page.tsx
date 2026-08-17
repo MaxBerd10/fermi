@@ -3,9 +3,11 @@ import { useTranslation } from "react-i18next";
 import PageHeader from "@/components/shared/PageHeader";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { getImentorTestStats, getImentorSampleQuestions } from "@/api/imentor";
+import { downloadTestResultPdf } from "@/lib/testResultPdf";
 import type { ImentorSubjectStat, ImentorSampleQuestion, ImentorQuestionLang } from "@/types/imentor";
 
-const QUESTION_COUNT = 30;
+const STUDY_QUESTION_COUNT = 30;
+const QUIZ_QUESTION_COUNT = 20;
 const SUBJECT_ICONS = ["ri-stethoscope-line", "ri-microscope-line", "ri-capsule-line", "ri-pulse-line", "ri-heart-pulse-line", "ri-flask-line"];
 const OPTION_LETTERS = ["A", "B", "C", "D", "E", "F"];
 
@@ -25,11 +27,14 @@ export default function TestPage() {
   const [error, setError] = useState<string | null>(null);
   const [subject, setSubject] = useState<ImentorSubjectStat | null>(null);
   const [questions, setQuestions] = useState<ImentorSampleQuestion[]>([]);
+  const [quizQuestions, setQuizQuestions] = useState<ImentorSampleQuestion[]>([]);
   const [openStudyIndex, setOpenStudyIndex] = useState<number | null>(null);
 
   const [index, setIndex] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [answers, setAnswers] = useState<Record<number, number>>({});
+  const [isDownloadingPdf, setIsDownloadingPdf] = useState(false);
+  const [pdfError, setPdfError] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -49,7 +54,7 @@ export default function TestPage() {
     setSubject(s);
     setStage("loading");
     setError(null);
-    getImentorSampleQuestions({ subjectCode: s.subject_code, count: QUESTION_COUNT })
+    getImentorSampleQuestions({ subjectCode: s.subject_code, count: STUDY_QUESTION_COUNT })
       .then((data) => {
         if (data.questions.length === 0) {
           setError(t("test.noContent"));
@@ -67,10 +72,27 @@ export default function TestPage() {
   }
 
   function startQuiz() {
-    setIndex(0);
-    setSelected(null);
-    setAnswers({});
-    setStage("quiz");
+    if (!subject) return;
+    setStage("loading");
+    setError(null);
+    setPdfError(null);
+    getImentorSampleQuestions({ subjectCode: subject.subject_code, count: QUIZ_QUESTION_COUNT })
+      .then((data) => {
+        if (data.questions.length === 0) {
+          setError(t("test.noContent"));
+          setStage("study");
+          return;
+        }
+        setQuizQuestions(data.questions);
+        setIndex(0);
+        setSelected(null);
+        setAnswers({});
+        setStage("quiz");
+      })
+      .catch(() => {
+        setError(t("test.loadError"));
+        setStage("study");
+      });
   }
 
   function selectOption(i: number) {
@@ -80,7 +102,7 @@ export default function TestPage() {
   }
 
   function nextQuestion() {
-    if (index + 1 < questions.length) {
+    if (index + 1 < quizQuestions.length) {
       setIndex(index + 1);
       setSelected(answers[index + 1] ?? null);
     } else {
@@ -96,10 +118,58 @@ export default function TestPage() {
     setStage("picking");
     setSubject(null);
     setQuestions([]);
+    setQuizQuestions([]);
     setError(null);
+    setPdfError(null);
   }
 
-  const score = questions.reduce((sum, q, i) => sum + (answers[i] === q.correctOptionIndex ? 1 : 0), 0);
+  async function downloadPdf() {
+    if (!subject || quizQuestions.length === 0) return;
+    setIsDownloadingPdf(true);
+    setPdfError(null);
+    try {
+      await downloadTestResultPdf({
+        subjectName: subject.subject_name,
+        score,
+        total: quizQuestions.length,
+        percent: scorePercent,
+        locale: i18n.language || "uz",
+        labels: {
+          title: t("test.pdf.title"),
+          subject: t("test.pdf.subject"),
+          result: t("test.pdf.result"),
+          correctAnswers: t("test.pdf.correctAnswers"),
+          score: t("test.pdf.score"),
+          yourAnswer: t("test.yourAnswer"),
+          correctAnswer: t("test.correctAnswer"),
+          explanation: t("test.explanation"),
+          correct: t("test.pdf.correct"),
+          incorrect: t("test.pdf.incorrect"),
+          notAnswered: t("test.pdf.notAnswered"),
+          page: t("test.pdf.page"),
+        },
+        questions: quizQuestions.map((q, questionIndex) => {
+          const content = pickLang(q, lang);
+          const selectedIndex = answers[questionIndex];
+          return {
+            number: questionIndex + 1,
+            question: content.question,
+            selectedOption: selectedIndex === undefined ? undefined : `${OPTION_LETTERS[selectedIndex]}. ${content.options[selectedIndex]}`,
+            correctOption: `${OPTION_LETTERS[q.correctOptionIndex]}. ${content.options[q.correctOptionIndex]}`,
+            explanation: content.explanation,
+            isCorrect: selectedIndex === q.correctOptionIndex,
+          };
+        }),
+      });
+    } catch {
+      setPdfError(t("test.pdf.error"));
+    } finally {
+      setIsDownloadingPdf(false);
+    }
+  }
+
+  const score = quizQuestions.reduce((sum, q, i) => sum + (answers[i] === q.correctOptionIndex ? 1 : 0), 0);
+  const scorePercent = quizQuestions.length > 0 ? Math.round((score / quizQuestions.length) * 100) : 0;
 
   return (
     <div className="text-foreground-950">
@@ -176,6 +246,8 @@ export default function TestPage() {
               </div>
               <p className="text-sm text-foreground-500 mb-4">{t("test.studyHint")}</p>
 
+              {error && <p className="text-sm text-red-600 mb-4" role="alert">{error}</p>}
+
               <div className="space-y-2 mb-5">
                 {questions.map((q, i) => {
                   const content = pickLang(q, lang);
@@ -240,9 +312,9 @@ export default function TestPage() {
           )}
 
           {stage === "quiz" &&
-            questions[index] &&
+            quizQuestions[index] &&
             (() => {
-              const q = questions[index];
+              const q = quizQuestions[index];
               const content = pickLang(q, lang);
               const isAnswered = selected !== null;
               return (
@@ -250,14 +322,14 @@ export default function TestPage() {
                   <div className="h-1.5 w-full rounded-full bg-[#eee] overflow-hidden mb-4">
                     <div
                       className="h-full rounded-full bg-gradient-to-r from-primary-500 to-primary-700 transition-all duration-300"
-                      style={{ width: `${((index + (isAnswered ? 1 : 0)) / questions.length) * 100}%` }}
+                      style={{ width: `${((index + (isAnswered ? 1 : 0)) / quizQuestions.length) * 100}%` }}
                     />
                   </div>
 
                   <div className="flex items-center justify-between mb-4">
                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary-50 text-primary-700 text-xs font-bold">
                       <i className="ri-file-list-3-line" />
-                      {t("test.questionOf", { current: index + 1, total: questions.length })}
+                      {t("test.questionOf", { current: index + 1, total: quizQuestions.length })}
                     </span>
                     <button
                       type="button"
@@ -317,7 +389,7 @@ export default function TestPage() {
 
                   {isAnswered && (
                     <button type="button" onClick={nextQuestion} className="uni-btn cursor-pointer">
-                      {index + 1 < questions.length ? t("test.next") : t("test.finish")}
+                      {index + 1 < quizQuestions.length ? t("test.next") : t("test.finish")}
                       <i className="ri-arrow-right-line" />
                     </button>
                   )}
@@ -331,18 +403,26 @@ export default function TestPage() {
                 <i className="ri-medal-line text-3xl" />
               </div>
               <h2 className="font-heading text-lg font-bold text-foreground-900 mb-2">{t("test.resultTitle")}</h2>
-              <p className="text-2xl font-bold text-primary-800 mb-6">
-                {t("test.resultScore", { correct: score, total: questions.length })}
+              <p className="text-2xl font-bold text-primary-800 mb-1" aria-live="polite">
+                {t("test.resultScore", { correct: score, total: quizQuestions.length })}
               </p>
+              <p className="text-sm font-semibold text-foreground-600 mb-6">
+                {t("test.resultPercent", { percent: scorePercent })}
+              </p>
+              {pdfError && <p className="text-sm text-red-600 mb-4" role="alert">{pdfError}</p>}
               <div className="flex flex-wrap items-center justify-center gap-3">
-                <button type="button" onClick={retry} className="uni-btn cursor-pointer">
+                <button type="button" onClick={downloadPdf} disabled={isDownloadingPdf} className="uni-btn cursor-pointer disabled:cursor-wait disabled:opacity-60">
+                  <i className={isDownloadingPdf ? "ri-loader-4-line animate-spin" : "ri-file-download-line"} />
+                  {isDownloadingPdf ? t("test.pdf.generating") : t("test.pdf.download")}
+                </button>
+                <button type="button" onClick={retry} className="uni-btn-ghost !text-primary-800 !border-primary-200 !bg-primary-50 hover:!bg-primary-100 cursor-pointer">
                   <i className="ri-refresh-line" />
                   {t("test.retry")}
                 </button>
-                <button type="button" onClick={() => setStage("study")} className="uni-btn-ghost cursor-pointer">
+                <button type="button" onClick={() => setStage("study")} className="uni-btn-ghost !text-primary-800 !border-primary-200 !bg-primary-50 hover:!bg-primary-100 cursor-pointer">
                   {t("test.backToStudy")}
                 </button>
-                <button type="button" onClick={backToSubjects} className="uni-btn-ghost cursor-pointer">
+                <button type="button" onClick={backToSubjects} className="uni-btn-ghost !text-primary-800 !border-primary-200 !bg-primary-50 hover:!bg-primary-100 cursor-pointer">
                   {t("test.backToSubjects")}
                 </button>
               </div>

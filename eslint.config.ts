@@ -72,10 +72,10 @@ export default [
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true },
-      ],
+      // TypeScript resolves DOM types and undefined identifiers more accurately than ESLint's
+      // JavaScript-only no-undef rule. Production checks run both lint and tsc.
+      'react-refresh/only-export-components': 'off',
+      'react-hooks/exhaustive-deps': 'warn',
       '@typescript-eslint/no-namespace': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-unused-vars': 'off',
@@ -89,7 +89,7 @@ export default [
       '@typescript-eslint/no-unused-expressions': 'off',
       'no-useless-catch': 'off',
       'no-irregular-whitespace': 'off',
-      'no-undef': 'error',
+      'no-undef': 'off',
     },
   },
   // Only enforce this rule for the router config file to avoid false positives elsewhere.
@@ -103,4 +103,3 @@ export default [
     },
   },
 ]
-

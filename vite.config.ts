@@ -1,4 +1,4 @@
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import { resolve } from "node:path";
 import AutoImport from "unplugin-auto-import/vite";
@@ -9,7 +9,14 @@ const base = process.env.BASE_PATH || "/";
 const isPreview = process.env.IS_PREVIEW ? true : false;
 //const proxyPlugins = isPreview ? [readdyJsxRuntimeProxyPlugin()] : [];
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), "");
+  const encodedOpenAiKey = String(env.OPENAI_API_KEY_B64 || env.VITE_OPENAI_API_KEY_B64 || "").trim();
+  const openAiKey = String(env.OPENAI_API_KEY || env.VITE_OPENAI_API_KEY || "").trim() || (encodedOpenAiKey ? Buffer.from(encodedOpenAiKey, "base64").toString("utf8").trim() : "");
+  const encodedImentorKey = String(env.IMENTOR_API_KEY_B64 || env.VITE_IMENTOR_API_KEY_B64 || "").trim();
+  const imentorApiKey = String(env.IMENTOR_API_KEY || env.VITE_IMENTOR_API_KEY || "").trim() || (encodedImentorKey ? Buffer.from(encodedImentorKey, "base64").toString("utf8").trim() : "");
+
+  return {
   define: {
     __BASE_PATH__: JSON.stringify(base),
     __IS_PREVIEW__: JSON.stringify(isPreview),
@@ -19,7 +26,7 @@ export default defineConfig({
   },
   plugins: [
     // ...proxyPlugins,
-    fjstiAiPlugin(),
+    fjstiAiPlugin({ apiKey: openAiKey, model: String(env.OPENAI_MODEL || env.VITE_OPENAI_MODEL || "gpt-4o-mini") }),
     react(),
     AutoImport({
       imports: [
@@ -104,8 +111,10 @@ export default defineConfig({
         target: "https://imentor.devflix.uz",
         changeOrigin: true,
         secure: true,
+        headers: imentorApiKey ? { "X-Api-Key": imentorApiKey } : undefined,
         rewrite: (path) => path.replace(/^\/imentor-api/, "/api"),
       },
     },
   },
+  };
 });

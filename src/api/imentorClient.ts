@@ -1,21 +1,8 @@
-function getApiKey() {
-  const b64 = String(import.meta.env.VITE_IMENTOR_API_KEY_B64 || "").trim();
-  if (!b64) return "";
-  try {
-    return atob(b64).trim();
-  } catch {
-    return "";
-  }
-}
-
-const BASE_URL = String(import.meta.env.VITE_IMENTOR_API_BASE_URL || "").trim();
+// The production server proxies this route and keeps the iMentor credential private.
+// Keeping the path relative also works behind a reverse proxy and on any domain.
+const BASE_URL = "/imentor-api";
 
 export async function imentorGet<T>(path: string, params?: Record<string, string | number | boolean | undefined>): Promise<T> {
-  const apiKey = getApiKey();
-  if (!apiKey || !BASE_URL) {
-    throw new Error("iMentor API sozlanmagan");
-  }
-
   const url = new URL(BASE_URL.replace(/\/$/, "") + "/" + path.replace(/^\//, ""), window.location.origin);
   if (params) {
     for (const [key, value] of Object.entries(params)) {
@@ -23,9 +10,7 @@ export async function imentorGet<T>(path: string, params?: Record<string, string
     }
   }
 
-  const response = await fetch(url.toString(), {
-    headers: { "X-Api-Key": apiKey },
-  });
+  const response = await fetch(url.toString());
 
   if (!response.ok) {
     throw new Error(`iMentor API xatosi: ${response.status}`);

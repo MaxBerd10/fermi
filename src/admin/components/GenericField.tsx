@@ -276,13 +276,13 @@ function AsyncSelectField({
   onChange: (key: string, value: unknown) => void;
 }) {
   const [options, setOptions] = useState<{ value: number; label: string }[]>([]);
+  const { optionsResource, optionsLabelKey } = field;
 
   useEffect(() => {
-    adminResource<Record<string, unknown>>(field.optionsResource)
+    adminResource<Record<string, unknown> & { id: number }>(optionsResource)
       .list({ pageSize: 300 })
-      .then((r) => setOptions(r.items.map((it) => ({ value: it.id as number, label: String(it[field.optionsLabelKey] ?? it.id) }))));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [field.optionsResource]);
+      .then((r) => setOptions(r.items.map((it) => ({ value: it.id, label: String(it[optionsLabelKey] ?? it.id) }))));
+  }, [optionsLabelKey, optionsResource]);
 
   return (
     <div>

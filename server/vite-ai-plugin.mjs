@@ -1,8 +1,8 @@
 /**
  * CORS-safe OpenAI proxy for Vite dev/preview.
- * API key is sent by the frontend (VITE_OPENAI_API_KEY) — not stored on institute API.
+ * The API key stays in Vite's server process and is never sent to the browser.
  */
-export function fjstiAiPlugin() {
+export function fjstiAiPlugin({ apiKey, model = "gpt-4o-mini" } = {}) {
   const mount = (middlewares) => {
     middlewares.use(async (req, res, next) => {
       if (!req.url?.startsWith("/openai-api")) return next();
@@ -28,13 +28,21 @@ export function fjstiAiPlugin() {
       const body = Buffer.concat(chunks);
 
       try {
+        if (!apiKey) {
+          res.statusCode = 503;
+          res.setHeader("Content-Type", "application/json");
+          res.end(JSON.stringify({ error: { message: "OPENAI_API_KEY sozlanmagan" } }));
+          return;
+        }
+
+        const parsed = JSON.parse(body.toString("utf8"));
         const upstream = await fetch(`https://api.openai.com${targetPath}`, {
           method: "POST",
           headers: {
-            Authorization: req.headers.authorization || "",
+            Authorization: `Bearer ${apiKey}`,
             "Content-Type": "application/json",
           },
-          body,
+          body: JSON.stringify({ ...parsed, model }),
         });
         const text = await upstream.text();
         res.statusCode = upstream.status;

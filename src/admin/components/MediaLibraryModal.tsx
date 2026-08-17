@@ -28,7 +28,6 @@ export default function MediaLibraryModal({ onSelect, onClose }: Props) {
 
   useEffect(() => {
     load("");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const segments = listing?.currentPath ? listing.currentPath.split("/") : [];

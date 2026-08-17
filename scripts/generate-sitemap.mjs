@@ -22,6 +22,8 @@ const STATIC_ROUTES = [
   "/schedule",
 ];
 
+let sourceFetchFailed = false;
+
 function isIncludable(path) {
   if (!path || !path.startsWith("/") || path === "/#" || path.includes("#")) return false;
   return !EXCLUDED_PREFIXES.some((prefix) => path.startsWith(prefix));
@@ -47,7 +49,8 @@ async function collectMenuUrls() {
     const menu = body.data ?? body;
     if (Array.isArray(menu)) collectMenuHrefs(menu, urls);
   } catch (err) {
-    console.warn("[sitemap] menu fetch failed, continuing with static routes only:", err.message);
+    sourceFetchFailed = true;
+    console.warn("[sitemap] menu fetch failed; preserving the existing sitemap:", err.message);
   }
   return urls;
 }
@@ -60,7 +63,8 @@ async function collectNewsUrls() {
     try {
       body = await fetchJson(`${API_BASE}/news?page=${page}&lang=uz`);
     } catch (err) {
-      console.warn(`[sitemap] news page ${page} fetch failed, stopping:`, err.message);
+      sourceFetchFailed = true;
+      console.warn(`[sitemap] news page ${page} fetch failed; preserving the existing sitemap:`, err.message);
       break;
     }
     const items = body.data ?? [];
@@ -76,6 +80,10 @@ async function collectNewsUrls() {
 
 async function main() {
   const [menuUrls, newsUrls] = await Promise.all([collectMenuUrls(), collectNewsUrls()]);
+  if (sourceFetchFailed) {
+    console.warn("[sitemap] live CMS data was unavailable; existing sitemap.xml was not changed.");
+    return;
+  }
   const all = new Set([...menuUrls, ...newsUrls]);
 
   const body = [...all]

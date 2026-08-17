@@ -1,4 +1,4 @@
-/** Frontend OpenAI client — uses VITE_OPENAI_API_KEY from env (bundled at build). */
+/** Browser-facing AI client — sends requests to the server-side proxy. */
 export {
   aiChat,
   aiPathfinder,

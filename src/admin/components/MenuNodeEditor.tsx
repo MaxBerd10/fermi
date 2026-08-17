@@ -37,7 +37,7 @@ export default function MenuNodeEditor({ node, onSave, onClose }: Props) {
       disabled: node.disabled,
     });
     setError("");
-  }, [node.id]);
+  }, [node]);
 
   function set<K extends keyof MenuNodeInput>(key: K, value: MenuNodeInput[K]) {
     setForm((f) => ({ ...f, [key]: value }));

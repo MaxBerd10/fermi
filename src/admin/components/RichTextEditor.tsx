@@ -83,7 +83,6 @@ export default function RichTextEditor({ label, value, onChange }: RichTextEdito
       editor.commands.setContent(value, { emitUpdate: false });
       lastEmittedHtml.current = value;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, editor]);
 
   function insertImage(url: string) {

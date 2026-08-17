@@ -14,22 +14,6 @@ Qoidalar:
 - Havolalarni FAQAT markdown formatida yozing: [Fakultetlar](/#faculties-news) yoki [Qabul](/qabul) yoki [HEMIS](http://hemis.fjsti.uz). Yalang'och path yozmang va "sahifaga o'ting" deb qoldirmang — har doim bosiladigan [matn](url) bering.
 - HEMIS: http://hemis.fjsti.uz | Qabul: /qabul | my.edu.uz`;
 
-function getApiKey() {
-  const plain = String(import.meta.env.VITE_OPENAI_API_KEY || "").trim();
-  if (plain) return plain;
-  const b64 = String(import.meta.env.VITE_OPENAI_API_KEY_B64 || "").trim();
-  if (!b64) return "";
-  try {
-    return atob(b64).trim();
-  } catch {
-    return "";
-  }
-}
-
-function getModel() {
-  return String(import.meta.env.VITE_OPENAI_MODEL || "gpt-4o-mini").trim();
-}
-
 function tokenize(s: string) {
   return String(s || "")
     .toLowerCase()
@@ -68,11 +52,7 @@ function contextBlock(docs: KbDoc[]) {
 }
 
 async function openaiChat(messages: { role: string; content: string }[], opts?: { temperature?: number; json?: boolean }) {
-  const apiKey = getApiKey();
-  if (!apiKey) throw new Error("VITE_OPENAI_API_KEY_B64 sozlanmagan");
-
   const body: Record<string, unknown> = {
-    model: getModel(),
     messages,
     temperature: opts?.temperature ?? 0.3,
   };
@@ -81,7 +61,6 @@ async function openaiChat(messages: { role: string; content: string }[], opts?: 
   const res = await fetch("/openai-api/v1/chat/completions", {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify(body),
