@@ -3,7 +3,7 @@ export const heroSlides = [
     id: 1,
     tag: "Qabul 2026",
     title: "Texnikum bitiruvchilari qabul boshlandi",
-    description: "2026-yil 5-iyuldan boshlab texnikumlarni muvaffaqiyatli tamomlagan bitiruvchilarni OTMga qabul boshlandi! Onlayn ro'yxatdan o'tish ochiq.",
+    description: "2026-yil 5-iyuldan boshlab texnikumlarni muvaffaqiyatli tamomlagan bitiruvchilarni OTMga qabul boshlandi! Onlayn roʻyxatdan oʻtish ochiq.",
     image: "https://readdy.ai/api/search-image?query=Modern%20medical%20university%20campus%20building%20with%20beautiful%20contemporary%20architecture%2C%20white%20walls%20with%20large%20glass%20windows%2C%20medical%20students%20walking%20on%20campus%20pathways%2C%20green%20trees%20and%20landscaping%2C%20sunny%20day%20with%20natural%20lighting%2C%20professional%20educational%20institution%20photography%2C%20clean%20and%20inspiring%20atmosphere%2C%20no%20text%20or%20banners%20visible&width=1600&height=900&seq=fjsti-hero-1&orientation=landscape",
     cta: { label: "Batafsil", href: "/yangiliklar" },
     secondary: { label: "Onlayn ariza topshirish", href: "https://my.uzedu.uz" },
@@ -12,7 +12,7 @@ export const heroSlides = [
     id: 2,
     tag: "Xalqaro qabul",
     title: "Xorijiy abituriyentlar qabuli boshlandi",
-    description: "Farg'ona jamoat salomatligi tibbiyot institutiga xorijiy abituriyentlar qabuli boshlandi! Qabul muddati: 2026-yil 1-iyuldan 1-avgustga qadar.",
+    description: "Fargʻona jamoat salomatligi tibbiyot institutiga xorijiy abituriyentlar qabuli boshlandi! Qabul muddati: 2026-yil 1-iyuldan 1-avgustga qadar.",
     image: "https://readdy.ai/api/search-image?query=Diverse%20group%20of%20international%20medical%20students%20in%20white%20lab%20coats%20standing%20together%20in%20front%20of%20a%20modern%20university%20building%2C%20smiling%20and%20confident%2C%20warm%20afternoon%20sunlight%2C%20professional%20academic%20atmosphere%2C%20clean%20architectural%20background%2C%20high%20quality%20editorial%20photography%2C%20representing%20global%20medical%20education%20and%20cultural%20diversity%2C%20no%20text%20or%20banners%20visible&width=1600&height=900&seq=fjsti-hero-2&orientation=landscape",
     cta: { label: "Batafsil", href: "/yangiliklar" },
     secondary: { label: "Kontrakt narxlari", href: "/qabul" },
@@ -21,7 +21,7 @@ export const heroSlides = [
     id: 3,
     tag: "Tadbir",
     title: "\"Workshop\" formatidagi amaliy seminar tashkil etildi",
-    description: "Pediatriya fakulteti Farmatsiya yo'nalishi bitiruvchi bosqich talabalari uchun amaliy ko'nikmalar seminar va mahorat darsi tashkil etildi.",
+    description: "Pediatriya fakulteti Farmatsiya yoʻnalishi bitiruvchi bosqich talabalari uchun amaliy koʻnikmalar seminar va mahorat darsi tashkil etildi.",
     image: "https://readdy.ai/api/search-image?query=Medical%20students%20in%20white%20lab%20coats%20gathered%20around%20a%20laboratory%20table%20during%20a%20hands-on%20practical%20workshop%20session%2C%20focused%20and%20engaged%20in%20learning%2C%20modern%20clean%20laboratory%20environment%20with%20medical%20equipment%2C%20bright%20natural%20lighting%20from%20windows%2C%20professional%20educational%20photography%2C%20collaborative%20academic%20atmosphere%2C%20no%20text%20or%20banners%20visible&width=1600&height=900&seq=fjsti-hero-3&orientation=landscape",
     cta: { label: "Batafsil", href: "/yangiliklar" },
     secondary: { label: "Tadbirlar", href: "/yangiliklar" },
@@ -30,7 +30,7 @@ export const heroSlides = [
 
 export const quickServices = [
   { id: "virtual", icon: "ri-customer-service-2-line", title: "Virtual qabulxona", desc: "Rasmiy murojaat", href: "/virtual-qabulxona", color: "primary" },
-  { id: "hemis", icon: "ri-database-2-line", title: "HEMIS", desc: "Masofaviy ta'limni boshqarish tizimi", href: "https://hemis.fjsti.uz", color: "accent" },
+  { id: "hemis", icon: "ri-database-2-line", title: "HEMIS", desc: "Masofaviy taʻlimni boshqarish tizimi", href: "https://hemis.fjsti.uz", color: "accent" },
   { id: "scopus", icon: "ri-book-open-line", title: "Scopus", desc: "Ilmiy nashrlar", href: "https://www.scopus.com/standard/marketing.uri", color: "primary" },
   { id: "doctorium", icon: "ri-stethoscope-line", title: "Doctorium", desc: "Shifokorlar platformasi", href: "https://doctorium.com/", color: "secondary" },
   { id: "qabul", icon: "ri-user-add-line", title: "Onlayn qabul", desc: "Ariza topshirish", href: "https://my.uzedu.uz", color: "accent" },
@@ -39,31 +39,31 @@ export const quickServices = [
 ];
 
 export const stats = [
-  { id: 1, value: 275, suffix: "", label: "Professor o'qituvchilar", icon: "ri-user-3-line" },
+  { id: 1, value: 275, suffix: "", label: "Professor oʻqituvchilar", icon: "ri-user-3-line" },
   { id: 2, value: 6238, suffix: "", label: "Talabalar", icon: "ri-team-line" },
   { id: 3, value: 1089, suffix: "", label: "Bitiruvchilar", icon: "ri-graduation-cap-line" },
   { id: 4, value: 25836, suffix: "", label: "Kitob fondi", icon: "ri-book-2-line" },
-  { id: 5, value: 35, suffix: "+", label: "Ta'lim yo'nalishlari", icon: "ri-folder-open-line" },
+  { id: 5, value: 35, suffix: "+", label: "Taʻlim yoʻnalishlari", icon: "ri-folder-open-line" },
   { id: 6, value: 18, suffix: "", label: "Xalqaro hamkorlik", icon: "ri-earth-line" },
 ];
 
 export const news = [
   {
     id: 1,
-    category: "E'lon",
+    category: "Eʻlon",
     date: "2026-07-05",
     title: "Texnikum bitiruvchilari qabul boshlandi",
-    excerpt: "Texnikum bitiruvchilari diqqatiga: OTMga qabul boshlandi! 2026-yil 5-iyuldan boshlab texnikumlarni muvaffaqiyatli tamomlagan bitiruvchilarni oliy ta'lim tashkilotlarining bakalavriat yo'nalishlariga qabul qilish jarayoni boshlandi.",
+    excerpt: "Texnikum bitiruvchilari diqqatiga: OTMga qabul boshlandi! 2026-yil 5-iyuldan boshlab texnikumlarni muvaffaqiyatli tamomlagan bitiruvchilarni oliy taʻlim tashkilotlarining bakalavriat yoʻnalishlariga qabul qilish jarayoni boshlandi.",
     image: "https://readdy.ai/api/search-image?query=Young%20Uzbek%20students%20sitting%20at%20desks%20in%20a%20bright%20modern%20university%20classroom%2C%20focused%20on%20studying%2C%20clean%20white%20walls%20with%20natural%20daylight%20from%20large%20windows%2C%20academic%20atmosphere%2C%20educational%20setting%2C%20professional%20photography%20with%20warm%20tones%2C%20no%20text%20or%20banners%20visible&width=800&height=600&seq=fjsti-news-1&orientation=landscape",
     href: "/yangiliklar/texnikum-qabul",
     views: 1257,
   },
   {
     id: 2,
-    category: "E'lon",
+    category: "Eʻlon",
     date: "2026-07-01",
     title: "Xorijiy abituriyentlar qabuli boshlandi",
-    excerpt: "Xorijiy abituriyentlar diqqatiga! Farg'ona jamoat salomatligi tibbiyot institutiga xorijiy abituriyentlar qabuli boshlandi! Qabul muddati: 2026-yil 1-iyuldan 1-avgustga qadar.",
+    excerpt: "Xorijiy abituriyentlar diqqatiga! Fargʻona jamoat salomatligi tibbiyot institutiga xorijiy abituriyentlar qabuli boshlandi! Qabul muddati: 2026-yil 1-iyuldan 1-avgustga qadar.",
     image: "https://readdy.ai/api/search-image?query=International%20students%20walking%20through%20a%20modern%20university%20campus%20courtyard%2C%20green%20trees%20and%20manicured%20gardens%2C%20contemporary%20glass%20building%20architecture%20in%20background%2C%20diverse%20young%20people%20carrying%20books%20and%20backpacks%2C%20sunny%20bright%20day%2C%20welcoming%20academic%20environment%2C%20professional%20editorial%20photography%2C%20no%20text%20or%20banners%20visible&width=800&height=600&seq=fjsti-news-2&orientation=landscape",
     href: "/yangiliklar/xorijiy-qabul",
     views: 3249,
@@ -73,7 +73,7 @@ export const news = [
     category: "Tadbir",
     date: "2026-06-30",
     title: "\"Workshop\" formatidagi amaliy seminar va mahorat darsi tashkil etildi",
-    excerpt: "2025–2026-o'quv yilida Farg'ona jamoat salomatligi tibbiyot instituti Pediatriya fakulteti Farmatsiya yo'nalishi bitiruvchi bosqich talabalari uchun amaliy ko'nikmalar seminar va mahorat darsi tashkil etildi.",
+    excerpt: "2025–2026-oʻquv yilida Fargʻona jamoat salomatligi tibbiyot instituti Pediatriya fakulteti Farmatsiya yoʻnalishi bitiruvchi bosqich talabalari uchun amaliy koʻnikmalar seminar va mahorat darsi tashkil etildi.",
     image: "https://readdy.ai/api/search-image?query=Pharmacy%20students%20in%20white%20lab%20coats%20working%20with%20laboratory%20glassware%20and%20pharmaceutical%20equipment%2C%20modern%20clean%20laboratory%20setting%2C%20focused%20young%20professionals%20learning%20practical%20skills%2C%20bright%20overhead%20lighting%2C%20professional%20medical%20education%20photography%2C%20no%20text%20or%20banners%20visible&width=800&height=600&seq=fjsti-news-3&orientation=landscape",
     href: "/yangiliklar/workshop-pharmacy",
     views: 825,
@@ -83,7 +83,7 @@ export const news = [
     category: "Yangilik",
     date: "2026-06-25",
     title: "FJSTI da AI klinikasi ochildi",
-    excerpt: "Institut tarkibida sun'iy intellekt asosida ishlovchi zamonaviy klinika ochildi. Bu klinikada talabalar eng so'nggi texnologiyalar bilan tanishadilar.",
+    excerpt: "Institut tarkibida sunʻiy intellekt asosida ishlovchi zamonaviy klinika ochildi. Bu klinikada talabalar eng soʻnggi texnologiyalar bilan tanishadilar.",
     image: "https://readdy.ai/api/search-image?query=Modern%20futuristic%20medical%20clinic%20interior%20with%20advanced%20diagnostic%20equipment%20and%20digital%20screens%20displaying%20medical%20data%2C%20clean%20white%20and%20soft%20blue%20color%20scheme%2C%20bright%20spacious%20room%20with%20natural%20light%2C%20high%20tech%20healthcare%20environment%2C%20professional%20medical%20setting%2C%20no%20text%20or%20banners%20visible&width=800&height=600&seq=fjsti-news-4&orientation=landscape",
     href: "/yangiliklar/ai-klinika",
     views: 1847,
@@ -95,8 +95,8 @@ export const announcements = [
   { id: 2, sticky: true, tag: "Xalqaro", date: "2026-07-01", title: "Xorijiy abituriyentlar qabuli boshlandi — 1 avgustga qadar", href: "/yangiliklar/xorijiy-qabul" },
   { id: 3, sticky: false, tag: "Tadbir", date: "2026-06-30", title: "\"Workshop\" formatidagi amaliy seminar tashkil etildi", href: "/yangiliklar/workshop-pharmacy" },
   { id: 4, sticky: false, tag: "Ilm-fan", date: "2026-06-20", title: "JCPM jurnaliga maqolalar qabuli — 2026/3-son", href: "/jcpm" },
-  { id: 5, sticky: false, tag: "Konferensiya", date: "2026-06-15", title: "Kongress 2026 dasturi e'lon qilindi", href: "/kongress" },
-  { id: 6, sticky: false, tag: "Amaliyot", date: "2026-06-10", title: "Amaliyot dasturlari 2026-yillik ro'yxati e'lon qilindi", href: "/yangiliklar/amaliyot-2026" },
+  { id: 5, sticky: false, tag: "Konferensiya", date: "2026-06-15", title: "Kongress 2026 dasturi eʻlon qilindi", href: "/kongress" },
+  { id: 6, sticky: false, tag: "Amaliyot", date: "2026-06-10", title: "Amaliyot dasturlari 2026-yillik roʻyxati eʻlon qilindi", href: "/yangiliklar/amaliyot-2026" },
   { id: 7, sticky: false, tag: "Muhim", date: "2026-06-05", title: "Talabalar turar joyi arizalari qabul boshlandi", href: "/yangiliklar/turar-joy" },
 ];
 
@@ -142,7 +142,7 @@ export const faculties = [
 export const departments = [
   { id: 1, name: "Pediatriya kafedrasi", image: "https://fjsti.uz/uploads/img/kafedra/Kafedra%20logo/Sayt%20uchun/Pediatriya%20kafedrasi.jpg", href: "/kafedralar/pediatriya" },
   { id: 2, name: "Mikrobiologiya, virusologiya va immunologiya kafedrasi", image: "https://fjsti.uz/uploads/img/kafedra/Kafedra%20logo/Sayt%20uchun/Mikrobilogiya.jpg", href: "/kafedralar/mikrobiologiya" },
-  { id: 3, name: "O'zbek va xorijiy tillar kafedrasi", image: "https://fjsti.uz/uploads/img/kafedra/Kafedra%20logo/Sayt%20uchun/Xorijiy%20tillar.jpg", href: "/kafedralar/xorijiy-tillar" },
+  { id: 3, name: "Oʻzbek va xorijiy tillar kafedrasi", image: "https://fjsti.uz/uploads/img/kafedra/Kafedra%20logo/Sayt%20uchun/Xorijiy%20tillar.jpg", href: "/kafedralar/xorijiy-tillar" },
   { id: 4, name: "Kommunal va mehnat gigienasi kafedrasi", image: "https://fjsti.uz/uploads/img/kafedra/Kafedra%20logo/Sayt%20uchun/Kommunal.jpg", href: "/kafedralar/kommunal-gigiena" },
   { id: 5, name: "Tibbiy va biologik kimyo kafedrasi", image: "https://fjsti.uz/uploads/img/kafedra/Kafedra%20logo/Sayt%20uchun/Tibbiy%20kimyo%20kafedrasi.jpg", href: "/kafedralar/tibbiy-kimyo" },
   { id: 6, name: "Epidemiologiya va yuqumli kasalliklar kafedrasi", image: "https://fjsti.uz/uploads/img/kafedra/Kafedra%20logo/Sayt%20uchun/Epid%20kafedrasi.jpg", href: "/kafedralar/epidemiologiya" },
@@ -168,9 +168,9 @@ export const events = [
     day: "25",
     month: "IYUL",
     title: "Xalqaro talabalar uchun oriyentatsiya seminari",
-    desc: "Xorijiy talabalar uchun o'qish, yashash va hujjatlashtirish bo'yicha amaliy yo'riqnoma. Xalqaro bo'lim mutaxassislari ishtirokida.",
+    desc: "Xorijiy talabalar uchun oʻqish, yashash va hujjatlashtirish boʻyicha amaliy yoʻriqnoma. Xalqaro boʻlim mutaxassislari ishtirokida.",
     time: "14:00 – 17:00",
-    place: "Xalqaro bo'lim",
+    place: "Xalqaro boʻlim",
     type: "Seminar",
   },
   {
@@ -178,7 +178,7 @@ export const events = [
     day: "02",
     month: "AVG",
     title: "Doktorantlar ilmiy anjumani",
-    desc: "Yosh olimlar tadqiqot natijalarini taqdim etadi. Jamoat salomatligi, klinik tibbiyot va profilaktika yo'nalishlarida sessiyalar.",
+    desc: "Yosh olimlar tadqiqot natijalarini taqdim etadi. Jamoat salomatligi, klinik tibbiyot va profilaktika yoʻnalishlarida sessiyalar.",
     time: "09:00 – 18:00",
     place: "Konferensiya zali",
     type: "Ilm-fan",
@@ -187,8 +187,8 @@ export const events = [
     id: 4,
     day: "10",
     month: "AVG",
-    title: "Tibbiy simulyatsiya bo'yicha master-klass",
-    desc: "Zamonaviy simulyatorlarda klinik ko'nikmalarni mashq qilish. Guruhlar cheklangan — oldindan ro'yxatdan o'ting.",
+    title: "Tibbiy simulyatsiya boʻyicha master-klass",
+    desc: "Zamonaviy simulyatorlarda klinik koʻnikmalarni mashq qilish. Guruhlar cheklangan — oldindan roʻyxatdan oʻting.",
     time: "11:00 – 14:00",
     place: "Simulyatsiya markazi",
     type: "Master-klass",
@@ -206,7 +206,7 @@ export const galleryImages = [
 
 export const partners = [
   { name: "Prezident portali", icon: "ri-government-line", href: "https://president.uz/uz" },
-  { name: "Qonun hujjatlari ma'lumotlar bazasi", icon: "ri-file-list-line", href: "https://lex.uz/" },
+  { name: "Qonun hujjatlari maʻlumotlar bazasi", icon: "ri-file-list-line", href: "https://lex.uz/" },
   { name: "Hukumat portali", icon: "ri-building-line", href: "https://gov.uz/uz" },
   { name: "Vazirlik (OTMFI)", icon: "ri-graduation-cap-line", href: "https://gov.uz/en/edu" },
   { name: "SSV", icon: "ri-heart-pulse-line", href: "https://ssv.uz/uz" },
@@ -237,7 +237,7 @@ export const navItems = [
       { label: "Rahbariyat", href: "/institut/rahbariyat" },
       { label: "Fakultetlar", href: "/fakultetlar" },
       { label: "Kafedralar", href: "/kafedralar" },
-      { label: "Bo'limlar", href: "/tuzilma#bolimlar" },
+      { label: "Boʻlimlar", href: "/tuzilma#bolimlar" },
       { label: "Markazlar", href: "/tuzilma#markazlar" },
       { label: "Texnikumlar", href: "/tuzilma#texnikumlar" },
       { label: "Karyera markazi", href: "/tuzilma#karyera" },
@@ -250,7 +250,7 @@ export const navItems = [
       { label: "Ilmiy faoliyat", href: "/faoliyat/ilmiy" },
       { label: "Xalqaro faoliyat", href: "/faoliyat/xalqaro" },
       { label: "Moliyaviy faoliyat", href: "/faoliyat/moliyaviy" },
-      { label: "Madaniy-ma'rifiy fa'oliyat", href: "/faoliyat/madaniy" },
+      { label: "Madaniy-maʻrifiy faʻoliyat", href: "/faoliyat/madaniy" },
       { label: "Korrupsiyaga qarshi kurashish", href: "/korrupsiya" },
       { label: "Loyihalar", href: "/faoliyat/loyihalar" },
       { label: "Doktorantura", href: "/faoliyat/doktorantura" },
@@ -263,7 +263,7 @@ export const navItems = [
       { label: "Bakalavriat", href: "/qabul/bakalavriat" },
       { label: "Magistratura", href: "/qabul/magistratura" },
       { label: "Ordinatura", href: "/qabul/ordinatura" },
-      { label: "Qo'shma ta'lim", href: "/qabul/qoshma" },
+      { label: "Qoʻshma taʻlim", href: "/qabul/qoshma" },
       { label: "Doktorantura", href: "/qabul/doktorantura" },
       { label: "Internatura", href: "/qabul/internatura" },
       { label: "Xorijiy fuqarolar", href: "/qabul/xorijiy" },
@@ -297,7 +297,7 @@ export const navItems = [
     label: "Aloqa",
     href: "/aloqa",
     children: [
-      { label: "Kontakt ma'lumotlari", href: "/aloqa" },
+      { label: "Kontakt maʻlumotlari", href: "/aloqa" },
       { label: "Xarita", href: "/aloqa#map" },
       { label: "Fuqarolar murojaati", href: "/virtual-qabulxona" },
       { label: "Matbuot xizmati", href: "/aloqa/matbuot" },
@@ -308,7 +308,7 @@ export const navItems = [
 export const contactInfo = {
   phones: ["+998 95 062-23-45", "+998 95 063-23-45"],
   emails: ["info@fjsti.uz", "fmioz@mail.ru"],
-  address: "Farg'ona sh., Yangi Turon, 2-a uy",
+  address: "Fargʻona sh., Yangi Turon, 2-a uy",
   workHours: "Dushanba–Shanba, 09:00–17:00",
   socials: {
     facebook: "https://www.facebook.com/FarJSTI",
@@ -322,15 +322,15 @@ export const contactInfo = {
 export const instituteInfo = {
   founded: "1992-yil",
   decree: "PQ-4911-son Prezident qarori",
-  mission: "Sog'liqni saqlash, sanitariya-epidemiologik osoyishtalik va jamoat salomatligi sohasida yuqori malakaga ega oliy ma'lumotli kadrlarni tayyorlash, xodimlarni kasbiy qayta tayyorlash va ularning malakasini oshirish.",
-  vision: "O'zbekiston tibbiyot oliy ta'lim tizimida yetakchi o'rinni egallaydigan, xalqaro standartlarga javob beruvchi, innovatsion tadqiqotlarga asoslangan zamonaviy tibbiyot instituti.",
+  mission: "Sogʻliqni saqlash, sanitariya-epidemiologik osoyishtalik va jamoat salomatligi sohasida yuqori malakaga ega oliy maʻlumotli kadrlarni tayyorlash, xodimlarni kasbiy qayta tayyorlash va ularning malakasini oshirish.",
+  vision: "Oʻzbekiston tibbiyot oliy taʻlim tizimida yetakchi oʻrinni egallaydigan, xalqaro standartlarga javob beruvchi, innovatsion tadqiqotlarga asoslangan zamonaviy tibbiyot instituti.",
 };
 
 export const admissionInfo = {
   bakalavriat: {
     kvota: "2 500+",
     deadline: "15 iyul 2026",
-    grant: "Davlat granti va to'lov-kontrakt asosida",
+    grant: "Davlat granti va toʻlov-kontrakt asosida",
     imtihon: "Test sinovlari (DTM)",
     hujjatlar: [
       "Shaxs guvohnomasi (pasport)",
@@ -343,7 +343,7 @@ export const admissionInfo = {
   magistratura: {
     kvota: "350",
     deadline: "15 avgust 2026",
-    grant: "Davlat granti va to'lov-kontrakt",
+    grant: "Davlat granti va toʻlov-kontrakt",
     imtihon: "Magistratura kirish imtihonlari",
     hujjatlar: [
       "Bakalavriat diplom",
@@ -355,7 +355,7 @@ export const admissionInfo = {
   ordinatura: {
     kvota: "280",
     deadline: "20 avgust 2026",
-    grant: "To'lov-kontrakt asosida",
+    grant: "Toʻlov-kontrakt asosida",
     imtihon: "Klinik ordinatura kirish imtihonlari",
     hujjatlar: [
       "Bakalavriat diplom",

@@ -10,6 +10,38 @@ const JOURNAL_SUBMIT_HREF = "/blog/283/maqola-namunasi";
 export default function EventsJournal() {
   const { t } = useTranslation();
   const cd = useAdmissionCountdown();
+  // Keep these keys explicit. The production i18n build does not reliably
+  // resolve runtime-composed keys such as `events.item${id}.title`.
+  const eventTranslations = [
+    {
+      month: t("events.item1.month"),
+      type: t("events.item1.type"),
+      title: t("events.item1.title"),
+      desc: t("events.item1.desc"),
+      place: t("events.item1.place"),
+    },
+    {
+      month: t("events.item2.month"),
+      type: t("events.item2.type"),
+      title: t("events.item2.title"),
+      desc: t("events.item2.desc"),
+      place: t("events.item2.place"),
+    },
+    {
+      month: t("events.item3.month"),
+      type: t("events.item3.type"),
+      title: t("events.item3.title"),
+      desc: t("events.item3.desc"),
+      place: t("events.item3.place"),
+    },
+    {
+      month: t("events.item4.month"),
+      type: t("events.item4.type"),
+      title: t("events.item4.title"),
+      desc: t("events.item4.desc"),
+      place: t("events.item4.place"),
+    },
+  ];
 
   return (
     <section className="pt-5 pb-3 md:pt-6 md:pb-3 bg-transparent border-t border-[#e5e5e5]/60">
@@ -28,7 +60,10 @@ export default function EventsJournal() {
         </div>
 
         <div className="border-t border-primary-200">
-          {events.map((e) => (
+          {events.map((e, index) => {
+            const translation = eventTranslations[index];
+
+            return (
             <Link
               key={e.id}
               to={EVENTS_HREF}
@@ -39,19 +74,19 @@ export default function EventsJournal() {
                   {e.day}
                 </span>
                 <span className="text-xs uppercase tracking-wider font-semibold text-foreground-500 sm:mt-1">
-                  {t(`events.item${e.id}.month`)}
+                  {translation.month}
                 </span>
               </div>
 
               <div className="min-w-0">
                 <p className="text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-primary-600">
-                  {t(`events.item${e.id}.type`)}
+                  {translation.type}
                 </p>
                 <h3 className="mt-1 font-heading text-base md:text-lg font-semibold text-foreground-950 leading-snug group-hover:text-primary-700 transition-colors">
-                  {t(`events.item${e.id}.title`)}
+                  {translation.title}
                 </h3>
                 <p className="mt-1.5 text-sm text-foreground-500 leading-relaxed line-clamp-2 max-w-xl">
-                  {t(`events.item${e.id}.desc`)}
+                  {translation.desc}
                 </p>
               </div>
 
@@ -62,11 +97,12 @@ export default function EventsJournal() {
                 </div>
                 <div className="flex sm:justify-end items-center gap-2">
                   <i className="ri-map-pin-line text-secondary-600" />
-                  {t(`events.item${e.id}.place`)}
+                  {translation.place}
                 </div>
               </div>
             </Link>
-          ))}
+            );
+          })}
         </div>
 
         <div className="mt-5 bg-primary-950 text-white p-4 md:p-5 grid lg:grid-cols-2 gap-5 overflow-hidden relative rounded-2xl">

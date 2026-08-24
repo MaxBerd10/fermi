@@ -44,7 +44,7 @@ const PROJECTS: Project[] = [
   },
   {
     id: "slikon",
-    name: "Slikonli mashg'ulot",
+    name: "Slikonli mashgʻulot",
     href: null,
     icon: "ri-cpu-line",
     img: "/images/projects/slikon.jpg",

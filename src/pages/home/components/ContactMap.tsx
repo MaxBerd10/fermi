@@ -130,7 +130,7 @@ export default function ContactMap() {
                   <label className="text-[10px] uppercase tracking-wide text-[#333333] font-bold">{t("contact.subject")}</label>
                   <select name="topic" required className={inputClass}>
                     <option value="Qabul haqida">{t("contact.topicAdmission")}</option>
-                    <option value="O'quv jarayoni">{t("contact.topicStudy")}</option>
+                    <option value="Oʻquv jarayoni">{t("contact.topicStudy")}</option>
                     <option value="Ilmiy faoliyat">{t("contact.topicScience")}</option>
                     <option value="Xalqaro hamkorlik">{t("contact.topicInternational")}</option>
                     <option value="Boshqa">{t("contact.topicOther")}</option>

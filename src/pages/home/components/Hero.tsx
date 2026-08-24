@@ -8,7 +8,7 @@ import { FOUNDED_YEAR } from "@/lib/siteConstants";
 import { stripHtml } from "@/lib/html";
 import { CountUp, useInViewOnce, usePrefersReducedMotion } from "@/components/Animation";
 
-const FALLBACK_TITLE = "Farg'ona jamoat salomatligi tibbiyot instituti";
+const FALLBACK_TITLE = "Fargʻona jamoat salomatligi tibbiyot instituti";
 
 const PILLARS = [
   { icon: "ri-award-line", key: "hero.features.f1" },

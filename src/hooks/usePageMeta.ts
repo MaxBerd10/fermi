@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 
 const SITE_NAME = "FJSTI.uz";
-const DEFAULT_TITLE = "Farg'ona Jamoat Salomatligi Tibbiyot Instituti | FJSTI.uz — Rasmiy sayt";
+const DEFAULT_TITLE = "Fargʻona Jamoat Salomatligi Tibbiyot Instituti | FJSTI.uz — Rasmiy sayt";
 const DEFAULT_DESCRIPTION =
-  "Farg'ona jamoat salomatligi tibbiyot instituti (FJSTI) rasmiy veb-sayti. Qabul 2026, bakalavriat, magistratura, ordinatura, doktorantura. Zamonaviy tibbiy ta'lim Farg'ona shahri, Yangi Turon 2-a.";
+  "Fargʻona jamoat salomatligi tibbiyot instituti (FJSTI) rasmiy veb-sayti. Qabul 2026, bakalavriat, magistratura, ordinatura, doktorantura. Zamonaviy tibbiy taʻlim Fargʻona shahri, Yangi Turon 2-a.";
 
 /**
  * This is a pure client-side SPA (no SSR/prerendering), so without this,

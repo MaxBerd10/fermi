@@ -8,7 +8,7 @@ export function useRegulatorySectionNav() {
 
   return {
     loading,
-    title: section?.title ?? "Me'yoriy hujjatlar",
+    title: section?.title ?? "Meʻyoriy hujjatlar",
     items: section?.items ?? [],
   };
 }

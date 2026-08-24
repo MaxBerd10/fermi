@@ -3,6 +3,18 @@ import { partners } from "@/mocks/homeData";
 
 export default function Partners() {
   const { t } = useTranslation();
+  // See EventsJournal: use explicit keys so the production build resolves
+  // every language rather than showing a generated key as visible text.
+  const partnerNames = [
+    t("partners.item1.name"),
+    t("partners.item2.name"),
+    t("partners.item3.name"),
+    t("partners.item4.name"),
+    t("partners.item5.name"),
+    t("partners.item6.name"),
+    t("partners.item7.name"),
+    t("partners.item8.name"),
+  ];
 
   return (
     <section className="pt-3 pb-5 md:pt-4 md:pb-6 bg-transparent border-t border-[#e5e5e5]/60">
@@ -32,7 +44,7 @@ export default function Partners() {
                 <i className={`${p.icon} text-sm`} />
               </span>
               <span className="text-xs font-semibold text-[#0a0a0a] leading-snug line-clamp-2">
-                {t(`partners.item${i + 1}.name`)}
+                {partnerNames[i] ?? p.name}
               </span>
             </a>
           ))}

@@ -1,5 +1,5 @@
-/** Institut manzili: Farg'ona sh., Yangi Turon ko'chasi, 2-a uy */
-export const INSTITUTE_ADDRESS = "Farg'ona sh., Yangi Turon ko'chasi, 2-a uy";
+/** Institut manzili: Fargʻona sh., Yangi Turon koʻchasi, 2-a uy */
+export const INSTITUTE_ADDRESS = "Fargʻona sh., Yangi Turon koʻchasi, 2-a uy";
 
 /** Google Maps embed — aniq institut joylashuvi */
 export const MAP_EMBED_URL =
@@ -10,13 +10,13 @@ export const FOUNDED_YEAR = "1992";
 /** Menyu va sarlavhalardagi matnni normallashtirish */
 export function normalizeYearLabels(text: string): string {
   let result = text;
-  if (/vakant|vakansiya|yo['`]l xaritasi|xaritasi|yo-l-xaritasi/i.test(result)) {
+  if (/vakant|vakansiya|yo[ʻ'`]l xaritasi|xaritasi|yo-l-xaritasi/i.test(result)) {
     result = result.replace(/\b2025\b/g, "2026");
   }
   // Dynamic import avoided — inline minimal orthography for menu labels
-  result = result.replace(/`/g, "'");
-  result = result.replace(/\btogrisia\b/gi, "to'g'risida");
-  result = result.replace(/\bOzbeksiton\b/gi, "O'zbekiston");
+  result = result.replace(/`/g, "ʻ");
+  result = result.replace(/\btogrisia\b/gi, "toʻgʻrisida");
+  result = result.replace(/\bOzbeksiton\b/gi, "Oʻzbekiston");
   return result;
 }
 
@@ -30,7 +30,7 @@ export function normalizeMenuHref(href: string): string {
     .replace(/yol-xaritasi-2025/gi, "institut-yol-xaritasi-2026");
 }
 
-/** URL slug → API slug (CMS hali yangilanmagan bo'lsa) */
+/** URL slug → API slug (CMS hali yangilanmagan boʻlsa) */
 export function normalizePageSlug(slug: string): string {
   if (!slug) return slug;
   return slug
