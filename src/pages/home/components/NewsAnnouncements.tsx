@@ -47,8 +47,10 @@ export default function NewsAnnouncements() {
 
   if (news.length === 0) return null;
 
-  const featured = news[0];
-  const secondary = news.slice(1, 6);
+  // Text-only announcements are still shown in the list, but the large card
+  // should always prefer a usable image so it never renders as a blank block.
+  const featured = news.find((article) => Boolean(article.img)) ?? news[0];
+  const secondary = news.filter((article) => article.id !== featured.id).slice(0, 5);
 
   return (
     <section id="yangiliklar" className="py-5 md:py-6 bg-transparent">
