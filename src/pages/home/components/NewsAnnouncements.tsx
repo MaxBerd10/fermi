@@ -55,12 +55,20 @@ export default function NewsAnnouncements() {
         })
         .catch(() => {});
 
-    Promise.all([cmsPromise, telegramPromise]).then(async ([cmsItems, telegramItems]) => {
-      if (cancelled) return;
-      cms = cmsItems;
-      telegram = await localizeTelegramCards(telegramItems, i18n.language);
-      if (!cancelled) paint();
-    });
+    Promise.all([cmsPromise, telegramPromise])
+      .then(([cmsItems, telegramItems]) => {
+        if (cancelled) return;
+        cms = cmsItems;
+        telegram = telegramItems;
+        paint();
+        localizeTelegramCards(telegramItems, i18n.language)
+          .then((items) => {
+            telegram = items;
+            paint();
+          })
+          .catch(() => {});
+      })
+      .catch(() => {});
 
     const retryTimer = window.setTimeout(() => {
       loadTelegram();

@@ -32,14 +32,18 @@ export default function DetailPage() {
     setLoading(true);
     setError(null);
     getNewsArticle(slug, menuId)
-      .then(async (data) => {
+      .then((data) => {
+        setArticle(data);
+        setLoading(false);
         const lang = i18n.language;
         if (isTelegramNewsSlug(slug) && lang.slice(0, 2) !== "uz") {
-          return localizeTelegramArticle(data, lang);
+          localizeTelegramArticle(data, lang)
+            .then((localized) => {
+              setArticle(localized);
+            })
+            .catch(() => {});
         }
-        return data;
       })
-      .then(setArticle)
       .catch((e) => setError(e instanceof ApiError ? e.message : t("detail.loadError")))
       .finally(() => setLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps

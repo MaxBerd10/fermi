@@ -37,13 +37,13 @@ async function translateChunk(text: string, lang: string): Promise<string> {
   }
 
   const tryUrls = [
-    `/telegram-feed/translate?lang=${encodeURIComponent(code)}&q=${encodeURIComponent(source.slice(0, 450))}`,
     `https://api.mymemory.translated.net/get?langpair=${encodeURIComponent(`uz|${code}`)}&q=${encodeURIComponent(source.slice(0, 450))}`,
+    `/telegram-feed/translate?lang=${encodeURIComponent(code)}&q=${encodeURIComponent(source.slice(0, 450))}`,
   ];
 
   for (const url of tryUrls) {
     try {
-      const response = await fetch(url);
+      const response = await fetch(url, { signal: AbortSignal.timeout(4000) });
       if (!response.ok) continue;
       const payload = await response.json();
       const translated = String(

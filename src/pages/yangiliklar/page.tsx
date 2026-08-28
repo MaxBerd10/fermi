@@ -35,12 +35,17 @@ export default function NewsPage() {
         setTotal(res.meta?.total ?? res.data.length);
         setLoading(false);
         if (page !== 1) return;
-        const applyTelegram = async (telegramNews: NewsArticle[]) => {
+        const applyTelegram = (telegramNews: NewsArticle[]) => {
           if (cancelled) return;
-          const localized = await localizeTelegramCards(telegramNews, i18n.language);
-          if (cancelled) return;
-          setItems(mergeNewsByDate(localized, res.data));
-          setTotal((res.meta?.total ?? res.data.length) + localized.length);
+          setItems(mergeNewsByDate(telegramNews, res.data));
+          setTotal((res.meta?.total ?? res.data.length) + telegramNews.length);
+          localizeTelegramCards(telegramNews, i18n.language)
+            .then((localized) => {
+              if (cancelled) return;
+              setItems(mergeNewsByDate(localized, res.data));
+              setTotal((res.meta?.total ?? res.data.length) + localized.length);
+            })
+            .catch(() => {});
         };
         listTelegramNews().then(applyTelegram).catch(() => {});
         retryTimer = window.setTimeout(() => {
