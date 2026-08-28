@@ -154,12 +154,19 @@ function extractMedia(block) {
 }
 
 function titleFromHtml(html) {
-  const bold = [...String(html).matchAll(/<b>([\s\S]*?)<\/b>/gi)]
-    .map((match) => htmlToText(unwrapEmoji(match[1])))
+  // Custom Telegram emoji render as <i class="emoji">...<b>X</b>...</i> (or <tg-emoji>),
+  // with their OWN nested <b>. Scanning for <b>...</b> on the raw html before unwrapping
+  // those makes the non-greedy regex stop at the emoji's inner </b> instead of the real
+  // one — a message opening with an emoji (very common) then yields a random mid-sentence
+  // fragment from a LATER <b> tag as the "title". Unwrap emoji globally first so only the
+  // real bold spans remain.
+  const unwrapped = unwrapEmoji(String(html));
+  const bold = [...unwrapped.matchAll(/<b>([\s\S]*?)<\/b>/gi)]
+    .map((match) => htmlToText(match[1]))
     .find((text) => text && !text.startsWith("#") && text.length > 8);
   if (bold) return bold.slice(0, 160);
 
-  const lines = htmlToText(unwrapEmoji(html))
+  const lines = htmlToText(unwrapped)
     .split(/\n+/)
     .map((line) => line.trim())
     .filter((line) => line && !/^#\S+$/.test(line) && !/^©/.test(line));
