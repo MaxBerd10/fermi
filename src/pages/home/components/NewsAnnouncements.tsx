@@ -29,27 +29,29 @@ export default function NewsAnnouncements() {
 
   useEffect(() => {
     let cancelled = false;
-    let retryTimer: number | undefined;
 
-    Promise.all([
+    const cmsPromise = Promise.all([
       getHomeData()
         .then((d) => d.news ?? [])
         .catch(() => [] as NewsArticle[]),
       listNews(1)
         .then((r) => r.data ?? [])
         .catch(() => [] as NewsArticle[]),
-    ]).then(([homeNews, allNews]) => {
-      if (cancelled) return;
-      const cms = dedupeById([...homeNews, ...allNews]);
-      setNews(cms);
-      const applyTelegram = (telegramNews: NewsArticle[]) => {
-        if (!cancelled) setNews(mergeNewsByDate(telegramNews, cms));
-      };
-      listTelegramNews().then(applyTelegram).catch(() => {});
-      retryTimer = window.setTimeout(() => {
-        listTelegramNews().then(applyTelegram).catch(() => {});
-      }, 12000);
-    });
+    ]).then(([homeNews, allNews]) => dedupeById([...homeNews, ...allNews]));
+
+    const apply = (cms: NewsArticle[], telegramNews: NewsArticle[]) => {
+      if (!cancelled) setNews(mergeNewsByDate(telegramNews, cms));
+    };
+
+    Promise.all([cmsPromise, listTelegramNews().catch(() => [] as NewsArticle[])]).then(
+      ([cms, telegramNews]) => apply(cms, telegramNews),
+    );
+
+    const retryTimer = window.setTimeout(() => {
+      Promise.all([cmsPromise, listTelegramNews().catch(() => [] as NewsArticle[])]).then(
+        ([cms, telegramNews]) => apply(cms, telegramNews),
+      );
+    }, 8000);
 
     return () => {
       cancelled = true;

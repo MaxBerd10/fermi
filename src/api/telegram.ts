@@ -23,7 +23,7 @@ async function readEnvelope<T>(response: Response): Promise<T> {
 export async function listTelegramNews(): Promise<NewsArticle[]> {
   const lang = activeLang();
   const controller = new AbortController();
-  const timer = window.setTimeout(() => controller.abort(), lang === "uz" ? 4000 : 20000);
+  const timer = window.setTimeout(() => controller.abort(), 6000);
   try {
     const response = await fetch(`/telegram-feed?lang=${encodeURIComponent(lang)}`, {
       signal: controller.signal,

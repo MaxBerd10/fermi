@@ -25,28 +25,34 @@ export default function NewsPage() {
 
   useEffect(() => {
     let cancelled = false;
-    let retryTimer: number | undefined;
     setLoading(true);
-    listNews(page)
-      .then((res) => {
+
+    const cmsPromise = listNews(page);
+    const telegramPromise = page === 1 ? listTelegramNews().catch(() => [] as NewsArticle[]) : Promise.resolve([] as NewsArticle[]);
+
+    Promise.all([cmsPromise, telegramPromise])
+      .then(([res, telegramNews]) => {
         if (cancelled) return;
-        setItems(res.data);
-        setTotal(res.meta?.total ?? res.data.length);
+        const merged = page === 1 ? mergeNewsByDate(telegramNews, res.data) : res.data;
+        setItems(merged);
+        setTotal((res.meta?.total ?? res.data.length) + telegramNews.length);
         setLoading(false);
-        if (page !== 1) return;
-        const applyTelegram = (telegramNews: NewsArticle[]) => {
-          if (cancelled) return;
-          setItems(mergeNewsByDate(telegramNews, res.data));
-          setTotal((res.meta?.total ?? res.data.length) + telegramNews.length);
-        };
-        listTelegramNews().then(applyTelegram).catch(() => {});
-        retryTimer = window.setTimeout(() => {
-          listTelegramNews().then(applyTelegram).catch(() => {});
-        }, 12000);
       })
       .catch(() => {
         if (!cancelled) setLoading(false);
       });
+
+    const retryTimer = window.setTimeout(() => {
+      if (page !== 1) return;
+      Promise.all([cmsPromise, listTelegramNews().catch(() => [] as NewsArticle[])])
+        .then(([res, telegramNews]) => {
+          if (cancelled) return;
+          setItems(mergeNewsByDate(telegramNews, res.data));
+          setTotal((res.meta?.total ?? res.data.length) + telegramNews.length);
+        })
+        .catch(() => {});
+    }, 8000);
+
     return () => {
       cancelled = true;
       window.clearTimeout(retryTimer);
