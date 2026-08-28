@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { listNews } from "@/api/news";
 import { listTelegramNews } from "@/api/telegram";
 import type { NewsArticle } from "@/types/content";
-import { mergeNewsByDate } from "@/lib/telegramNews";
+import { mergeNewsByDate, readyTelegramNews } from "@/lib/telegramNews";
 import PageHeader from "@/components/shared/PageHeader";
 import NewsSectionLayout from "@/components/shared/NewsSectionLayout";
 import NewsCard from "@/components/shared/NewsCard";
@@ -36,20 +36,24 @@ export default function NewsPage() {
         if (page !== 1) return;
         const applyTelegram = (telegramNews: NewsArticle[]) => {
           if (cancelled) return;
-          setItems(mergeNewsByDate(telegramNews, res.data));
-          setTotal((res.meta?.total ?? res.data.length) + telegramNews.length);
+          const ready = readyTelegramNews(telegramNews, i18n.language);
+          setItems(mergeNewsByDate(ready, res.data));
+          setTotal((res.meta?.total ?? res.data.length) + ready.length);
         };
         listTelegramNews().then(applyTelegram).catch(() => {});
-        retryTimer = window.setTimeout(() => {
+        let tries = 0;
+        retryTimer = window.setInterval(() => {
+          tries += 1;
           listTelegramNews().then(applyTelegram).catch(() => {});
-        }, 8000);
+          if (tries >= 4) window.clearInterval(retryTimer);
+        }, 4000);
       })
       .catch(() => {
         if (!cancelled) setLoading(false);
       });
     return () => {
       cancelled = true;
-      window.clearTimeout(retryTimer);
+      window.clearInterval(retryTimer);
     };
   }, [page, i18n.language]);
 

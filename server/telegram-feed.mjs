@@ -585,7 +585,7 @@ async function localizePosts(posts, lang, { full = true, wait = false } = {}) {
   if (missing.length && wait) {
     await Promise.race([
       fillMissingTranslations(missing.slice(0, full ? 1 : 8), target),
-      sleep(full ? 20000 : 12000),
+      sleep(full ? 20000 : 6000),
     ]);
     scheduleTranslationFill(
       missing.filter((row) => {
@@ -641,16 +641,20 @@ export async function handleTelegramFeedRequest(request, response) {
     }
 
     const feed = await getTelegramFeed();
-    const posts = await localizePosts(feed, lang, { full: false, wait: false });
+    const posts = await localizePosts(feed, lang, { full: false, wait: lang !== "uz" });
     const originals = new Map(feed.map((post) => [post.slug, post.title]));
-    const pending = lang !== "uz" && posts.some((post) => post.title === originals.get(post.slug));
+    const marked = posts.map((post) => ({
+      ...post,
+      translated: lang === "uz" || post.title !== originals.get(post.slug),
+    }));
+    const pending = lang !== "uz" && marked.some((post) => !post.translated);
     response.statusCode = 200;
     response.setHeader("Content-Type", "application/json; charset=utf-8");
     response.setHeader(
       "Cache-Control",
       pending ? "no-store" : lang === "uz" ? "public, max-age=30" : "private, max-age=60",
     );
-    response.end(JSON.stringify({ success: true, data: posts }));
+    response.end(JSON.stringify({ success: true, data: marked }));
   } catch (error) {
     response.statusCode = 502;
     response.setHeader("Content-Type", "application/json; charset=utf-8");

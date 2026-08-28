@@ -8,7 +8,7 @@ import type { NewsArticle } from "@/types/content";
 import { stripHtml } from "@/lib/html";
 import { formatShortDate } from "@/lib/date";
 import { Reveal } from "@/components/Animation";
-import { mergeNewsByDate } from "@/lib/telegramNews";
+import { mergeNewsByDate, readyTelegramNews } from "@/lib/telegramNews";
 
 function newsHref(article: NewsArticle) {
   return `/detail/${article.slug}?menuId=71`;
@@ -30,10 +30,14 @@ export default function NewsAnnouncements() {
   useEffect(() => {
     let cancelled = false;
     let cms: NewsArticle[] = [];
+    let telegram: NewsArticle[] = [];
+    const lang = i18n.language;
 
-    const paint = (telegramNews: NewsArticle[]) => {
-      if (!cancelled) setNews(mergeNewsByDate(telegramNews, cms));
+    const paint = () => {
+      if (!cancelled) setNews(mergeNewsByDate(readyTelegramNews(telegram, lang), cms));
     };
+
+    const telegramPromise = listTelegramNews().catch(() => [] as NewsArticle[]);
 
     Promise.all([
       getHomeData()
@@ -45,21 +49,29 @@ export default function NewsAnnouncements() {
     ]).then(([homeNews, allNews]) => {
       if (cancelled) return;
       cms = dedupeById([...homeNews, ...allNews]);
-      paint([]);
-      listTelegramNews()
-        .then((telegramNews) => paint(telegramNews))
-        .catch(() => {});
+      paint();
     });
 
-    const retryTimer = window.setTimeout(() => {
+    telegramPromise.then((items) => {
+      telegram = items;
+      paint();
+    });
+
+    let tries = 0;
+    const pollTimer = window.setInterval(() => {
+      tries += 1;
       listTelegramNews()
-        .then((telegramNews) => paint(telegramNews))
+        .then((items) => {
+          telegram = items;
+          paint();
+        })
         .catch(() => {});
-    }, 8000);
+      if (tries >= 4) window.clearInterval(pollTimer);
+    }, 4000);
 
     return () => {
       cancelled = true;
-      window.clearTimeout(retryTimer);
+      window.clearInterval(pollTimer);
     };
   }, [i18n.language]);
 

@@ -41,6 +41,7 @@ export interface NewsArticle {
   menuId?: number;
   file?: string | null;
   telegramUrl?: string;
+  translated?: boolean;
 }
 
 export interface FacultyListItem {
