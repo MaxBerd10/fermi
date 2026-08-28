@@ -37,7 +37,7 @@ let cache = { expiresAt: 0, posts: null, error: null };
 let openAiApiKey = "";
 let openAiModel = "gpt-4o-mini";
 const translationCache = new Map();
-const translationCacheFile = resolve(rootDir, ".tmp/telegram-translations.json");
+const translationCacheFile = resolve(rootDir, ".tmp/telegram-translations-v2.json");
 
 function loadTranslationCache() {
   try {
@@ -511,7 +511,7 @@ export async function handleTelegramFeedRequest(request, response) {
       }
       response.statusCode = 200;
       response.setHeader("Content-Type", "application/json; charset=utf-8");
-      response.setHeader("Cache-Control", lang === "uz" ? "public, max-age=30" : "private, max-age=30");
+      response.setHeader("Cache-Control", lang === "uz" ? "public, max-age=30" : "no-store");
       response.end(JSON.stringify({ success: true, data: post }));
       return true;
     }

@@ -37,8 +37,9 @@ export async function listTelegramNews(): Promise<NewsArticle[]> {
 
 export async function getTelegramArticle(slug: string): Promise<NewsArticle> {
   const lang = activeLang();
-  const response = await fetch(`/telegram-feed/${encodeURIComponent(slug)}?lang=${encodeURIComponent(lang)}`, {
-    cache: "no-store",
-  });
+  const response = await fetch(
+    `/telegram-feed/${encodeURIComponent(slug)}?lang=${encodeURIComponent(lang)}&_=${Date.now()}`,
+    { cache: "no-store" },
+  );
   return readEnvelope<NewsArticle>(response);
 }
