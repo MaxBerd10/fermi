@@ -196,9 +196,15 @@ async function handleImentor(request, response) {
   const upstreamPath = requestUrl.pathname.replace(/^\/imentor-api/, "");
   const target = new URL(`${upstreamPath}${requestUrl.search}`, imentorBaseUrl);
   const isStats = /\/v1\/external\/(tests|keys)\/stats\/$/.test(upstreamPath);
-  const result = isStats
-    ? await cachedGet(target, { "X-Api-Key": imentorApiKey }, 60_000)
-    : await cachedGet(target, { "X-Api-Key": imentorApiKey }, 0);
+  // Sample-questions/scenarios were previously uncached — every "start test" click hit
+  // iMentor's own server directly. iMentor has already shown it can't take much traffic
+  // (see today's ECONNREFUSED outage), so if many people started a test in the same
+  // moment, that many requests would go straight through. A short cache means concurrent
+  // requests for the exact same subject/count within this window share one upstream
+  // call and get the same (still shuffled) set — a small trade against pure randomness
+  // in exchange for not being able to hammer a third party's server into the ground.
+  const ttlMs = isStats ? 60_000 : 8_000;
+  const result = await cachedGet(target, { "X-Api-Key": imentorApiKey }, ttlMs);
 
   response.statusCode = result.statusCode;
   response.setHeader("Content-Type", result.contentType);
