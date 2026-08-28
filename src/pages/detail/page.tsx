@@ -10,6 +10,7 @@ import NewsSectionLayout from "@/components/shared/NewsSectionLayout";
 import { LoadingState, ErrorState } from "@/components/shared/LoadingState";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { stripHtml } from "@/lib/html";
+import { getNewsArticleImage } from "@/lib/newsImages";
 import { formatLongDate } from "@/lib/date";
 import { Reveal } from "@/components/Animation";
 import AiSummaryBlock from "@/components/ai/AiSummaryBlock";
