@@ -29,29 +29,33 @@ export default function NewsAnnouncements() {
 
   useEffect(() => {
     let cancelled = false;
+    let cms: NewsArticle[] = [];
 
-    const cmsPromise = Promise.all([
+    const paint = (telegramNews: NewsArticle[]) => {
+      if (!cancelled) setNews(mergeNewsByDate(telegramNews, cms));
+    };
+
+    Promise.all([
       getHomeData()
         .then((d) => d.news ?? [])
         .catch(() => [] as NewsArticle[]),
       listNews(1)
         .then((r) => r.data ?? [])
         .catch(() => [] as NewsArticle[]),
-    ]).then(([homeNews, allNews]) => dedupeById([...homeNews, ...allNews]));
-
-    const apply = (cms: NewsArticle[], telegramNews: NewsArticle[]) => {
-      if (!cancelled) setNews(mergeNewsByDate(telegramNews, cms));
-    };
-
-    Promise.all([cmsPromise, listTelegramNews().catch(() => [] as NewsArticle[])]).then(
-      ([cms, telegramNews]) => apply(cms, telegramNews),
-    );
+    ]).then(([homeNews, allNews]) => {
+      if (cancelled) return;
+      cms = dedupeById([...homeNews, ...allNews]);
+      paint([]);
+      listTelegramNews()
+        .then((telegramNews) => paint(telegramNews))
+        .catch(() => {});
+    });
 
     const retryTimer = window.setTimeout(() => {
-      Promise.all([cmsPromise, listTelegramNews().catch(() => [] as NewsArticle[])]).then(
-        ([cms, telegramNews]) => apply(cms, telegramNews),
-      );
-    }, 12000);
+      listTelegramNews()
+        .then((telegramNews) => paint(telegramNews))
+        .catch(() => {});
+    }, 8000);
 
     return () => {
       cancelled = true;
