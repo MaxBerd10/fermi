@@ -6,13 +6,40 @@ const DEFAULT_CHANNEL = "ferghana_medical_institute";
 const CACHE_TTL_MS = 60_000;
 const TELEGRAM_ID_OFFSET = 1_000_000;
 const LANG_NAMES = { ru: "Russian", en: "English" };
+const rootDir = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+
+function loadEnvFile(filePath) {
+  try {
+    const text = readFileSync(filePath, "utf8");
+    for (const line of text.split("\n")) {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith("#")) continue;
+      const eq = trimmed.indexOf("=");
+      if (eq < 1) continue;
+      const key = trimmed.slice(0, eq).trim();
+      let value = trimmed.slice(eq + 1).trim();
+      if (
+        (value.startsWith('"') && value.endsWith('"')) ||
+        (value.startsWith("'") && value.endsWith("'"))
+      ) {
+        value = value.slice(1, -1);
+      }
+      if (!process.env[key]) process.env[key] = value;
+    }
+  } catch {
+    /* optional local env files */
+  }
+}
+
+loadEnvFile(resolve(rootDir, ".env.production"));
+loadEnvFile(resolve(rootDir, ".env"));
 
 let cache = { expiresAt: 0, posts: null, error: null };
 let openAiApiKey = "";
 let openAiModel = "gpt-4o-mini";
 let openAiDisabled = false;
 const translationCache = new Map();
-const translationCacheFile = resolve(dirname(fileURLToPath(import.meta.url)), "../.tmp/telegram-translations.json");
+const translationCacheFile = resolve(rootDir, ".tmp/telegram-translations.json");
 
 function loadTranslationCache() {
   try {
@@ -219,9 +246,25 @@ function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+async function translateWithMyMemory(text, lang) {
+  const source = String(text || "").trim();
+  if (!source) return "";
+  const url = new URL("https://api.mymemory.translated.net/get");
+  url.searchParams.set("q", source.slice(0, 450));
+  url.searchParams.set("langpair", `uz|${lang}`);
+  const response = await fetch(url, {
+    headers: { "User-Agent": "Mozilla/5.0 (compatible; FerMI-web/1.0)" },
+  });
+  if (!response.ok) return "";
+  const payload = await response.json();
+  const translated = String(payload?.responseData?.translatedText || "").trim();
+  if (!translated || /MYMEMORY WARNING/i.test(translated)) return "";
+  return decodeEntities(translated);
+}
+
 async function translateWithGoogle(text, lang) {
   const source = String(text || "").trim();
-  if (!source) return source;
+  if (!source) return "";
   const url = new URL("https://translate.googleapis.com/translate_a/single");
   url.searchParams.set("client", "gtx");
   url.searchParams.set("sl", "uz");
@@ -229,20 +272,37 @@ async function translateWithGoogle(text, lang) {
   url.searchParams.set("dt", "t");
   url.searchParams.set("q", source.slice(0, 4500));
 
-  for (let attempt = 0; attempt < 5; attempt += 1) {
+  for (let attempt = 0; attempt < 3; attempt += 1) {
     try {
       const response = await fetch(url, { headers: { "User-Agent": "Mozilla/5.0 (compatible; FerMI-web/1.0)" } });
       if (response.status === 429) {
-        await sleep(700 * (attempt + 1));
+        await sleep(800 * (attempt + 1));
         continue;
       }
-      if (!response.ok) return source;
+      if (!response.ok) return "";
       const payload = await response.json();
-      return decodeEntities((payload?.[0] || []).map((row) => row?.[0] || "").join("").trim() || source);
+      return decodeEntities((payload?.[0] || []).map((row) => row?.[0] || "").join("").trim());
     } catch {
       await sleep(400 * (attempt + 1));
     }
   }
+  return "";
+}
+
+async function translateText(text, lang) {
+  const source = String(text || "").trim();
+  if (!source) return source;
+  if (source.length > 450) {
+    const parts = [];
+    for (let index = 0; index < source.length; index += 420) {
+      parts.push(await translateText(source.slice(index, index + 420), lang));
+    }
+    return parts.join("") || source;
+  }
+  const memory = await translateWithMyMemory(source, lang);
+  if (memory && memory !== source) return memory;
+  const google = await translateWithGoogle(source, lang);
+  if (google && google !== source) return google;
   return source;
 }
 
@@ -263,47 +323,52 @@ async function mapPool(items, limit, worker) {
 async function requestTranslations(items, lang) {
   const key = ensureOpenAiKey();
   if (key && !openAiDisabled) {
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${key}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: openAiModel,
-        temperature: 0.2,
-        response_format: { type: "json_object" },
-        max_tokens: 5000,
-        messages: [
-          {
-            role: "system",
-            content:
-              `Translate official Fergana Medical Institute of Public Health (FerMI / FJSTI) Telegram posts from Uzbek into ${LANG_NAMES[lang]}. ` +
-              `Return JSON: {"items":[{"slug":"","title":"","html":""}]}. ` +
-              "Keep HTML tags, emoji, hashtags, @mentions and URLs. Translate visible text only. " +
-              "Institute name: English = Fergana Medical Institute of Public Health; Russian = Ферганский медицинский институт общественного здоровья. " +
-              "Do not add commentary.",
-          },
-          { role: "user", content: JSON.stringify({ items }) },
-        ],
-      }),
-    });
+    try {
+      const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${key}`,
+          "Content-Type": "application/json",
+        },
+        signal: AbortSignal.timeout(2500),
+        body: JSON.stringify({
+          model: openAiModel,
+          temperature: 0.2,
+          response_format: { type: "json_object" },
+          max_tokens: 5000,
+          messages: [
+            {
+              role: "system",
+              content:
+                `Translate official Fergana Medical Institute of Public Health (FerMI / FJSTI) Telegram posts from Uzbek into ${LANG_NAMES[lang]}. ` +
+                `Return JSON: {"items":[{"slug":"","title":"","html":""}]}. ` +
+                "Keep HTML tags, emoji, hashtags, @mentions and URLs. Translate visible text only. " +
+                "Institute name: English = Fergana Medical Institute of Public Health; Russian = Ферганский медицинский институт общественного здоровья. " +
+                "Do not add commentary.",
+            },
+            { role: "user", content: JSON.stringify({ items }) },
+          ],
+        }),
+      });
 
-    if (response.status === 401 || response.status === 403) {
+      if (response.status === 401 || response.status === 403) {
+        openAiDisabled = true;
+      } else if (response.ok) {
+        const payload = await response.json();
+        const raw = String(payload?.choices?.[0]?.message?.content || "").trim();
+        const parsed = JSON.parse(raw);
+        const translated = Array.isArray(parsed?.items) ? parsed.items : Array.isArray(parsed) ? parsed : [];
+        if (translated.length) return translated;
+      }
+    } catch {
       openAiDisabled = true;
-    } else if (response.ok) {
-      const payload = await response.json();
-      const raw = String(payload?.choices?.[0]?.message?.content || "").trim();
-      const parsed = JSON.parse(raw);
-      const translated = Array.isArray(parsed?.items) ? parsed.items : Array.isArray(parsed) ? parsed : [];
-      if (translated.length) return translated;
     }
   }
 
-  return mapPool(items, 2, async (item) => ({
+  return mapPool(items, 3, async (item) => ({
     slug: item.slug,
-    title: decodeEntities(await translateWithGoogle(item.title, lang)),
-    html: await translateWithGoogle(item.html, lang),
+    title: await translateText(item.title, lang),
+    html: await translateText(item.html, lang),
   }));
 }
 
@@ -372,7 +437,11 @@ async function localizePosts(posts, lang, { full = true, wait = false } = {}) {
   }
 
   if (missing.length && wait) {
-    await Promise.race([fillMissingTranslations(missing, target), sleep(6000)]);
+    await Promise.race([fillMissingTranslations(missing.slice(0, 12), target), sleep(12000)]);
+    scheduleTranslationFill(
+      missing.filter((row) => !translationCache.has(row.cacheKey)),
+      target,
+    );
   } else {
     scheduleTranslationFill(missing, target);
   }
@@ -385,7 +454,7 @@ export async function getTelegramPost(slugOrId, lang = "uz") {
   const key = String(slugOrId || "").replace(/^tg-/, "");
   const post = posts.find((item) => item.slug === `tg-${key}` || String(item.id) === key) || null;
   if (!post) return null;
-      const [localized] = await localizePosts([post], lang, { full: true, wait: true });
+  const [localized] = await localizePosts([post], lang, { full: true, wait: true });
   return localized;
 }
 
@@ -419,10 +488,16 @@ export async function handleTelegramFeedRequest(request, response) {
       return true;
     }
 
-    const posts = await localizePosts(await getTelegramFeed(), lang, { full: false });
+    const feed = await getTelegramFeed();
+    const posts = await localizePosts(feed, lang, { full: false, wait: lang !== "uz" });
+    const originals = new Map(feed.map((post) => [post.slug, post.title]));
+    const pending = lang !== "uz" && posts.some((post) => post.title === originals.get(post.slug));
     response.statusCode = 200;
     response.setHeader("Content-Type", "application/json; charset=utf-8");
-    response.setHeader("Cache-Control", lang === "uz" ? "public, max-age=30" : "private, max-age=30");
+    response.setHeader(
+      "Cache-Control",
+      pending ? "no-store" : lang === "uz" ? "public, max-age=30" : "private, max-age=60",
+    );
     response.end(JSON.stringify({ success: true, data: posts }));
   } catch (error) {
     response.statusCode = 502;

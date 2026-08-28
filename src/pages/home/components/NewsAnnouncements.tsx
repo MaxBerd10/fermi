@@ -29,6 +29,7 @@ export default function NewsAnnouncements() {
 
   useEffect(() => {
     let cancelled = false;
+    let retryTimer: number | undefined;
 
     Promise.all([
       getHomeData()
@@ -41,15 +42,18 @@ export default function NewsAnnouncements() {
       if (cancelled) return;
       const cms = dedupeById([...homeNews, ...allNews]);
       setNews(cms);
-      listTelegramNews()
-        .then((telegramNews) => {
-          if (!cancelled) setNews(mergeNewsByDate(telegramNews, cms));
-        })
-        .catch(() => {});
+      const applyTelegram = (telegramNews: NewsArticle[]) => {
+        if (!cancelled) setNews(mergeNewsByDate(telegramNews, cms));
+      };
+      listTelegramNews().then(applyTelegram).catch(() => {});
+      retryTimer = window.setTimeout(() => {
+        listTelegramNews().then(applyTelegram).catch(() => {});
+      }, 12000);
     });
 
     return () => {
       cancelled = true;
+      window.clearTimeout(retryTimer);
     };
   }, [i18n.language]);
 

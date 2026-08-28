@@ -3,7 +3,7 @@ import { ApiError } from "../types/api";
 import i18n from "../i18n";
 
 function activeLang() {
-  return i18n.language?.slice(0, 2) || "uz";
+  return (i18n.resolvedLanguage || i18n.language || "uz").slice(0, 2);
 }
 
 async function readEnvelope<T>(response: Response): Promise<T> {
@@ -21,11 +21,13 @@ async function readEnvelope<T>(response: Response): Promise<T> {
 }
 
 export async function listTelegramNews(): Promise<NewsArticle[]> {
+  const lang = activeLang();
   const controller = new AbortController();
-  const timer = window.setTimeout(() => controller.abort(), 4000);
+  const timer = window.setTimeout(() => controller.abort(), lang === "uz" ? 4000 : 20000);
   try {
-    const response = await fetch(`/telegram-feed?lang=${encodeURIComponent(activeLang())}`, {
+    const response = await fetch(`/telegram-feed?lang=${encodeURIComponent(lang)}`, {
       signal: controller.signal,
+      cache: lang === "uz" ? "default" : "no-store",
     });
     return await readEnvelope<NewsArticle[]>(response);
   } finally {

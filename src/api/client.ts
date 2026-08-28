@@ -46,7 +46,7 @@ interface RequestOptions {
 
 function buildUrl(path: string, params?: RequestOptions["params"]) {
   const url = new URL(BASE_URL.replace(/\/$/, "") + "/" + path.replace(/^\//, ""), window.location.origin);
-  url.searchParams.set("lang", i18n.language?.slice(0, 2) || "uz");
+  url.searchParams.set("lang", (i18n.resolvedLanguage || i18n.language || "uz").slice(0, 2));
   if (params) {
     for (const [key, value] of Object.entries(params)) {
       if (value !== undefined && value !== null) {
