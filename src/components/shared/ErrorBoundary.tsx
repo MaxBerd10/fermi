@@ -17,6 +17,17 @@ export default class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, info: ErrorInfo) {
     console.error("Unhandled render error:", error, info.componentStack);
+    const message = `${error?.message || ""} ${error?.name || ""}`;
+    if (/Failed to fetch dynamically imported module|Loading chunk|dynamically imported module/i.test(message)) {
+      try {
+        if (!sessionStorage.getItem("fermi-chunk-reload")) {
+          sessionStorage.setItem("fermi-chunk-reload", "1");
+          window.location.reload();
+        }
+      } catch {
+        /* ignore */
+      }
+    }
   }
 
   render() {

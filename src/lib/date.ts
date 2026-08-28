@@ -16,14 +16,26 @@ const UZ_MONTHS_LONG = [
   "Iyul", "Avgust", "Sentabr", "Oktabr", "Noyabr", "Dekabr",
 ];
 
-export function formatShortDate(iso: string, locale: string) {
+export function formatShortDate(iso: string, locale?: string) {
   const date = new Date(iso);
-  if (locale.startsWith("uz")) return `${date.getDate()} ${UZ_MONTHS_SHORT[date.getMonth()]}`;
-  return new Intl.DateTimeFormat(locale, { day: "numeric", month: "short" }).format(date);
+  if (Number.isNaN(date.getTime())) return "";
+  const lang = String(locale || "uz").slice(0, 2);
+  if (lang === "uz") return `${date.getDate()} ${UZ_MONTHS_SHORT[date.getMonth()] || ""}`;
+  try {
+    return new Intl.DateTimeFormat(lang, { day: "numeric", month: "short" }).format(date);
+  } catch {
+    return `${date.getDate()}.${date.getMonth() + 1}`;
+  }
 }
 
-export function formatLongDate(iso: string, locale: string) {
+export function formatLongDate(iso: string, locale?: string) {
   const date = new Date(iso);
-  if (locale.startsWith("uz")) return `${date.getDate()} ${UZ_MONTHS_LONG[date.getMonth()]}, ${date.getFullYear()}`;
-  return new Intl.DateTimeFormat(locale, { day: "numeric", month: "long", year: "numeric" }).format(date);
+  if (Number.isNaN(date.getTime())) return "";
+  const lang = String(locale || "uz").slice(0, 2);
+  if (lang === "uz") return `${date.getDate()} ${UZ_MONTHS_LONG[date.getMonth()] || ""}, ${date.getFullYear()}`;
+  try {
+    return new Intl.DateTimeFormat(lang, { day: "numeric", month: "long", year: "numeric" }).format(date);
+  } catch {
+    return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
+  }
 }

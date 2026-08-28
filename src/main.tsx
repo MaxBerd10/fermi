@@ -22,10 +22,27 @@ import './styles/kongress-content.css'
 import App from './App.tsx'
 import ErrorBoundary from './components/shared/ErrorBoundary.tsx'
 
-createRoot(document.getElementById('root')!).render(
+function reloadOnceForStaleBuild() {
+  try {
+    if (sessionStorage.getItem("fermi-chunk-reload")) return false;
+    sessionStorage.setItem("fermi-chunk-reload", "1");
+    window.location.reload();
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+window.addEventListener("vite:preloadError", (event) => {
+  event.preventDefault();
+  reloadOnceForStaleBuild();
+});
+
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ErrorBoundary>
       <App />
     </ErrorBoundary>
   </StrictMode>,
-)
+);
+
