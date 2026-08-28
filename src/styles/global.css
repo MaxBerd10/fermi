@@ -3012,6 +3012,11 @@ button.page-card:hover {
   --my: 0;
 }
 
+/* Keep the page background still. Its ambient drift looked like page scroll. */
+.med-atmosphere * {
+  animation: none !important;
+}
+
 .med-atmosphere__base {
   position: absolute;
   inset: 0;
@@ -4551,4 +4556,3 @@ a.hero-chip {
     background-position: 40% 50%;
   }
 }
-

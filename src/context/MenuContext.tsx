@@ -1,7 +1,8 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { getMenu } from "../api/menu";
 import type { MenuNode } from "../types/menu";
 import i18n from "../i18n";
+import { navItems } from "../mocks/homeData";
 
 interface MenuContextValue {
   menu: MenuNode[];
@@ -11,6 +12,28 @@ interface MenuContextValue {
 const MenuContext = createContext<MenuContextValue>({ menu: [], loading: true });
 
 const SUPPORTED_LANGS = ["uz", "ru", "en"];
+
+type FallbackMenuItem = {
+  label: string;
+  href: string;
+  children?: FallbackMenuItem[];
+};
+
+let fallbackId = -1000;
+function asMenuNodes(items: FallbackMenuItem[]): MenuNode[] {
+  return items.map((item) => ({
+    id: fallbackId--,
+    title: item.label,
+    urlType: "",
+    urlValue: "",
+    href: item.href,
+    children: asMenuNodes(item.children ?? []),
+  }));
+}
+
+// A navigation outage must not leave the header with only Test and Keyslar.
+// The API remains the source of truth; this list is used only if it is unavailable.
+const FALLBACK_MENU = asMenuNodes(navItems as FallbackMenuItem[]);
 
 function menuCacheKey(lang: string) {
   return `fjsti_menu_cache_${lang}`;
@@ -42,10 +65,11 @@ function writeMenuCache(lang: string, data: MenuNode[]) {
 export function MenuProvider({ children }: { children: ReactNode }) {
   const lang = currentLang();
   const cached = readMenuCache(lang);
+  const hasCachedMenu = useRef(cached !== null).current;
   // Seeding from cache means the navbar renders its links immediately on repeat visits
   // instead of sitting empty for the length of the /menu request; the fetch below still
   // runs in the background so the cache — and the menu shown — stays current.
-  const [menu, setMenu] = useState<MenuNode[]>(cached ?? []);
+  const [menu, setMenu] = useState<MenuNode[]>(cached ?? FALLBACK_MENU);
   const [loading, setLoading] = useState(cached === null);
 
   useEffect(() => {
@@ -56,13 +80,16 @@ export function MenuProvider({ children }: { children: ReactNode }) {
         setMenu(data);
         writeMenuCache(lang, data);
       })
+      .catch(() => {
+        if (!cancelled && !hasCachedMenu) setMenu(FALLBACK_MENU);
+      })
       .finally(() => {
         if (!cancelled) setLoading(false);
       });
     return () => {
       cancelled = true;
     };
-  }, [lang]);
+  }, [lang, hasCachedMenu]);
 
   useEffect(() => {
     // Language switches do a full page reload (see Navbar's changeLanguage), so the first
@@ -72,9 +99,14 @@ export function MenuProvider({ children }: { children: ReactNode }) {
     let cancelled = false;
     for (const otherLang of SUPPORTED_LANGS) {
       if (otherLang === lang || readMenuCache(otherLang)) continue;
-      getMenu(otherLang).then((data) => {
-        if (!cancelled) writeMenuCache(otherLang, data);
-      });
+      getMenu(otherLang)
+        .then((data) => {
+          if (!cancelled) writeMenuCache(otherLang, data);
+        })
+        .catch(() => {
+          // The active language already has a visible fallback. Other caches
+          // can be refreshed once the menu endpoint is available again.
+        });
     }
     return () => {
       cancelled = true;

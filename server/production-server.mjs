@@ -1,4 +1,4 @@
-import { createReadStream, existsSync } from "node:fs";
+import { createReadStream, existsSync, readFileSync } from "node:fs";
 import { stat } from "node:fs/promises";
 import { createServer } from "node:http";
 import { dirname, extname, resolve } from "node:path";
@@ -8,10 +8,37 @@ import { configureTelegramFeed, handleTelegramFeedRequest } from "./telegram-fee
 
 const rootDir = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const distDir = resolve(rootDir, "out");
+
+// Real secrets live in .env.production.local (gitignored, never committed — see
+// DEPLOY_SECRETS.md). Loaded here so this process doesn't depend on the launcher
+// (systemd/pm2/shell) having exported them already. First file loaded wins for a
+// given key, so .local files (real secrets) must come before the committed ones.
+function loadEnvFile(filePath) {
+  try {
+    const text = readFileSync(filePath, "utf8");
+    for (const line of text.split("\n")) {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith("#")) continue;
+      const eq = trimmed.indexOf("=");
+      if (eq < 1) continue;
+      const key = trimmed.slice(0, eq).trim();
+      let value = trimmed.slice(eq + 1).trim();
+      if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+        value = value.slice(1, -1);
+      }
+      if (!process.env[key]) process.env[key] = value;
+    }
+  } catch {
+    /* optional */
+  }
+}
+for (const name of [".env.production.local", ".env.local", ".env.production", ".env"]) {
+  loadEnvFile(resolve(rootDir, name));
+}
+
 const port = Number(process.env.PORT || 3001);
 const host = process.env.HOST || "127.0.0.1";
 const imentorBaseUrl = String(process.env.IMENTOR_API_BASE_URL || "https://imentor.devflix.uz/api").replace(/\/$/, "");
-const imentorApiKey = String(process.env.IMENTOR_API_KEY || "").trim();
 const fermiApiBaseUrl = String(process.env.FERMI_API_BASE_URL || "https://api.fermi.uz").replace(/\/$/, "");
 function decodeSecret(raw, encoded) {
   const direct = String(raw || "").trim();
@@ -25,6 +52,7 @@ function decodeSecret(raw, encoded) {
   }
 }
 
+const imentorApiKey = decodeSecret(process.env.IMENTOR_API_KEY, process.env.IMENTOR_API_KEY_B64);
 const openAiApiKey = decodeSecret(
   process.env.OPENAI_API_KEY || process.env.VITE_OPENAI_API_KEY,
   process.env.OPENAI_API_KEY_B64 || process.env.VITE_OPENAI_API_KEY_B64,
@@ -51,6 +79,21 @@ const mimeTypes = {
 const responseCache = new Map();
 const pendingRequests = new Map();
 const aiRateLimits = new Map();
+
+// Hard daily ceiling on OpenAI calls across ALL visitors combined — independent of
+// per-IP rate limiting, which only slows down a single abuser but does nothing to
+// cap total spend if many different IPs (or a leaked key used directly) hit the API.
+// Once this is hit, requests are refused with zero OpenAI cost until the window
+// rolls over. Set OPENAI_DAILY_LIMIT in the environment to raise/lower it.
+const OPENAI_DAILY_LIMIT = Number(process.env.OPENAI_DAILY_LIMIT) || 300;
+let aiBudget = { count: 0, resetAt: 0 };
+
+function allowAiBudget() {
+  const now = Date.now();
+  if (now > aiBudget.resetAt) aiBudget = { count: 0, resetAt: now + 24 * 60 * 60 * 1000 };
+  aiBudget.count += 1;
+  return aiBudget.count <= OPENAI_DAILY_LIMIT;
+}
 
 function applySecurityHeaders(response) {
   response.setHeader("X-Content-Type-Options", "nosniff");
@@ -167,23 +210,28 @@ async function handleOpenAi(request, response) {
   if (request.method !== "POST") return sendJson(response, 405, { error: "Method not allowed" });
   if (!openAiApiKey) return sendJson(response, 503, { error: "OpenAI is not configured" });
   if (!allowAiRequest(request)) return sendJson(response, 429, { error: "Too many requests. Please try again shortly." });
+  if (!allowAiBudget()) return sendJson(response, 429, { error: "Daily AI budget reached. Please try again tomorrow." });
 
   const rawBody = await readRequestBody(request);
   const incoming = JSON.parse(rawBody.toString("utf8"));
-  const messages = Array.isArray(incoming.messages) ? incoming.messages.slice(-16) : [];
+  const messages = Array.isArray(incoming.messages) ? incoming.messages.slice(-8) : [];
   if (!messages.length || messages.some((message) => !["system", "user", "assistant"].includes(message?.role) || typeof message?.content !== "string")) {
     return sendJson(response, 400, { error: "Invalid chat request" });
   }
+
+  // Respect a smaller client-requested cap (each AI feature asks for only as much as
+  // it needs) but never trust the client for more than this ceiling.
+  const maxTokens = Math.min(Number(incoming.max_tokens) || 900, 900);
 
   const upstream = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
     headers: { Authorization: `Bearer ${openAiApiKey}`, "Content-Type": "application/json" },
     body: JSON.stringify({
       model: openAiModel,
-      messages: messages.map((message) => ({ role: message.role, content: message.content.slice(0, 5000) })),
+      messages: messages.map((message) => ({ role: message.role, content: message.content.slice(0, 2000) })),
       temperature: typeof incoming.temperature === "number" ? Math.min(Math.max(incoming.temperature, 0), 1) : 0.3,
       response_format: incoming.response_format?.type === "json_object" ? { type: "json_object" } : undefined,
-      max_tokens: 900,
+      max_tokens: maxTokens,
     }),
   });
 

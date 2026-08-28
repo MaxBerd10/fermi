@@ -36,13 +36,16 @@ export function fjstiAiPlugin({ apiKey, model = "gpt-4o-mini" } = {}) {
         }
 
         const parsed = JSON.parse(body.toString("utf8"));
+        // Clamp regardless of what the client asked for — a modified/malicious client
+        // could otherwise send its own (or no) max_tokens and rack up cost per call.
+        const maxTokens = Math.min(Number(parsed.max_tokens) || 900, 900);
         const upstream = await fetch(`https://api.openai.com${targetPath}`, {
           method: "POST",
           headers: {
             Authorization: `Bearer ${apiKey}`,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ ...parsed, model }),
+          body: JSON.stringify({ ...parsed, model, max_tokens: maxTokens }),
         });
         const text = await upstream.text();
         res.statusCode = upstream.status;

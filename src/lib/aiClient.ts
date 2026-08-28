@@ -51,10 +51,17 @@ function contextBlock(docs: KbDoc[]) {
   return docs.map((d, i) => `[${i + 1}] ${d.title}\nURL: ${d.href}\n${d.text}`).join("\n\n");
 }
 
-async function openaiChat(messages: { role: string; content: string }[], opts?: { temperature?: number; json?: boolean }) {
+async function openaiChat(
+  messages: { role: string; content: string }[],
+  opts?: { temperature?: number; json?: boolean; maxTokens?: number }
+) {
   const body: Record<string, unknown> = {
     messages,
     temperature: opts?.temperature ?? 0.3,
+    // Capped explicitly — OpenAI costs are billed per output token, and gpt-4o-mini
+    // will happily ramble up to its full context window if nothing stops it. The
+    // server-side proxy enforces its own hard ceiling too; this is a second layer.
+    max_tokens: opts?.maxTokens ?? 500,
   };
   if (opts?.json) body.response_format = { type: "json_object" };
 
@@ -82,16 +89,21 @@ function parseJson<T>(content: string, fallback: T): T {
 }
 
 export async function aiChat(messages: { role: "user" | "assistant"; content: string }[], lang: string) {
-  const sliced = messages.slice(-12);
+  // Fewer turns and a tighter per-message cap: a long back-and-forth otherwise resends
+  // its whole history (as input tokens, billed the same as output) on every new turn.
+  const sliced = messages.slice(-6);
   const lastUser = [...sliced].reverse().find((m) => m.role === "user")?.content || "";
   const docs = retrieve(lastUser, 5);
-  const reply = await openaiChat([
-    { role: "system", content: `${SYSTEM_BASE}\nTil: ${lang}\n\nKONTEKST:\n${contextBlock(docs)}` },
-    ...sliced.map((m) => ({
-      role: m.role === "assistant" ? "assistant" : "user",
-      content: String(m.content || "").slice(0, 4000),
-    })),
-  ]);
+  const reply = await openaiChat(
+    [
+      { role: "system", content: `${SYSTEM_BASE}\nTil: ${lang}\n\nKONTEKST:\n${contextBlock(docs)}` },
+      ...sliced.map((m) => ({
+        role: m.role === "assistant" ? "assistant" : "user",
+        content: String(m.content || "").slice(0, 1500),
+      })),
+    ],
+    { maxTokens: 450 }
+  );
   return { reply, sources: docs.map((d) => ({ title: d.title, href: d.href })) };
 }
 
@@ -119,7 +131,7 @@ KONTEKST:\n${contextBlock(docs)}`,
         content: `Qiziqish matni: ${input.freeText || "(yo'q)"}\nTanlangan interest: ${input.interest || "-"}\nDaraja: ${input.level || "-"}`,
       },
     ],
-    { json: true },
+    { json: true, maxTokens: 350 },
   );
   const parsed = parseJson(content, {
     title: "Tavsiya",
@@ -145,7 +157,7 @@ KONTEKST:\n${contextBlock(docs)}`,
       },
       { role: "user", content: query },
     ],
-    { json: true },
+    { json: true, maxTokens: 350 },
   );
   return parseJson(content, {
     interpretation: content,
@@ -164,7 +176,7 @@ Siz qabul bo'yicha yordamchisiz. my.edu.uz ga yo'naltiring. Hujjatlar va bosqich
 KONTEKST:\n${contextBlock(docs)}`,
     },
     { role: "user", content: question || "Qabul haqida qisqa ma'lumot bering" },
-  ]);
+  ], { maxTokens: 400 });
   return {
     reply,
     links: [
@@ -189,7 +201,7 @@ KONTEKST:\n${contextBlock(docs)}`,
       },
       { role: "user", content: text || "Menga mos fakultetni tavsiya qiling" },
     ],
-    { json: true },
+    { json: true, maxTokens: 350 },
   );
   return parseJson(content, {
     faculty: "Maslahat",
@@ -213,7 +225,7 @@ Tibbiy tashxis yozmang. Matnni o'zbek/rus/ingliz rasmiy uslubida tuzating.`,
       },
       { role: "user", content: text.slice(0, 6000) },
     ],
-    { temperature: 0.2, json: true },
+    { temperature: 0.2, json: true, maxTokens: 900 },
   );
   return parseJson(content, {
     polished: text,
@@ -224,9 +236,11 @@ Tibbiy tashxis yozmang. Matnni o'zbek/rus/ingliz rasmiy uslubida tuzating.`,
 }
 
 export async function aiSummarize(title: string, body: string, lang: string) {
+  // A 3-5 sentence summary doesn't need the full article — trimming the source
+  // cuts input tokens without hurting summary quality for typical news posts.
   const htmlOrText = String(body || "")
     .replace(/<[^>]+>/g, " ")
-    .slice(0, 12000);
+    .slice(0, 6000);
   const summary = await openaiChat(
     [
       {
@@ -237,7 +251,7 @@ Vazifa: yangilik/blog uchun 3–5 gaplik xulosa. Faqat berilgan matnga tayaning.
       },
       { role: "user", content: `Sarlavha: ${title}\n\nMatn:\n${htmlOrText}` },
     ],
-    { temperature: 0.2 },
+    { temperature: 0.2, maxTokens: 300 },
   );
   return { summary };
 }

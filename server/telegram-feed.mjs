@@ -30,6 +30,10 @@ function loadEnvFile(filePath) {
   }
 }
 
+// .local files first (real secrets, gitignored) so they win over the committed,
+// secret-free .env / .env.production placeholders.
+loadEnvFile(resolve(rootDir, ".env.production.local"));
+loadEnvFile(resolve(rootDir, ".env.local"));
 loadEnvFile(resolve(rootDir, ".env.production"));
 loadEnvFile(resolve(rootDir, ".env"));
 
@@ -515,14 +519,18 @@ async function fillOneTranslation(row, target) {
     const excerpt = htmlToText(row.html).slice(0, 320);
     const translatedExcerpt = await translateText(excerpt, target);
     const htmlOk = Boolean(translatedExcerpt && translatedExcerpt !== excerpt);
-    if (!titleOk && !htmlOk) return false;
-    storeTranslation(
-      row,
-      titleOk ? title : row.post.title,
-      `<p>${htmlOk ? translatedExcerpt : excerpt}</p>`,
-    );
-    saveTranslationCache();
-    return true;
+    if (titleOk || htmlOk) {
+      storeTranslation(
+        row,
+        titleOk ? title : row.post.title,
+        `<p>${htmlOk ? translatedExcerpt : excerpt}</p>`,
+      );
+      saveTranslationCache();
+      return true;
+    }
+    // MyMemory (daily quota) and Google's unofficial endpoint (rate-limited) both
+    // failed — fall back to OpenAI so cards don't stay stuck in Uzbek indefinitely.
+    return translateCardsWithOpenAi([row], target);
   }
 
   if (titleOk) {
