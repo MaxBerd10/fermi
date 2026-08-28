@@ -307,19 +307,23 @@ async function requestTranslations(items, lang) {
   }));
 }
 
-async function localizePosts(posts, lang, { full = true } = {}) {
-  const target = normalizeLang(lang);
-  if (target === "uz" || !posts.length) return posts;
-  const scope = full ? "full" : "card";
+let translationFill = null;
 
-  const missing = [];
-  for (const post of posts) {
-    const { html } = splitMedia(post.content);
-    const cacheKey = `${post.slug}:${target}:${post.title}:${scope}`;
-    if (!translationCache.has(cacheKey)) missing.push({ post, html, cacheKey, scope });
-  }
+function applyCachedTranslations(posts, target, scope, full) {
+  return posts.map((post) => {
+    const { images } = splitMedia(post.content);
+    const hit = translationCache.get(`${post.slug}:${target}:${post.title}:${scope}`);
+    if (!hit) return post;
+    return {
+      ...post,
+      title: hit.title,
+      content: full ? `${hit.html}${images.join("")}` : hit.html,
+    };
+  });
+}
 
-  const chunkSize = full ? 4 : 8;
+async function fillMissingTranslations(missing, target) {
+  const chunkSize = 4;
   let wrote = false;
   for (let index = 0; index < missing.length; index += chunkSize) {
     const chunk = missing.slice(index, index + chunkSize);
@@ -346,17 +350,34 @@ async function localizePosts(posts, lang, { full = true } = {}) {
     }
   }
   if (wrote) saveTranslationCache();
+}
 
-  return posts.map((post) => {
-    const { images } = splitMedia(post.content);
-    const hit = translationCache.get(`${post.slug}:${target}:${post.title}:${scope}`);
-    if (!hit) return post;
-    return {
-      ...post,
-      title: hit.title,
-      content: full ? `${hit.html}${images.join("")}` : hit.html,
-    };
+function scheduleTranslationFill(missing, target) {
+  if (!missing.length || translationFill) return;
+  translationFill = fillMissingTranslations(missing, target).finally(() => {
+    translationFill = null;
   });
+}
+
+async function localizePosts(posts, lang, { full = true, wait = false } = {}) {
+  const target = normalizeLang(lang);
+  if (target === "uz" || !posts.length) return posts;
+  const scope = full ? "full" : "card";
+
+  const missing = [];
+  for (const post of posts) {
+    const { html } = splitMedia(post.content);
+    const cacheKey = `${post.slug}:${target}:${post.title}:${scope}`;
+    if (!translationCache.has(cacheKey)) missing.push({ post, html, cacheKey, scope });
+  }
+
+  if (missing.length && wait) {
+    await Promise.race([fillMissingTranslations(missing, target), sleep(6000)]);
+  } else {
+    scheduleTranslationFill(missing, target);
+  }
+
+  return applyCachedTranslations(posts, target, scope, full);
 }
 
 export async function getTelegramPost(slugOrId, lang = "uz") {
@@ -364,7 +385,7 @@ export async function getTelegramPost(slugOrId, lang = "uz") {
   const key = String(slugOrId || "").replace(/^tg-/, "");
   const post = posts.find((item) => item.slug === `tg-${key}` || String(item.id) === key) || null;
   if (!post) return null;
-      const [localized] = await localizePosts([post], lang, { full: true });
+      const [localized] = await localizePosts([post], lang, { full: true, wait: true });
   return localized;
 }
 

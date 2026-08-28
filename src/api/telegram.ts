@@ -21,8 +21,16 @@ async function readEnvelope<T>(response: Response): Promise<T> {
 }
 
 export async function listTelegramNews(): Promise<NewsArticle[]> {
-  const response = await fetch(`/telegram-feed?lang=${encodeURIComponent(activeLang())}`);
-  return readEnvelope<NewsArticle[]>(response);
+  const controller = new AbortController();
+  const timer = window.setTimeout(() => controller.abort(), 4000);
+  try {
+    const response = await fetch(`/telegram-feed?lang=${encodeURIComponent(activeLang())}`, {
+      signal: controller.signal,
+    });
+    return await readEnvelope<NewsArticle[]>(response);
+  } finally {
+    window.clearTimeout(timer);
+  }
 }
 
 export async function getTelegramArticle(slug: string): Promise<NewsArticle> {

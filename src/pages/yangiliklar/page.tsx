@@ -24,17 +24,29 @@ export default function NewsPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let cancelled = false;
     setLoading(true);
-    Promise.all([
-      listNews(page),
-      page === 1 ? listTelegramNews().catch(() => [] as NewsArticle[]) : Promise.resolve([] as NewsArticle[]),
-    ])
-      .then(([res, telegramNews]) => {
-        const items = page === 1 ? mergeNewsByDate(telegramNews, res.data) : res.data;
-        setItems(items);
-        setTotal((res.meta?.total ?? res.data.length) + telegramNews.length);
+    listNews(page)
+      .then((res) => {
+        if (cancelled) return;
+        setItems(res.data);
+        setTotal(res.meta?.total ?? res.data.length);
+        setLoading(false);
+        if (page !== 1) return;
+        listTelegramNews()
+          .then((telegramNews) => {
+            if (cancelled) return;
+            setItems(mergeNewsByDate(telegramNews, res.data));
+            setTotal((res.meta?.total ?? res.data.length) + telegramNews.length);
+          })
+          .catch(() => {});
       })
-      .finally(() => setLoading(false));
+      .catch(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
   }, [page, i18n.language]);
 
   const pageSize = 9;

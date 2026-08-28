@@ -37,10 +37,15 @@ export default function NewsAnnouncements() {
       listNews(1)
         .then((r) => r.data ?? [])
         .catch(() => [] as NewsArticle[]),
-      listTelegramNews().catch(() => [] as NewsArticle[]),
-    ]).then(([homeNews, allNews, telegramNews]) => {
+    ]).then(([homeNews, allNews]) => {
       if (cancelled) return;
-      setNews(mergeNewsByDate(telegramNews, dedupeById([...homeNews, ...allNews])));
+      const cms = dedupeById([...homeNews, ...allNews]);
+      setNews(cms);
+      listTelegramNews()
+        .then((telegramNews) => {
+          if (!cancelled) setNews(mergeNewsByDate(telegramNews, cms));
+        })
+        .catch(() => {});
     });
 
     return () => {
