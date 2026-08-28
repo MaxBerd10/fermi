@@ -347,11 +347,32 @@ function cacheKeyFor(post, target, scope) {
   return `${post.slug}:${target}:${post.title}:${scope}`;
 }
 
+function normalizedText(value) {
+  return htmlToText(value).toLowerCase().replace(/\s+/g, " ").trim();
+}
+
+function bodyIsTranslated(originalHtml, translatedHtml) {
+  const original = normalizedText(originalHtml);
+  const next = normalizedText(translatedHtml);
+  if (!next || next === original) return false;
+  const words = original.split(" ").filter((word) => word.length > 4);
+  if (!words.length) return true;
+  const leftover = words.filter((word) => next.includes(word)).length;
+  return leftover / words.length < 0.55;
+}
+
+function isUsableHit(hit, originalHtml, full) {
+  if (!hit) return false;
+  if (!full) return Boolean(hit.title);
+  if (hit.complete === false) return false;
+  return Boolean(hit.html) && bodyIsTranslated(originalHtml, hit.html);
+}
+
 let translationFill = null;
 
 function applyCachedTranslations(posts, target, scope, full) {
   return posts.map((post) => {
-    const { images } = splitMedia(post.content);
+    const { html, images } = splitMedia(post.content);
     const hit = translationCache.get(cacheKeyFor(post, target, scope));
     const cardHit = full ? translationCache.get(cacheKeyFor(post, target, "card")) : null;
     const title = hit?.title || cardHit?.title || post.title;
@@ -359,7 +380,7 @@ function applyCachedTranslations(posts, target, scope, full) {
       if (!hit) return post;
       return { ...post, title: hit.title, content: hit.html };
     }
-    if (hit?.html && hit.complete !== false) {
+    if (isUsableHit(hit, html, true)) {
       return { ...post, title, content: `${hit.html}${images.join("")}` };
     }
     if (title !== post.title) return { ...post, title };
@@ -434,8 +455,7 @@ async function localizePosts(posts, lang, { full = true, wait = false } = {}) {
     const { html } = splitMedia(post.content);
     const cacheKey = cacheKeyFor(post, target, scope);
     const hit = translationCache.get(cacheKey);
-    const needsWork = !hit || (full && hit.complete === false);
-    if (needsWork) missing.push({ post, html, cacheKey, scope });
+    if (!isUsableHit(hit, html, full)) missing.push({ post, html, cacheKey, scope });
   }
 
   if (missing.length && wait) {
@@ -446,7 +466,7 @@ async function localizePosts(posts, lang, { full = true, wait = false } = {}) {
     scheduleTranslationFill(
       missing.filter((row) => {
         const hit = translationCache.get(row.cacheKey);
-        return !hit || (full && hit.complete === false);
+        return !isUsableHit(hit, row.html, full);
       }),
       target,
     );
