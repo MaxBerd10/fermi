@@ -87,7 +87,27 @@ export default function DetailPage() {
               {heroImage && (
                 <div className={`news-article__hero${categorySlug === "telegram" ? " news-article__hero--contain" : ""}`}>
                   <img src={heroImage} alt={article.title} />
+                  {article.isVideo && (
+                    <span className="news-article__video-badge" aria-hidden>
+                      <i className="ri-play-fill" />
+                    </span>
+                  )}
                 </div>
+              )}
+
+              {article.isVideo && article.telegramUrl && (
+                // Telegram's own web preview can't play video either (it marks it
+                // "not_supported" and only ever gives us a poster frame) — the only way
+                // to actually watch it is inside Telegram itself.
+                <a
+                  href={article.telegramUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="news-article__watch-video mb-5"
+                >
+                  <i className="ri-play-circle-fill" aria-hidden />
+                  {t("news.watchOnTelegram")}
+                </a>
               )}
 
               <AiSummaryBlock title={article.title} content={article.content} className="mb-5" />
@@ -109,7 +129,7 @@ export default function DetailPage() {
                 </a>
               )}
 
-              {article.telegramUrl && (
+              {article.telegramUrl && !article.isVideo && (
                 <a
                   href={article.telegramUrl}
                   target="_blank"

@@ -55,6 +55,11 @@ export default function NewsCard({
             <i className="ri-newspaper-line" />
           </div>
         )}
+        {article.isVideo && (
+          <span className="news-card__video-badge" aria-hidden>
+            <i className="ri-play-fill" />
+          </span>
+        )}
         {article.category && (
           <span className={`news-tag ${tag.bg}`}>{tag.label}</span>
         )}

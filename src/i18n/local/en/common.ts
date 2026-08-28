@@ -1513,6 +1513,7 @@ export default {
   "news.viewsSuffix": "views",
   "news.continueReading": "Continue reading",
   "news.openInTelegram": "Open in Telegram",
+  "news.watchOnTelegram": "Watch the video on Telegram",
   "news.telegram": "Telegram",
   "nav.workingHours": "Mon–Sat, 09:00–17:00",
   "nav.virtualReception": "Virtual reception",

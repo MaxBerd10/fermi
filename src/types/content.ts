@@ -42,6 +42,7 @@ export interface NewsArticle {
   file?: string | null;
   telegramUrl?: string;
   translated?: boolean;
+  isVideo?: boolean;
 }
 
 export interface FacultyListItem {

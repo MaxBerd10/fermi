@@ -200,12 +200,19 @@ export function parseTelegramChannelHtml(html, username = channelUsername()) {
       .slice(1)
       .map((src) => `<p><img src="${src}" alt="" /></p>`)
       .join("");
+    // Telegram's own public preview marks video posts "not_supported" and only ever
+    // serves a poster frame — there is no actual video file to fetch here, even for
+    // Telegram itself; watching it requires the Telegram app. Flag it so the frontend
+    // shows a play badge over the poster and points people at "watch on Telegram"
+    // instead of silently presenting a still frame with no explanation.
+    const isVideo = /tgme_widget_message_video_player|tgme_widget_message_video_thumb/.test(block);
 
     posts.push({
       id: TELEGRAM_ID_OFFSET + messageId,
       title: titleFromHtml(textHtml),
       content: extraImages ? `${content}${extraImages}` : content,
       img: media[0] || "",
+      isVideo,
       slug: `tg-${messageId}`,
       date: datetime || new Date().toISOString(),
       seen: 0,

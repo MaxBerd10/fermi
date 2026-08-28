@@ -1513,6 +1513,7 @@ export default {
   "news.viewsSuffix": "marta",
   "news.continueReading": "Batafsil oʻqish",
   "news.openInTelegram": "Telegramda ochish",
+  "news.watchOnTelegram": "Videoni Telegram'da tomosha qiling",
   "news.telegram": "Telegram",
   "nav.workingHours": "Du–Sha, 09:00–17:00",
   "nav.virtualReception": "Virtual qabulxona",
