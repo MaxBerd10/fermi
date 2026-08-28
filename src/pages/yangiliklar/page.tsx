@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { listNews } from "@/api/news";
 import { listTelegramNews } from "@/api/telegram";
 import type { NewsArticle } from "@/types/content";
-import { mergeNewsByDate, readyTelegramNews } from "@/lib/telegramNews";
+import { mergeNewsByDate } from "@/lib/telegramNews";
 import PageHeader from "@/components/shared/PageHeader";
 import NewsSectionLayout from "@/components/shared/NewsSectionLayout";
 import NewsCard from "@/components/shared/NewsCard";
@@ -36,9 +36,8 @@ export default function NewsPage() {
         if (page !== 1) return;
         const applyTelegram = (telegramNews: NewsArticle[]) => {
           if (cancelled) return;
-          const ready = readyTelegramNews(telegramNews, i18n.language);
-          setItems(mergeNewsByDate(ready, res.data));
-          setTotal((res.meta?.total ?? res.data.length) + ready.length);
+          setItems(mergeNewsByDate(telegramNews, res.data));
+          setTotal((res.meta?.total ?? res.data.length) + telegramNews.length);
         };
         listTelegramNews().then(applyTelegram).catch(() => {});
         let tries = 0;

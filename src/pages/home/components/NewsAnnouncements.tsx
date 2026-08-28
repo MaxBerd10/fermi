@@ -8,7 +8,7 @@ import type { NewsArticle } from "@/types/content";
 import { stripHtml } from "@/lib/html";
 import { formatShortDate } from "@/lib/date";
 import { Reveal } from "@/components/Animation";
-import { mergeNewsByDate, readyTelegramNews } from "@/lib/telegramNews";
+import { mergeNewsByDate } from "@/lib/telegramNews";
 
 function newsHref(article: NewsArticle) {
   return `/detail/${article.slug}?menuId=71`;
@@ -31,29 +31,24 @@ export default function NewsAnnouncements() {
     let cancelled = false;
     let cms: NewsArticle[] = [];
     let telegram: NewsArticle[] = [];
-    const lang = i18n.language;
-
     const paint = () => {
-      if (!cancelled) setNews(mergeNewsByDate(readyTelegramNews(telegram, lang), cms));
+      if (!cancelled) setNews(mergeNewsByDate(telegram, cms));
     };
 
     const telegramPromise = listTelegramNews().catch(() => [] as NewsArticle[]);
-
-    Promise.all([
+    const cmsPromise = Promise.all([
       getHomeData()
         .then((d) => d.news ?? [])
         .catch(() => [] as NewsArticle[]),
       listNews(1)
         .then((r) => r.data ?? [])
         .catch(() => [] as NewsArticle[]),
-    ]).then(([homeNews, allNews]) => {
-      if (cancelled) return;
-      cms = dedupeById([...homeNews, ...allNews]);
-      paint();
-    });
+    ]).then(([homeNews, allNews]) => dedupeById([...homeNews, ...allNews]));
 
-    telegramPromise.then((items) => {
-      telegram = items;
+    Promise.all([cmsPromise, telegramPromise]).then(([cmsItems, telegramItems]) => {
+      if (cancelled) return;
+      cms = cmsItems;
+      telegram = telegramItems;
       paint();
     });
 

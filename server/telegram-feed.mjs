@@ -641,7 +641,7 @@ export async function handleTelegramFeedRequest(request, response) {
     }
 
     const feed = await getTelegramFeed();
-    const posts = await localizePosts(feed, lang, { full: false, wait: lang !== "uz" });
+    const posts = await localizePosts(feed, lang, { full: false, wait: false });
     const originals = new Map(feed.map((post) => [post.slug, post.title]));
     const marked = posts.map((post) => ({
       ...post,

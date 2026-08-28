@@ -6,11 +6,6 @@ export function isTelegramNewsSlug(slug: string | undefined): boolean {
   return Boolean(slug?.startsWith(TELEGRAM_SLUG_PREFIX));
 }
 
-export function readyTelegramNews(items: NewsArticle[], lang: string): NewsArticle[] {
-  if (lang.slice(0, 2) === "uz") return items;
-  return items.filter((item) => item.translated === true);
-}
-
 export function mergeNewsByDate(telegram: NewsArticle[], cms: NewsArticle[]): NewsArticle[] {
   const seen = new Set<string>();
   return [...telegram, ...cms]
