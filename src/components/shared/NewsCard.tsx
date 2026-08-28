@@ -23,7 +23,11 @@ export default function NewsCard({
   const href = buildNewsDetailHref(article.slug, menuId);
   const imageSrc = useMemo(() => getNewsArticleImage(article, index), [article, index]);
   const [imgSrc, setImgSrc] = useState(imageSrc);
-  const isBannerLike = /flayer|flyer|banner|\.png$/i.test(imgSrc);
+  // Telegram photos come in whatever aspect ratio the poster took them in (portrait,
+  // square, screenshots...) — unlike CMS uploads, nobody pre-crops them to the card's
+  // 16:10 shape, so `cover` zooms in and cuts off whatever doesn't fit. Show the whole
+  // photo instead, same as we already do for flyer/banner-shaped images.
+  const isBannerLike = /flayer|flyer|banner|\.png$/i.test(imgSrc) || article.category?.slug === "telegram";
 
   useEffect(() => {
     setImgSrc(imageSrc);

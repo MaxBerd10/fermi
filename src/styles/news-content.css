@@ -338,6 +338,17 @@
   display: block;
 }
 
+/* Telegram photos aren't pre-cropped to any particular shape — show the whole
+   photo (letterboxed) instead of cropping whatever doesn't fit 28rem tall. */
+.news-article__hero--contain {
+  background: #f1f5f9;
+}
+
+.news-article__hero--contain img {
+  max-height: 32rem;
+  object-fit: contain;
+}
+
 .news-article__content {
   padding: 1.25rem 1.375rem 1.5rem;
 }

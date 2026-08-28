@@ -85,7 +85,7 @@ export default function DetailPage() {
               </div>
 
               {heroImage && (
-                <div className="news-article__hero">
+                <div className={`news-article__hero${categorySlug === "telegram" ? " news-article__hero--contain" : ""}`}>
                   <img src={heroImage} alt={article.title} />
                 </div>
               )}
