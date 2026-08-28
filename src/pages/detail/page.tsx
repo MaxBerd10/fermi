@@ -14,7 +14,8 @@ import { formatLongDate } from "@/lib/date";
 import { Reveal } from "@/components/Animation";
 import AiSummaryBlock from "@/components/ai/AiSummaryBlock";
 import { NEWS_DEFAULT_MENU_ID } from "@/lib/newsSection";
-import { getNewsArticleImage } from "@/lib/newsImages";
+import { localizeTelegramArticle } from "@/lib/uzTranslate";
+import { isTelegramNewsSlug } from "@/lib/telegramNews";
 
 export default function DetailPage() {
   const { t, i18n } = useTranslation();
@@ -31,6 +32,13 @@ export default function DetailPage() {
     setLoading(true);
     setError(null);
     getNewsArticle(slug, menuId)
+      .then(async (data) => {
+        const lang = i18n.language;
+        if (isTelegramNewsSlug(slug) && lang.slice(0, 2) !== "uz") {
+          return localizeTelegramArticle(data, lang);
+        }
+        return data;
+      })
       .then(setArticle)
       .catch((e) => setError(e instanceof ApiError ? e.message : t("detail.loadError")))
       .finally(() => setLoading(false));

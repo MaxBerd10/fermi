@@ -5,6 +5,7 @@ import { listNews } from "@/api/news";
 import { listTelegramNews } from "@/api/telegram";
 import type { NewsArticle } from "@/types/content";
 import { mergeNewsByDate } from "@/lib/telegramNews";
+import { localizeTelegramCards } from "@/lib/uzTranslate";
 import PageHeader from "@/components/shared/PageHeader";
 import NewsSectionLayout from "@/components/shared/NewsSectionLayout";
 import NewsCard from "@/components/shared/NewsCard";
@@ -34,25 +35,24 @@ export default function NewsPage() {
         setTotal(res.meta?.total ?? res.data.length);
         setLoading(false);
         if (page !== 1) return;
-        const applyTelegram = (telegramNews: NewsArticle[]) => {
+        const applyTelegram = async (telegramNews: NewsArticle[]) => {
           if (cancelled) return;
-          setItems(mergeNewsByDate(telegramNews, res.data));
-          setTotal((res.meta?.total ?? res.data.length) + telegramNews.length);
+          const localized = await localizeTelegramCards(telegramNews, i18n.language);
+          if (cancelled) return;
+          setItems(mergeNewsByDate(localized, res.data));
+          setTotal((res.meta?.total ?? res.data.length) + localized.length);
         };
         listTelegramNews().then(applyTelegram).catch(() => {});
-        let tries = 0;
-        retryTimer = window.setInterval(() => {
-          tries += 1;
+        retryTimer = window.setTimeout(() => {
           listTelegramNews().then(applyTelegram).catch(() => {});
-          if (tries >= 4) window.clearInterval(retryTimer);
-        }, 4000);
+        }, 6000);
       })
       .catch(() => {
         if (!cancelled) setLoading(false);
       });
     return () => {
       cancelled = true;
-      window.clearInterval(retryTimer);
+      window.clearTimeout(retryTimer);
     };
   }, [page, i18n.language]);
 

@@ -509,9 +509,6 @@ async function translateFullWithOpenAi(row, target) {
 }
 
 async function fillOneTranslation(row, target) {
-  if (row.scope === "full") {
-    if (await translateFullWithOpenAi(row, target)) return true;
-  }
   const title = await translateText(row.post.title, target);
   const titleOk = Boolean(title && title !== row.post.title);
   if (row.scope !== "full") {
@@ -534,23 +531,17 @@ async function fillOneTranslation(row, target) {
   }
   const translatedHtml = await translateHtml(row.html, target);
   const htmlOk = htmlToText(translatedHtml) !== htmlToText(row.html);
-  if (!titleOk && !htmlOk) return false;
-  storeTranslation(row, titleOk ? title : row.post.title, htmlOk ? translatedHtml : row.html, {
-    complete: htmlOk,
-  });
-  saveTranslationCache();
-  return true;
+  if (htmlOk || titleOk) {
+    storeTranslation(row, titleOk ? title : row.post.title, htmlOk ? translatedHtml : row.html, {
+      complete: htmlOk,
+    });
+    saveTranslationCache();
+    return true;
+  }
+  return translateFullWithOpenAi(row, target);
 }
 
 async function fillMissingTranslations(missing, target) {
-  const cards = missing.filter((row) => row.scope !== "full");
-  if (cards.length) {
-    try {
-      await translateCardsWithOpenAi(cards.slice(0, 8), target);
-    } catch (error) {
-      console.error("Telegram OpenAI card translation failed", error);
-    }
-  }
   for (const row of missing) {
     const hit = translationCache.get(row.cacheKey);
     if (isUsableHit(hit, row.html, row.scope === "full")) continue;
@@ -624,6 +615,16 @@ export async function handleTelegramFeedRequest(request, response) {
   }
 
   try {
+    if (pathname === "/telegram-feed/translate" || pathname === "/telegram-feed/translate/") {
+      const text = String(requestUrl.searchParams.get("q") || "");
+      const translated = await translateText(text, lang);
+      response.statusCode = 200;
+      response.setHeader("Content-Type", "application/json; charset=utf-8");
+      response.setHeader("Cache-Control", "no-store");
+      response.end(JSON.stringify({ success: true, data: translated }));
+      return true;
+    }
+
     const slug = match[1];
     if (slug) {
       const post = await getTelegramPost(slug, lang);
