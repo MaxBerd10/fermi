@@ -13,7 +13,22 @@ const host = process.env.HOST || "127.0.0.1";
 const imentorBaseUrl = String(process.env.IMENTOR_API_BASE_URL || "https://imentor.devflix.uz/api").replace(/\/$/, "");
 const imentorApiKey = String(process.env.IMENTOR_API_KEY || "").trim();
 const fermiApiBaseUrl = String(process.env.FERMI_API_BASE_URL || "https://api.fermi.uz").replace(/\/$/, "");
-const openAiApiKey = String(process.env.OPENAI_API_KEY || "").trim();
+function decodeSecret(raw, encoded) {
+  const direct = String(raw || "").trim();
+  if (direct) return direct;
+  const b64 = String(encoded || "").trim();
+  if (!b64) return "";
+  try {
+    return Buffer.from(b64, "base64").toString("utf8").trim();
+  } catch {
+    return "";
+  }
+}
+
+const openAiApiKey = decodeSecret(
+  process.env.OPENAI_API_KEY || process.env.VITE_OPENAI_API_KEY,
+  process.env.OPENAI_API_KEY_B64 || process.env.VITE_OPENAI_API_KEY_B64,
+);
 const openAiModel = String(process.env.OPENAI_MODEL || "gpt-4o-mini").trim();
 configureTelegramFeed({ apiKey: openAiApiKey, model: openAiModel });
 

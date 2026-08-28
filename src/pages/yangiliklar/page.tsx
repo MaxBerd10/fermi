@@ -51,7 +51,7 @@ export default function NewsPage() {
           setTotal((res.meta?.total ?? res.data.length) + telegramNews.length);
         })
         .catch(() => {});
-    }, 8000);
+    }, 12000);
 
     return () => {
       cancelled = true;

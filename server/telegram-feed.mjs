@@ -36,8 +36,9 @@ loadEnvFile(resolve(rootDir, ".env"));
 let cache = { expiresAt: 0, posts: null, error: null };
 let openAiApiKey = "";
 let openAiModel = "gpt-4o-mini";
+let openAiDisabled = false;
 const translationCache = new Map();
-const translationCacheFile = resolve(rootDir, ".tmp/telegram-translations-v2.json");
+const translationCacheFile = resolve(rootDir, ".tmp/telegram-translations-v3.json");
 
 function loadTranslationCache() {
   try {
@@ -343,6 +344,54 @@ async function translateHtml(html, lang) {
   return tokens.join("");
 }
 
+const LANG_NAMES = { ru: "Russian", en: "English" };
+
+function translatorSystemPrompt(lang) {
+  const institute =
+    lang === "ru"
+      ? "Ферганский медицинский институт общественного здоровья"
+      : "Fergana Medical Institute of Public Health";
+  return (
+    `You are a professional news translator for ${institute} (FerMI / FJSTI). ` +
+    `Translate from Uzbek into ${LANG_NAMES[lang]}. ` +
+    "Keep HTML tags, emoji, hashtags, @mentions and URLs. Translate visible text only. " +
+    `Always use this institute name: ${institute}. ` +
+    "Ostona/Ostonada = Astana; Qozog‘iston/Qozog'iston = Kazakhstan/Казахстан. " +
+    "Use formal journalistic style. Do not add commentary or extra facts."
+  );
+}
+
+async function requestOpenAiJson(messages, { maxTokens = 1800, timeoutMs = 18000 } = {}) {
+  const key = ensureOpenAiKey();
+  if (!key || openAiDisabled) return null;
+  try {
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${key}`,
+        "Content-Type": "application/json",
+      },
+      signal: AbortSignal.timeout(timeoutMs),
+      body: JSON.stringify({
+        model: openAiModel,
+        temperature: 0.15,
+        response_format: { type: "json_object" },
+        max_tokens: maxTokens,
+        messages,
+      }),
+    });
+    if (response.status === 401 || response.status === 403) {
+      openAiDisabled = true;
+      return null;
+    }
+    if (!response.ok) return null;
+    const payload = await response.json();
+    return JSON.parse(String(payload?.choices?.[0]?.message?.content || "").trim());
+  } catch {
+    return null;
+  }
+}
+
 function cacheKeyFor(post, target, scope) {
   return `${post.slug}:${target}:${post.title}:${scope}`;
 }
@@ -397,7 +446,72 @@ function storeTranslation(row, title, html, { complete = true } = {}) {
   });
 }
 
+async function translateCardsWithOpenAi(rows, target) {
+  const parsed = await requestOpenAiJson(
+    [
+      {
+        role: "system",
+        content: `${translatorSystemPrompt(target)} Return JSON: {"items":[{"slug":"","title":"","html":""}]}.`,
+      },
+      {
+        role: "user",
+        content: JSON.stringify({
+          items: rows.map((row) => ({
+            slug: row.post.slug,
+            title: row.post.title,
+            html: htmlToText(row.html).slice(0, 320),
+          })),
+        }),
+      },
+    ],
+    { maxTokens: 2500, timeoutMs: 16000 },
+  );
+  const items = Array.isArray(parsed?.items) ? parsed.items : [];
+  if (!items.length) return false;
+  let wrote = false;
+  for (const item of items) {
+    const row = rows.find((entry) => entry.post.slug === item.slug);
+    if (!row || !item?.title) continue;
+    const title = decodeEntities(String(item.title).trim());
+    if (title === row.post.title) continue;
+    const excerpt = decodeEntities(String(item.html || "").trim());
+    storeTranslation(row, title, `<p>${excerpt || htmlToText(row.html).slice(0, 320)}</p>`);
+    wrote = true;
+  }
+  if (wrote) saveTranslationCache();
+  return wrote;
+}
+
+async function translateFullWithOpenAi(row, target) {
+  const parsed = await requestOpenAiJson(
+    [
+      {
+        role: "system",
+        content: `${translatorSystemPrompt(target)} Return JSON: {"title":"","html":""}.`,
+      },
+      {
+        role: "user",
+        content: JSON.stringify({
+          title: row.post.title,
+          html: row.html.slice(0, 4000),
+        }),
+      },
+    ],
+    { maxTokens: 2200, timeoutMs: 20000 },
+  );
+  const title = decodeEntities(String(parsed?.title || "").trim());
+  const html = String(parsed?.html || "").trim();
+  if (!title || title === row.post.title || !html) return false;
+  if (!bodyIsTranslated(row.html, html)) return false;
+  storeTranslation(row, title, html, { complete: true });
+  saveTranslationCache();
+  return true;
+}
+
 async function fillOneTranslation(row, target) {
+  if (row.scope === "full") {
+    if (await translateFullWithOpenAi(row, target)) return true;
+  }
   const title = await translateText(row.post.title, target);
   const titleOk = Boolean(title && title !== row.post.title);
   if (row.scope !== "full") {
@@ -429,7 +543,17 @@ async function fillOneTranslation(row, target) {
 }
 
 async function fillMissingTranslations(missing, target) {
+  const cards = missing.filter((row) => row.scope !== "full");
+  if (cards.length) {
+    try {
+      await translateCardsWithOpenAi(cards.slice(0, 8), target);
+    } catch (error) {
+      console.error("Telegram OpenAI card translation failed", error);
+    }
+  }
   for (const row of missing) {
+    const hit = translationCache.get(row.cacheKey);
+    if (isUsableHit(hit, row.html, row.scope === "full")) continue;
     try {
       await fillOneTranslation(row, target);
     } catch (error) {
@@ -461,7 +585,7 @@ async function localizePosts(posts, lang, { full = true, wait = false } = {}) {
   if (missing.length && wait) {
     await Promise.race([
       fillMissingTranslations(missing.slice(0, full ? 1 : 8), target),
-      sleep(full ? 20000 : 8000),
+      sleep(full ? 20000 : 12000),
     ]);
     scheduleTranslationFill(
       missing.filter((row) => {
@@ -517,7 +641,7 @@ export async function handleTelegramFeedRequest(request, response) {
     }
 
     const feed = await getTelegramFeed();
-    const posts = await localizePosts(feed, lang, { full: false, wait: false });
+    const posts = await localizePosts(feed, lang, { full: false, wait: lang !== "uz" });
     const originals = new Map(feed.map((post) => [post.slug, post.title]));
     const pending = lang !== "uz" && posts.some((post) => post.title === originals.get(post.slug));
     response.statusCode = 200;

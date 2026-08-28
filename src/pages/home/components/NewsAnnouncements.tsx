@@ -51,7 +51,7 @@ export default function NewsAnnouncements() {
       Promise.all([cmsPromise, listTelegramNews().catch(() => [] as NewsArticle[])]).then(
         ([cms, telegramNews]) => apply(cms, telegramNews),
       );
-    }, 8000);
+    }, 12000);
 
     return () => {
       cancelled = true;
