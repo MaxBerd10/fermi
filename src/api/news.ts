@@ -5,6 +5,8 @@ import {
   enrichNewsArticles,
   normalizeNewsCategorySlug,
 } from "@/lib/newsImages";
+import { getTelegramArticle } from "./telegram";
+import { isTelegramNewsSlug } from "@/lib/telegramNews";
 
 export async function listNews(page = 1, menuId?: number) {
   const res = await apiClient.get<NewsArticle[]>("news", { page, menuId });
@@ -29,6 +31,9 @@ export async function getNewsCategory(slug: string, page = 1, menuId?: number) {
 }
 
 export async function getNewsArticle(slug: string, menuId?: number) {
+  if (isTelegramNewsSlug(slug)) {
+    return enrichNewsArticle(await getTelegramArticle(slug));
+  }
   const { data } = await apiClient.get<NewsArticle>(`news/${slug}`, { menuId });
   return enrichNewsArticle(data);
 }

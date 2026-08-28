@@ -3,10 +3,12 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { getHomeData } from "@/api/home";
 import { listNews } from "@/api/news";
+import { listTelegramNews } from "@/api/telegram";
 import type { NewsArticle } from "@/types/content";
 import { stripHtml } from "@/lib/html";
 import { formatShortDate } from "@/lib/date";
 import { Reveal } from "@/components/Animation";
+import { mergeNewsByDate } from "@/lib/telegramNews";
 
 function newsHref(article: NewsArticle) {
   return `/detail/${article.slug}?menuId=71`;
@@ -35,15 +37,16 @@ export default function NewsAnnouncements() {
       listNews(1)
         .then((r) => r.data ?? [])
         .catch(() => [] as NewsArticle[]),
-    ]).then(([homeNews, allNews]) => {
+      listTelegramNews().catch(() => [] as NewsArticle[]),
+    ]).then(([homeNews, allNews, telegramNews]) => {
       if (cancelled) return;
-      setNews(dedupeById([...homeNews, ...allNews]));
+      setNews(mergeNewsByDate(telegramNews, dedupeById([...homeNews, ...allNews])));
     });
 
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [i18n.language]);
 
   if (news.length === 0) return null;
 

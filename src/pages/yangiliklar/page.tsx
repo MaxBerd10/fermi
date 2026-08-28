@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { listNews } from "@/api/news";
+import { listTelegramNews } from "@/api/telegram";
 import type { NewsArticle } from "@/types/content";
+import { mergeNewsByDate } from "@/lib/telegramNews";
 import PageHeader from "@/components/shared/PageHeader";
 import NewsSectionLayout from "@/components/shared/NewsSectionLayout";
 import NewsCard from "@/components/shared/NewsCard";
@@ -13,7 +15,7 @@ import { Reveal } from "@/components/Animation";
 import { NEWS_DEFAULT_MENU_ID } from "@/lib/newsSection";
 
 export default function NewsPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   usePageMeta(t("news.title"));
   const [searchParams] = useSearchParams();
   const page = Number(searchParams.get("page") || "1");
@@ -23,13 +25,17 @@ export default function NewsPage() {
 
   useEffect(() => {
     setLoading(true);
-    listNews(page)
-      .then((res) => {
-        setItems(res.data);
-        setTotal(res.meta?.total ?? res.data.length);
+    Promise.all([
+      listNews(page),
+      page === 1 ? listTelegramNews().catch(() => [] as NewsArticle[]) : Promise.resolve([] as NewsArticle[]),
+    ])
+      .then(([res, telegramNews]) => {
+        const items = page === 1 ? mergeNewsByDate(telegramNews, res.data) : res.data;
+        setItems(items);
+        setTotal((res.meta?.total ?? res.data.length) + telegramNews.length);
       })
       .finally(() => setLoading(false));
-  }, [page]);
+  }, [page, i18n.language]);
 
   const pageSize = 9;
   const totalPages = Math.max(1, Math.ceil(total / pageSize));

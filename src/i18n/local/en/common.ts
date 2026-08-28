@@ -1512,6 +1512,8 @@ export default {
   "news.new": "New",
   "news.viewsSuffix": "views",
   "news.continueReading": "Continue reading",
+  "news.openInTelegram": "Open in Telegram",
+  "news.telegram": "Telegram",
   "nav.workingHours": "Mon–Sat, 09:00–17:00",
   "nav.virtualReception": "Virtual reception",
   "nav.search": "Search",

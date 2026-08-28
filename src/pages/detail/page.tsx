@@ -35,7 +35,7 @@ export default function DetailPage() {
       .catch((e) => setError(e instanceof ApiError ? e.message : t("detail.loadError")))
       .finally(() => setLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [slug, menuId]);
+  }, [slug, menuId, i18n.language]);
 
   usePageMeta(article?.title, article ? stripHtml(article.content).slice(0, 160) : null);
 
@@ -55,16 +55,20 @@ export default function DetailPage() {
             <div className="news-article__content">
               <div className="news-article__meta">
                 {article.category && (
-                  <span className="news-article__chip">{article.category.title}</span>
+                  <span className="news-article__chip">
+                    {article.category.slug === "telegram" ? t("news.telegram") : article.category.title}
+                  </span>
                 )}
                 <span className="news-article__meta-item">
                   <i className="ri-calendar-line" aria-hidden />
                   {formatLongDate(article.date, i18n.language)}
                 </span>
-                <span className="news-article__meta-item">
-                  <i className="ri-eye-line" aria-hidden />
-                  {article.seen} {t("news.viewsSuffix")}
-                </span>
+                {article.seen > 0 && (
+                  <span className="news-article__meta-item">
+                    <i className="ri-eye-line" aria-hidden />
+                    {article.seen} {t("news.viewsSuffix")}
+                  </span>
+                )}
               </div>
 
               {heroImage && (
@@ -91,11 +95,23 @@ export default function DetailPage() {
                   {t("common.downloadFile")}
                 </a>
               )}
+
+              {article.telegramUrl && (
+                <a
+                  href={article.telegramUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="news-article__download"
+                >
+                  <i className="ri-telegram-fill" aria-hidden />
+                  {t("news.openInTelegram")}
+                </a>
+              )}
             </div>
           </article>
         </Reveal>
 
-        {categorySlug && (
+        {categorySlug && categorySlug !== "telegram" && (
           <Reveal delay={120}>
             <Link
               to={`/news/${menuId}/${categorySlug}`}

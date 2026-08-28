@@ -17,7 +17,8 @@ export default function NewsCard({
   index?: number;
 }) {
   const { t, i18n } = useTranslation();
-  const tag = newsCategoryTagStyle(article.category?.title);
+  const categoryTitle = article.category?.slug === "telegram" ? t("news.telegram") : article.category?.title;
+  const tag = newsCategoryTagStyle(categoryTitle);
   const excerpt = stripHtml(article.content).trim() || t("news.cardFallback");
   const href = buildNewsDetailHref(article.slug, menuId);
   const imageSrc = useMemo(() => getNewsArticleImage(article, index), [article, index]);

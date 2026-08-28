@@ -1512,6 +1512,8 @@ export default {
   "news.new": "Yangi",
   "news.viewsSuffix": "marta",
   "news.continueReading": "Batafsil oʻqish",
+  "news.openInTelegram": "Telegramda ochish",
+  "news.telegram": "Telegram",
   "nav.workingHours": "Du–Sha, 09:00–17:00",
   "nav.virtualReception": "Virtual qabulxona",
   "nav.search": "Qidiruv",

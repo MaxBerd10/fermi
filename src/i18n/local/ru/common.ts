@@ -1512,6 +1512,8 @@ export default {
   "news.new": "Новое",
   "news.viewsSuffix": "просмотров",
   "news.continueReading": "Читать далее",
+  "news.openInTelegram": "Открыть в Telegram",
+  "news.telegram": "Telegram",
   "nav.workingHours": "Пн–Сб, 09:00–17:00",
   "nav.virtualReception": "Виртуальная приёмная",
   "nav.search": "Поиск",

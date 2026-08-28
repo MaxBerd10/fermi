@@ -4,6 +4,7 @@ import { createServer } from "node:http";
 import { dirname, extname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { Readable } from "node:stream";
+import { configureTelegramFeed, handleTelegramFeedRequest } from "./telegram-feed.mjs";
 
 const rootDir = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const distDir = resolve(rootDir, "out");
@@ -14,6 +15,7 @@ const imentorApiKey = String(process.env.IMENTOR_API_KEY || "").trim();
 const fermiApiBaseUrl = String(process.env.FERMI_API_BASE_URL || "https://api.fermi.uz").replace(/\/$/, "");
 const openAiApiKey = String(process.env.OPENAI_API_KEY || "").trim();
 const openAiModel = String(process.env.OPENAI_MODEL || "gpt-4o-mini").trim();
+configureTelegramFeed({ apiKey: openAiApiKey, model: openAiModel });
 
 const mimeTypes = {
   ".css": "text/css; charset=utf-8",
@@ -200,6 +202,10 @@ const server = createServer(async (request, response) => {
     const pathname = new URL(request.url || "/", "http://localhost").pathname;
     if (pathname.startsWith("/imentor-api/")) return await handleImentor(request, response);
     if (pathname.startsWith("/openai-api/")) return await handleOpenAi(request, response);
+    if (pathname.startsWith("/telegram-feed")) {
+      const handled = await handleTelegramFeedRequest(request, response);
+      if (handled) return;
+    }
     if (pathname.startsWith("/v1/") || pathname.startsWith("/uploads/")) return await streamProxy(request, response, fermiApiBaseUrl);
     return await serveStatic(request, response);
   } catch (error) {

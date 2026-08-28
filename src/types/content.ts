@@ -40,6 +40,7 @@ export interface NewsArticle {
   category: NewsCategoryRef | null;
   menuId?: number;
   file?: string | null;
+  telegramUrl?: string;
 }
 
 export interface FacultyListItem {

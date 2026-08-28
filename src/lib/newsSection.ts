@@ -47,6 +47,9 @@ export function newsCategoryTagStyle(categoryTitle: string | undefined): {
   label: string;
 } {
   const t = (categoryTitle ?? "").toLowerCase();
+  if (/telegram/.test(t)) {
+    return { bg: "news-tag--news", text: "", label: categoryTitle ?? "Telegram" };
+  }
   if (/tadbir|sport|konferens|xalqaro|madaniy|yoshlar|talaba/.test(t)) {
     return { bg: "news-tag--event", text: "", label: categoryTitle ?? "Tadbir" };
   }
