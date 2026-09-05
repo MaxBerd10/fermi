@@ -25,6 +25,13 @@ export function normalizeNewsCategorySlug(slug: string): string {
 
 export function resolveNewsImageUrl(src: string): string {
   if (!src) return "";
+  // Unlike real uploaded content (which lives on the API/CMS server, hence the
+  // API_ORIGIN prefixing below), the document placeholder is this frontend's own
+  // static asset — same file the navbar/footer already use. Leave it relative so
+  // it resolves against fermi.uz itself, not the API's separate domain, whether
+  // this function sees it directly or via a second getNewsArticleImage() pass
+  // over an already-enriched article (enrichNewsArticle prefills img).
+  if (src.trim() === DOCUMENT_PLACEHOLDER_IMAGE) return DOCUMENT_PLACEHOLDER_IMAGE;
   let url = src.trim().replace(/&amp;/g, "&");
 
   if (url.startsWith("//")) url = `https:${url}`;
