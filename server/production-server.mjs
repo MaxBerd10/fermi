@@ -79,6 +79,9 @@ const mimeTypes = {
 const responseCache = new Map();
 const pendingRequests = new Map();
 const aiRateLimits = new Map();
+const imentorRateLimits = new Map();
+const telegramRateLimits = new Map();
+const proxyRateLimits = new Map();
 
 // Hard daily ceiling on OpenAI calls across ALL visitors combined — independent of
 // per-IP rate limiting, which only slows down a single abuser but does nothing to
@@ -95,11 +98,31 @@ function allowAiBudget() {
   return aiBudget.count <= OPENAI_DAILY_LIMIT;
 }
 
+// script-src has no 'unsafe-inline': besides blocking injected <script> tags, this
+// also stops inline event-handler attributes (onerror=, onclick=...) from firing —
+// the main realistic XSS vector for HTML scraped from Telegram and rendered via
+// dangerouslySetInnerHTML without a real sanitizer. The app itself uses no inline
+// handlers or <script> tags (React attaches listeners via the DOM API, not HTML
+// attributes), so this doesn't need loosening for legitimate use.
+const CONTENT_SECURITY_POLICY = [
+  "default-src 'self'",
+  "script-src 'self'",
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com",
+  "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com",
+  "img-src 'self' data: https:",
+  "connect-src 'self' https://api.fermi.uz https://api.mymemory.translated.net",
+  "frame-src 'self' https://www.google.com https://docs.google.com https://www.youtube.com",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "frame-ancestors 'self'",
+].join("; ");
+
 function applySecurityHeaders(response) {
   response.setHeader("X-Content-Type-Options", "nosniff");
   response.setHeader("X-Frame-Options", "SAMEORIGIN");
   response.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
   response.setHeader("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+  response.setHeader("Content-Security-Policy", CONTENT_SECURITY_POLICY);
 }
 
 function sendJson(response, statusCode, body) {
@@ -109,19 +132,49 @@ function sendJson(response, statusCode, body) {
 }
 
 function clientIp(request) {
-  return String(request.headers["x-forwarded-for"] || request.socket.remoteAddress || "unknown").split(",")[0].trim();
+  // nginx sets this as `$proxy_add_x_forwarded_for`, which APPENDS the real
+  // connecting IP to whatever the client already sent — so the trustworthy value
+  // nginx itself added is the LAST entry, not the first. Reading the first entry
+  // let anyone bypass IP-based rate limiting by sending their own fake
+  // `X-Forwarded-For: <anything>` header.
+  const forwarded = String(request.headers["x-forwarded-for"] || "").trim();
+  if (forwarded) {
+    const parts = forwarded.split(",").map((part) => part.trim()).filter(Boolean);
+    if (parts.length) return parts[parts.length - 1];
+  }
+  return String(request.socket.remoteAddress || "unknown");
+}
+
+function allowRateLimit(store, request, windowMs, maximum) {
+  const now = Date.now();
+  const key = clientIp(request);
+  const current = store.get(key);
+  const active = current && current.resetAt > now ? current : { count: 0, resetAt: now + windowMs };
+  active.count += 1;
+  store.set(key, active);
+  return active.count <= maximum;
 }
 
 function allowAiRequest(request) {
-  const now = Date.now();
-  const key = clientIp(request);
-  const current = aiRateLimits.get(key);
-  const windowMs = 60_000;
-  const maximum = 20;
-  const active = current && current.resetAt > now ? current : { count: 0, resetAt: now + windowMs };
-  active.count += 1;
-  aiRateLimits.set(key, active);
-  return active.count <= maximum;
+  return allowRateLimit(aiRateLimits, request, 60_000, 20);
+}
+
+// iMentor's own server has already shown it can't take much traffic (see the
+// ECONNREFUSED outage) — this only softens a single client hammering it, on top
+// of the short response cache in cachedGet().
+function allowImentorRequest(request) {
+  return allowRateLimit(imentorRateLimits, request, 60_000, 60);
+}
+
+function allowTelegramFeedRequest(request) {
+  return allowRateLimit(telegramRateLimits, request, 60_000, 60);
+}
+
+// General ceiling on the pass-through to the real backend API/DB — loose enough
+// for normal browsing, tight enough to blunt a single client scraping or
+// hammering it directly through this proxy.
+function allowProxyRequest(request) {
+  return allowRateLimit(proxyRateLimits, request, 60_000, 120);
 }
 
 async function readRequestBody(request, maxBytes = 100_000) {
@@ -190,6 +243,7 @@ async function cachedGet(url, headers, ttlMs) {
 async function handleImentor(request, response) {
   if (request.method !== "GET") return sendJson(response, 405, { error: "Method not allowed" });
   if (!imentorApiKey) return sendJson(response, 503, { error: "iMentor API is not configured" });
+  if (!allowImentorRequest(request)) return sendJson(response, 429, { error: "Too many requests. Please try again shortly." });
 
   const requestUrl = new URL(request.url || "/", "http://localhost");
   if (!requestUrl.pathname.startsWith("/imentor-api/v1/external/")) return sendJson(response, 404, { error: "Not found" });
@@ -272,10 +326,14 @@ const server = createServer(async (request, response) => {
     if (pathname.startsWith("/imentor-api/")) return await handleImentor(request, response);
     if (pathname.startsWith("/openai-api/")) return await handleOpenAi(request, response);
     if (pathname.startsWith("/telegram-feed")) {
+      if (!allowTelegramFeedRequest(request)) return sendJson(response, 429, { error: "Too many requests. Please try again shortly." });
       const handled = await handleTelegramFeedRequest(request, response);
       if (handled) return;
     }
-    if (pathname.startsWith("/v1/") || pathname.startsWith("/uploads/")) return await streamProxy(request, response, fermiApiBaseUrl);
+    if (pathname.startsWith("/v1/") || pathname.startsWith("/uploads/")) {
+      if (!allowProxyRequest(request)) return sendJson(response, 429, { error: "Too many requests. Please try again shortly." });
+      return await streamProxy(request, response, fermiApiBaseUrl);
+    }
     return await serveStatic(request, response);
   } catch (error) {
     console.error("Request failed", error);
