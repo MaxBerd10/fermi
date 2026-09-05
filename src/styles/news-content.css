@@ -97,22 +97,31 @@
 }
 
 .news-card__placeholder--document {
-  flex-direction: column;
-  gap: 0.5rem;
-  opacity: 1;
-  color: #0a1158;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
 }
 
-.news-card__placeholder--document i {
-  font-size: 2.25rem;
+.news-card__placeholder--document img {
+  padding: 1.5rem;
 }
 
-.news-card__placeholder--document span {
-  font-size: 0.75rem;
+.news-card__document-badge {
+  position: absolute;
+  left: 0.6rem;
+  bottom: 0.6rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 9999px;
+  background: rgba(10, 17, 88, 0.85);
+  color: #fff;
+  font-size: 0.6875rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  opacity: 0.7;
+  letter-spacing: 0.03em;
 }
 
 /* Telegram post attachment list (real filename + size, injected into content) */

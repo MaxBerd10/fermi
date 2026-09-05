@@ -7,6 +7,8 @@ import { buildNewsDetailHref, newsCategoryTagStyle, NEWS_DEFAULT_MENU_ID } from 
 import { getNewsArticleImage } from "@/lib/newsImages";
 import { useMemo, useState, useEffect } from "react";
 
+const DOCUMENT_PLACEHOLDER_IMG = "/images/logo.png?v=2";
+
 export default function NewsCard({
   article,
   menuId = NEWS_DEFAULT_MENU_ID,
@@ -45,9 +47,12 @@ export default function NewsCard({
     >
       <Link to={href} className="news-card__media block overflow-hidden">
         {showDocumentPlaceholder ? (
-          <div className="news-card__placeholder news-card__placeholder--document" aria-hidden>
-            <i className="ri-file-text-line" />
-            <span>{t("news.documentBadge")}</span>
+          <div className="news-card__placeholder--document" aria-hidden>
+            <img src={DOCUMENT_PLACEHOLDER_IMG} alt="" className="news-card__img news-card__img--contain" loading="lazy" />
+            <span className="news-card__document-badge">
+              <i className="ri-file-text-line" />
+              {t("news.documentBadge")}
+            </span>
           </div>
         ) : imgSrc ? (
           <img
