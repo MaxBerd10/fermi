@@ -48,7 +48,7 @@ export default function NewsCard({
             className={`news-card__img${isBannerLike ? " news-card__img--contain" : ""}`}
             loading="lazy"
             onError={() => {
-              const fallback = getNewsArticleImage({ img: "", content: article.content }, index + 1);
+              const fallback = getNewsArticleImage({ ...article, img: "" }, index + 1);
               if (fallback !== imgSrc) setImgSrc(fallback);
             }}
           />

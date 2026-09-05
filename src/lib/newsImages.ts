@@ -59,7 +59,7 @@ export function extractFirstImageFromHtml(html: string): string | null {
 }
 
 export function getNewsArticleImage(
-  article: Pick<NewsArticle, "img" | "content" | "hasDocument">,
+  article: Pick<NewsArticle, "img" | "content" | "hasDocument" | "category">,
   fallbackIndex = 0,
 ): string {
   const fromField = article.img?.trim();
@@ -68,14 +68,15 @@ export function getNewsArticleImage(
     if (resolved) return resolved;
   }
 
-  // Document-only Telegram posts (PDF attachments, no photo) have no real image of
-  // their own — a random decorative stock photo next to a filename list reads as a
-  // rendering bug. Prefer the institute logo, before falling through to the
-  // generic per-index fallback used for everything else.
-  if (article.hasDocument) return DOCUMENT_PLACEHOLDER_IMAGE;
-
   const fromContent = extractFirstImageFromHtml(article.content);
   if (fromContent) return fromContent;
+
+  // Telegram posts with no real photo at all — document-only, or plain text — have
+  // no image of their own. A random decorative stock photo (the generic per-index
+  // rotation below) reads as arbitrary/wrong for auto-imported content with no
+  // editorial control over it. Prefer the institute logo instead; CMS-authored
+  // articles (a real editor picked the category/content) keep the rotation.
+  if (article.hasDocument || article.category?.slug === "telegram") return DOCUMENT_PLACEHOLDER_IMAGE;
 
   return NEWS_FALLBACK_IMAGES[fallbackIndex % NEWS_FALLBACK_IMAGES.length];
 }
