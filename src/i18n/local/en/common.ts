@@ -1515,6 +1515,7 @@ export default {
   "news.openInTelegram": "Open in Telegram",
   "news.watchOnTelegram": "Watch the video on Telegram",
   "news.telegram": "Telegram",
+  "news.documentBadge": "Document",
   "nav.workingHours": "Mon–Sat, 09:00–17:00",
   "nav.virtualReception": "Virtual reception",
   "nav.search": "Search",

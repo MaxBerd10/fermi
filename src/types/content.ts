@@ -43,6 +43,7 @@ export interface NewsArticle {
   telegramUrl?: string;
   translated?: boolean;
   isVideo?: boolean;
+  hasDocument?: boolean;
 }
 
 export interface FacultyListItem {

@@ -96,6 +96,69 @@
   opacity: 0.45;
 }
 
+.news-card__placeholder--document {
+  flex-direction: column;
+  gap: 0.5rem;
+  opacity: 1;
+  color: #0a1158;
+}
+
+.news-card__placeholder--document i {
+  font-size: 2.25rem;
+}
+
+.news-card__placeholder--document span {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  opacity: 0.7;
+}
+
+/* Telegram post attachment list (real filename + size, injected into content) */
+.telegram-post-documents {
+  margin-top: 1rem;
+  padding: 0.9rem 1.1rem;
+  border-radius: 0.75rem;
+  background: #f1f5f9;
+  border: 1px solid rgba(10, 17, 88, 0.08);
+}
+
+.telegram-post-documents p {
+  margin: 0 0 0.5rem;
+  font-size: 0.8125rem;
+  color: #555;
+}
+
+.telegram-post-documents ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.telegram-post-documents li {
+  font-size: 0.875rem;
+  color: #333;
+}
+
+.telegram-post-documents li::before {
+  content: "📎";
+  margin-right: 0.4rem;
+}
+
+.telegram-post-documents a {
+  color: #0a1158;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.telegram-post-documents a:hover {
+  text-decoration: underline;
+}
+
 .news-tag {
   position: absolute;
   top: 0.75rem;

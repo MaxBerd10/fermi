@@ -23,6 +23,11 @@ export default function NewsCard({
   const href = buildNewsDetailHref(article.slug, menuId);
   const imageSrc = useMemo(() => getNewsArticleImage(article, index), [article, index]);
   const [imgSrc, setImgSrc] = useState(imageSrc);
+  // getNewsArticleImage always falls back to one of a handful of generic decorative
+  // images when there's no real photo — a poor match for a document-only post (a
+  // photo of an unrelated scene next to a PDF filename list looks like a rendering
+  // bug). Show a plain document placeholder instead when we know that's what this is.
+  const showDocumentPlaceholder = Boolean(article.hasDocument) && !article.img?.trim();
   // Telegram photos come in whatever aspect ratio the poster took them in (portrait,
   // square, screenshots...) — unlike CMS uploads, nobody pre-crops them to the card's
   // 16:10 shape, so `cover` zooms in and cuts off whatever doesn't fit. Show the whole
@@ -39,7 +44,12 @@ export default function NewsCard({
       style={{ animationDelay: `${index * 60}ms` }}
     >
       <Link to={href} className="news-card__media block overflow-hidden">
-        {imgSrc ? (
+        {showDocumentPlaceholder ? (
+          <div className="news-card__placeholder news-card__placeholder--document" aria-hidden>
+            <i className="ri-file-text-line" />
+            <span>{t("news.documentBadge")}</span>
+          </div>
+        ) : imgSrc ? (
           <img
             src={imgSrc}
             alt={article.title}

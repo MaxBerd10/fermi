@@ -153,6 +153,24 @@ function extractMedia(block) {
   return [...new Set(urls)];
 }
 
+// Documents (PDFs etc.) render as their own card — icon, filename, size — separate
+// from extractMedia's photo background-images. The link only opens that single
+// message in Telegram (the actual file isn't fetchable from this public preview,
+// same limitation as video), but the filename/size are real and worth showing.
+function extractDocuments(block) {
+  const docs = [];
+  const re =
+    /<a class="tgme_widget_message_document_wrap" href="([^"]+)">[\s\S]*?<div class="tgme_widget_message_document_title[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<div class="tgme_widget_message_document_extra"[^>]*>([\s\S]*?)<\/div>/g;
+  for (const match of String(block).matchAll(re)) {
+    docs.push({
+      url: match[1],
+      name: decodeEntities(htmlToText(match[2])),
+      size: decodeEntities(htmlToText(match[3])),
+    });
+  }
+  return docs;
+}
+
 function titleFromHtml(html) {
   // Custom Telegram emoji render as <i class="emoji">...<b>X</b>...</i> (or <tg-emoji>),
   // with their OWN nested <b>. Scanning for <b>...</b> on the raw html before unwrapping
@@ -195,23 +213,39 @@ export function parseTelegramChannelHtml(html, username = channelUsername()) {
 
     const datetime = block.match(/<time[^>]*datetime="([^"]+)"/)?.[1];
     const media = extractMedia(block);
+    const documents = extractDocuments(block);
     const content = sanitizePostHtml(textHtml);
     const extraImages = media
       .slice(1)
       .map((src) => `<p><img src="${src}" alt="" /></p>`)
       .join("");
+    // Real filenames/sizes (e.g. "2-ilova (4).pdf — 2.3 MB") — the file itself isn't
+    // fetchable from this public preview (same limitation as video), but naming it
+    // beats an unexplained blank card. The link opens that single message in Telegram.
+    const documentsHtml = documents.length
+      ? `<div class="telegram-post-documents"><p><strong>Ilovalar:</strong></p><ul>${documents
+          .map(
+            (doc) =>
+              `<li><a href="${doc.url}" target="_blank" rel="noopener noreferrer">${doc.name}</a>${
+                doc.size ? ` (${doc.size})` : ""
+              }</li>`,
+          )
+          .join("")}</ul></div>`
+      : "";
     // Telegram's own public preview marks video posts "not_supported" and only ever
     // serves a poster frame — there is no actual video file to fetch here, even for
     // Telegram itself; watching it requires the Telegram app. Flag it so the frontend
     // shows a play badge over the poster and points people at "watch on Telegram"
     // instead of silently presenting a still frame with no explanation.
     const isVideo = /tgme_widget_message_video_player|tgme_widget_message_video_thumb/.test(block);
+    const hasDocument = documents.length > 0;
 
     posts.push({
       id: TELEGRAM_ID_OFFSET + messageId,
       title: titleFromHtml(textHtml),
-      content: extraImages ? `${content}${extraImages}` : content,
+      content: extraImages || documentsHtml ? `${content}${extraImages}${documentsHtml}` : content,
       img: media[0] || "",
+      hasDocument,
       isVideo,
       slug: `tg-${messageId}`,
       date: datetime || new Date().toISOString(),

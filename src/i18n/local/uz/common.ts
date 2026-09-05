@@ -1515,6 +1515,7 @@ export default {
   "news.openInTelegram": "Telegramda ochish",
   "news.watchOnTelegram": "Videoni Telegram'da tomosha qiling",
   "news.telegram": "Telegram",
+  "news.documentBadge": "Hujjat",
   "nav.workingHours": "Du–Sha, 09:00–17:00",
   "nav.virtualReception": "Virtual qabulxona",
   "nav.search": "Qidiruv",
