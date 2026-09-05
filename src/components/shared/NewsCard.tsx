@@ -7,8 +7,6 @@ import { buildNewsDetailHref, newsCategoryTagStyle, NEWS_DEFAULT_MENU_ID } from 
 import { getNewsArticleImage } from "@/lib/newsImages";
 import { useMemo, useState, useEffect } from "react";
 
-const DOCUMENT_PLACEHOLDER_IMG = "/images/logo.png?v=2";
-
 export default function NewsCard({
   article,
   menuId = NEWS_DEFAULT_MENU_ID,
@@ -25,16 +23,13 @@ export default function NewsCard({
   const href = buildNewsDetailHref(article.slug, menuId);
   const imageSrc = useMemo(() => getNewsArticleImage(article, index), [article, index]);
   const [imgSrc, setImgSrc] = useState(imageSrc);
-  // getNewsArticleImage always falls back to one of a handful of generic decorative
-  // images when there's no real photo — a poor match for a document-only post (a
-  // photo of an unrelated scene next to a PDF filename list looks like a rendering
-  // bug). Show a plain document placeholder instead when we know that's what this is.
-  const showDocumentPlaceholder = Boolean(article.hasDocument) && !article.img?.trim();
   // Telegram photos come in whatever aspect ratio the poster took them in (portrait,
   // square, screenshots...) — unlike CMS uploads, nobody pre-crops them to the card's
   // 16:10 shape, so `cover` zooms in and cuts off whatever doesn't fit. Show the whole
-  // photo instead, same as we already do for flyer/banner-shaped images.
-  const isBannerLike = /flayer|flyer|banner|\.png$/i.test(imgSrc) || article.category?.slug === "telegram";
+  // photo instead, same as we already do for flyer/banner-shaped images (the logo used
+  // for document-only posts needs this too, so it doesn't get cropped either).
+  const isBannerLike =
+    article.hasDocument || /flayer|flyer|banner|\.png$/i.test(imgSrc) || article.category?.slug === "telegram";
 
   useEffect(() => {
     setImgSrc(imageSrc);
@@ -46,15 +41,7 @@ export default function NewsCard({
       style={{ animationDelay: `${index * 60}ms` }}
     >
       <Link to={href} className="news-card__media block overflow-hidden">
-        {showDocumentPlaceholder ? (
-          <div className="news-card__placeholder--document" aria-hidden>
-            <img src={DOCUMENT_PLACEHOLDER_IMG} alt="" className="news-card__img news-card__img--contain" loading="lazy" />
-            <span className="news-card__document-badge">
-              <i className="ri-file-text-line" />
-              {t("news.documentBadge")}
-            </span>
-          </div>
-        ) : imgSrc ? (
+        {imgSrc ? (
           <img
             src={imgSrc}
             alt={article.title}
@@ -73,6 +60,12 @@ export default function NewsCard({
         {article.isVideo && (
           <span className="news-card__video-badge" aria-hidden>
             <i className="ri-play-fill" />
+          </span>
+        )}
+        {article.hasDocument && (
+          <span className="news-card__document-badge" aria-hidden>
+            <i className="ri-file-text-line" />
+            {t("news.documentBadge")}
           </span>
         )}
         {article.category && (

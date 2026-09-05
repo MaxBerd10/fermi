@@ -11,6 +11,8 @@ const NEWS_FALLBACK_IMAGES = [
   "/images/news-fallback-3.png",
 ] as const;
 
+const DOCUMENT_PLACEHOLDER_IMAGE = "/images/logo.png?v=2";
+
 /** CMS menyu slug → API dagi haqiqiy kategoriya slug */
 const NEWS_CATEGORY_SLUG_ALIASES: Record<string, string> = {
   "yoshlar-ittifoqi-tomonidan-otkazilgan-tadbirlar": "yoshlar-ittifoqi-tadbirlari",
@@ -50,7 +52,7 @@ export function extractFirstImageFromHtml(html: string): string | null {
 }
 
 export function getNewsArticleImage(
-  article: Pick<NewsArticle, "img" | "content">,
+  article: Pick<NewsArticle, "img" | "content" | "hasDocument">,
   fallbackIndex = 0,
 ): string {
   const fromField = article.img?.trim();
@@ -58,6 +60,12 @@ export function getNewsArticleImage(
     const resolved = resolveNewsImageUrl(fromField);
     if (resolved) return resolved;
   }
+
+  // Document-only Telegram posts (PDF attachments, no photo) have no real image of
+  // their own — a random decorative stock photo next to a filename list reads as a
+  // rendering bug. Prefer the institute logo, before falling through to the
+  // generic per-index fallback used for everything else.
+  if (article.hasDocument) return DOCUMENT_PLACEHOLDER_IMAGE;
 
   const fromContent = extractFirstImageFromHtml(article.content);
   if (fromContent) return fromContent;

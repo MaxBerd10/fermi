@@ -56,11 +56,7 @@ export default function DetailPage() {
   if (error || !article) return <ErrorState message={error ?? undefined} />;
 
   const categorySlug = article.category?.slug;
-  // Same reasoning as NewsCard: an unrelated stock photo next to a PDF attachment
-  // list reads as a rendering bug. Show the institute logo instead when we know
-  // this post has no real photo of its own, just document attachments.
-  const showDocumentHero = Boolean(article.hasDocument) && !article.img?.trim();
-  const heroImage = showDocumentHero ? "/images/logo.png?v=2" : getNewsArticleImage(article);
+  const heroImage = getNewsArticleImage(article);
 
   return (
     <div className="text-foreground-950">
