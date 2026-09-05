@@ -10,6 +10,7 @@ import { formatShortDate } from "@/lib/date";
 import { Reveal } from "@/components/Animation";
 import { mergeNewsByDate } from "@/lib/telegramNews";
 import { localizeTelegramCards } from "@/lib/uzTranslate";
+import { getNewsArticleImage } from "@/lib/newsImages";
 
 function newsHref(article: NewsArticle) {
   return `/detail/${article.slug}?menuId=71`;
@@ -118,18 +119,23 @@ export default function NewsAnnouncements() {
               className="group flex flex-col h-full rounded-[1.35rem] overflow-hidden bg-white/80 backdrop-blur-md border border-[#e5e5e5]/80 shadow-[0_12px_40px_rgba(15,23,42,0.06)] cursor-pointer"
             >
               <div className="aspect-[16/9] overflow-hidden bg-[#e5e5e5] shrink-0">
-                {featured.img ? (
-                  <img
-                    src={featured.img}
-                    alt={featured.title}
-                    className="w-full h-full object-cover object-top group-hover:scale-[1.03] transition-transform duration-500"
-                    loading="lazy"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-[#555555]">
-                    <i className="ri-newspaper-line text-4xl" />
-                  </div>
-                )}
+                {(() => {
+                  const featuredImg = getNewsArticleImage(featured);
+                  return featuredImg ? (
+                    <img
+                      src={featuredImg}
+                      alt={featured.title}
+                      className={`w-full h-full group-hover:scale-[1.03] transition-transform duration-500 ${
+                        featured.hasDocument ? "object-contain p-8 bg-white" : "object-cover object-top"
+                      }`}
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-[#555555]">
+                      <i className="ri-newspaper-line text-4xl" />
+                    </div>
+                  );
+                })()}
               </div>
               <div className="p-4 md:p-5 flex flex-col flex-1">
                 <div className="flex items-center gap-2 mb-2">
@@ -162,13 +168,21 @@ export default function NewsAnnouncements() {
                   className="group flex gap-3 h-full min-h-[4.5rem] p-3 rounded-2xl bg-white/80 backdrop-blur-md border border-[#e5e5e5]/80 shadow-sm hover:shadow-md hover:border-[#ffd600] transition-all cursor-pointer"
                 >
                   <div className="w-20 h-full min-h-[4.25rem] max-h-24 rounded-xl overflow-hidden bg-[#e5e5e5] shrink-0 self-stretch">
-                    {n.img ? (
-                      <img src={n.img} alt="" className="w-full h-full object-cover object-top" loading="lazy" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-[#555555]">
-                        <i className="ri-file-text-line text-xl" />
-                      </div>
-                    )}
+                    {(() => {
+                      const thumbImg = getNewsArticleImage(n);
+                      return thumbImg ? (
+                        <img
+                          src={thumbImg}
+                          alt=""
+                          className={`w-full h-full ${n.hasDocument ? "object-contain p-2 bg-white" : "object-cover object-top"}`}
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-[#555555]">
+                          <i className="ri-file-text-line text-xl" />
+                        </div>
+                      );
+                    })()}
                   </div>
                   <div className="min-w-0 flex-1 flex flex-col justify-center py-0.5">
                     <p className="text-[10px] font-bold uppercase tracking-wide text-[#0a1158] mb-1">
