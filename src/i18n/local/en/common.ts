@@ -1525,6 +1525,7 @@ export default {
   "nav.menu": "Menu",
   "nav.test": "Test",
   "nav.keyslar": "Case Studies",
+  "nav.vakansiyaTest": "Vacancy Test",
   "test.pickSubject": "Choose a subject",
   "test.pickSubjectHint": "Choose a subject to test — questions are picked randomly from it.",
   "test.questionsCount_one": "{{count}} question",

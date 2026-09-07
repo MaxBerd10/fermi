@@ -55,6 +55,9 @@ export default function Navbar() {
       ...apiMenu,
       { id: -101, title: t("nav.test"), urlType: "", urlValue: "", href: "/test", children: [] },
       { id: -102, title: t("nav.keyslar"), urlType: "", urlValue: "", href: "/keyslar", children: [] },
+      // Ishga kiruvchilar uchun bilim baholash testi — alohida (test.fermi.uz) tizimda
+      // joylashgan, shuning uchun tashqi havola sifatida (yangi tabda ochiladi).
+      { id: -103, title: t("nav.vakansiyaTest"), urlType: "", urlValue: "", href: "https://test.fermi.uz/vakansiya", children: [] },
     ],
     [apiMenu, t]
   );
@@ -435,7 +438,19 @@ export default function Navbar() {
           {mobileOpen && (
             <div className="lg:!hidden frosted-glass nav-dropdown-panel !rounded-none border-x-0 max-h-[calc(100dvh-56px)] overflow-y-auto overscroll-contain">
               <nav className="px-3 sm:px-4 py-3 sm:py-4 space-y-0.5">
-                {menu.map((item: MenuNode) => (
+                {menu.map((item: MenuNode) =>
+                  item.children.length === 0 ? (
+                    // No submenu to expand into — render as a real link (a bare
+                    // <details><summary> with nothing inside was a dead tap on mobile,
+                    // e.g. Test/Keyslar/Vakansiya testi never navigated anywhere).
+                    <NavLink
+                      key={item.id}
+                      href={normalizeMenuHref(item.href)}
+                      className="block min-h-[44px] px-3 py-3 text-sm font-semibold tracking-wide text-foreground-800 hover:bg-primary-50/70 transition-colors rounded-xl"
+                    >
+                      {normalizeYearLabels(item.title.trim())}
+                    </NavLink>
+                  ) : (
                   <details key={item.id} className="group overflow-hidden">
                     <summary className="flex items-center justify-between min-h-[44px] px-3 py-3 text-sm font-semibold tracking-wide text-foreground-800 cursor-pointer list-none hover:bg-primary-50/70 transition-colors rounded-xl">
                       <span className="pr-2">{normalizeYearLabels(item.title.trim())}</span>
@@ -475,7 +490,8 @@ export default function Navbar() {
                       )}
                     </div>
                   </details>
-                ))}
+                  )
+                )}
                 <Link
                   to="/qabul"
                   className="uni-btn-gold w-full mt-3 cursor-pointer"

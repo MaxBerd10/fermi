@@ -1525,6 +1525,7 @@ export default {
   "nav.menu": "Menyu",
   "nav.test": "Test",
   "nav.keyslar": "Keyslar",
+  "nav.vakansiyaTest": "Vakansiya testi",
   "test.pickSubject": "Fanni tanlang",
   "test.pickSubjectHint": "Sinash uchun fanni tanlang — savollar shu fandan tasodifiy tanlanadi.",
   "test.questionsCount_one": "{{count}} ta savol",

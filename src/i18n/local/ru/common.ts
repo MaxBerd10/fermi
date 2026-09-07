@@ -1525,6 +1525,7 @@ export default {
   "nav.menu": "Меню",
   "nav.test": "Тест",
   "nav.keyslar": "Кейсы",
+  "nav.vakansiyaTest": "Тест на вакансию",
   "test.pickSubject": "Выберите предмет",
   "test.pickSubjectHint": "Выберите предмет для теста — вопросы будут выбраны случайно из этого предмета.",
   "test.questionsCount_one": "{{count}} вопрос",
