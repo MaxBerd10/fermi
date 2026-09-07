@@ -57,43 +57,67 @@ function buildUrl(path: string, params?: RequestOptions["params"]) {
   return url.toString();
 }
 
+// Several homepage sections (Hero, Stats, ContactMap, NewsAnnouncements, Faculties,
+// FacultiesNews, About...) each call getHomeData()/getSettings() independently on
+// mount via useApi — with no shared cache, that's 6-7 identical GET requests fired
+// at the same instant, all competing for the same slow backend connection. This
+// collapses concurrent identical GETs into one shared in-flight request (mirrors
+// the same fix already applied server-side for iMentor in production-server.mjs).
+// Deliberately no TTL/staleness cache beyond that — once a request settles, the
+// next call always fetches fresh.
+const inFlightGets = new Map<string, Promise<unknown>>();
+
 async function request<T>(path: string, options: RequestOptions = {}): Promise<ApiResult<T>> {
   const url = buildUrl(path, options.params);
-  const headers: Record<string, string> = {};
-  let body: BodyInit | undefined;
+  const method = options.method || "GET";
+  const dedupeKey = method === "GET" ? url : null;
 
-  if (options.formData) {
-    body = options.formData;
-  } else if (options.body !== undefined) {
-    headers["Content-Type"] = "application/json";
-    body = JSON.stringify(options.body);
+  if (dedupeKey) {
+    const pending = inFlightGets.get(dedupeKey);
+    if (pending) return pending as Promise<ApiResult<T>>;
   }
 
-  const token = getAccessToken();
-  if (token) {
-    headers["Authorization"] = `Bearer ${token}`;
-  }
+  const doRequest = async (): Promise<ApiResult<T>> => {
+    const headers: Record<string, string> = {};
+    let body: BodyInit | undefined;
 
-  const response = await fetch(url, {
-    method: options.method || "GET",
-    headers,
-    body,
-  });
-
-  const envelope = (await response.json()) as ApiEnvelope<T>;
-
-  if (isErrorEnvelope(envelope)) {
-    if (response.status === 401 && options.auth && !options._isRetry) {
-      const refreshed = await tryRefresh();
-      if (refreshed) {
-        return request<T>(path, { ...options, _isRetry: true });
-      }
-      clearTokens();
+    if (options.formData) {
+      body = options.formData;
+    } else if (options.body !== undefined) {
+      headers["Content-Type"] = "application/json";
+      body = JSON.stringify(options.body);
     }
-    throw new ApiError(envelope.error.message, envelope.error.code, response.status, envelope.error.fields);
-  }
 
-  return { data: envelope.data, meta: envelope.meta };
+    const token = getAccessToken();
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+
+    const response = await fetch(url, { method, headers, body });
+    const envelope = (await response.json()) as ApiEnvelope<T>;
+
+    if (isErrorEnvelope(envelope)) {
+      if (response.status === 401 && options.auth && !options._isRetry) {
+        const refreshed = await tryRefresh();
+        if (refreshed) {
+          return request<T>(path, { ...options, _isRetry: true });
+        }
+        clearTokens();
+      }
+      throw new ApiError(envelope.error.message, envelope.error.code, response.status, envelope.error.fields);
+    }
+
+    return { data: envelope.data, meta: envelope.meta };
+  };
+
+  const resultPromise = doRequest();
+  if (dedupeKey) {
+    inFlightGets.set(dedupeKey, resultPromise);
+    resultPromise.finally(() => {
+      if (inFlightGets.get(dedupeKey) === resultPromise) inFlightGets.delete(dedupeKey);
+    });
+  }
+  return resultPromise;
 }
 
 async function tryRefresh(): Promise<boolean> {
