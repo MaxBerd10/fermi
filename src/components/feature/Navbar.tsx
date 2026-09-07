@@ -12,7 +12,7 @@ import { normalizeYearLabels, normalizeMenuHref } from "@/lib/siteConstants";
 
 const LOGO_IMG = "/images/logo.png?v=2";
 const MORE_ID = -1;
-const NAV_GAP = 1;
+const NAV_GAP = 4;
 
 interface Rect {
   left: number;
@@ -244,7 +244,7 @@ export default function Navbar() {
             {/* justify-center: the menu is centered in the space between logo and icons —
                 any leftover width from a narrower item set (text lengths differ per language)
                 splits evenly on both sides instead of piling up on one edge. */}
-            <nav ref={navContainerRef} className="hidden lg:flex items-center justify-center gap-px flex-1 min-w-0">
+            <nav ref={navContainerRef} className="hidden lg:flex items-center justify-center gap-1 flex-1 min-w-0">
               {visibleItems.map((item: MenuNode) => (
                 <div
                   key={item.id}
@@ -262,7 +262,7 @@ export default function Navbar() {
                 >
                   <NavLink
                     href={normalizeMenuHref(item.href)}
-                    className={`flex items-center gap-px px-1 py-1.5 font-heading text-[12px] font-semibold tracking-normal cursor-pointer whitespace-nowrap rounded-full transition-colors duration-200 ${
+                    className={`flex items-center gap-px px-2 py-1.5 font-heading text-[12px] font-semibold tracking-normal cursor-pointer whitespace-nowrap rounded-full transition-colors duration-200 ${
                       solid
                         ? "text-foreground-700 hover:text-primary-800 hover:bg-primary-50/70"
                         : "text-white/90 hover:text-white hover:bg-white/10"
@@ -302,7 +302,7 @@ export default function Navbar() {
                 >
                   <button
                     type="button"
-                    className={`flex items-center gap-px px-1 py-1.5 font-heading text-[12px] font-semibold tracking-normal cursor-pointer whitespace-nowrap rounded-full transition-colors duration-200 ${
+                    className={`flex items-center gap-px px-2 py-1.5 font-heading text-[12px] font-semibold tracking-normal cursor-pointer whitespace-nowrap rounded-full transition-colors duration-200 ${
                       solid
                         ? "text-foreground-700 hover:text-primary-800 hover:bg-primary-50/70"
                         : "text-white/90 hover:text-white hover:bg-white/10"
@@ -326,12 +326,12 @@ export default function Navbar() {
             </nav>
 
             {/* Off-screen row used only to measure natural item widths for the priority nav above */}
-            <div ref={navMeasureRef} className="fixed -top-[9999px] left-0 flex items-center gap-px pointer-events-none" aria-hidden="true">
+            <div ref={navMeasureRef} className="fixed -top-[9999px] left-0 flex items-center gap-1 pointer-events-none" aria-hidden="true">
               {menu.map((item: MenuNode) => (
                 <span
                   key={item.id}
                   data-measure-item
-                  className="flex items-center gap-px px-1 py-1.5 font-heading text-[12px] font-semibold tracking-normal whitespace-nowrap"
+                  className="flex items-center gap-px px-2 py-1.5 font-heading text-[12px] font-semibold tracking-normal whitespace-nowrap"
                 >
                   {navBarLabel(item.title)}
                   {item.children.length > 0 && <i className="ri-arrow-down-s-line text-xs opacity-50" />}
@@ -339,7 +339,7 @@ export default function Navbar() {
               ))}
               <span
                 data-measure-more
-                className="flex items-center gap-px px-1 py-1.5 font-heading text-[12px] font-semibold tracking-normal whitespace-nowrap"
+                className="flex items-center gap-px px-2 py-1.5 font-heading text-[12px] font-semibold tracking-normal whitespace-nowrap"
               >
                 {t("nav.more")}
                 <i className="ri-arrow-down-s-line text-xs opacity-50" />
