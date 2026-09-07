@@ -106,11 +106,17 @@ function allowAiBudget() {
 // attributes), so this doesn't need loosening for legitimate use.
 const CONTENT_SECURITY_POLICY = [
   "default-src 'self'",
-  "script-src 'self'",
+  // https://mc.yandex.ru: Yandex.Metrika (visit analytics, see index.html) — its own
+  // tag.js loader script plus the beacon/webvisor requests it sends. The sha256 hash
+  // allowlists ONLY that exact inline snippet (not 'unsafe-inline' generally, which
+  // would reopen the onerror=/onclick= XSS vector the strict script-src closes) — if
+  // that snippet in index.html is ever edited, recompute the hash (the browser's own
+  // CSP-violation console error reports the exact new hash needed).
+  "script-src 'self' https://mc.yandex.ru 'sha256-cx7R3KNkOZlVVQvcNZopJal9AvBCuVoXihLLqgYITBE='",
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com",
   "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com",
   "img-src 'self' data: https:",
-  "connect-src 'self' https://api.fermi.uz https://api.mymemory.translated.net",
+  "connect-src 'self' https://api.fermi.uz https://api.mymemory.translated.net https://mc.yandex.ru",
   "frame-src 'self' https://www.google.com https://docs.google.com https://www.youtube.com",
   "object-src 'none'",
   "base-uri 'self'",
