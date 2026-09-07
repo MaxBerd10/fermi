@@ -116,8 +116,11 @@ const CONTENT_SECURITY_POLICY = [
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com",
   "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com",
   "img-src 'self' data: https:",
-  "connect-src 'self' https://api.fermi.uz https://api.mymemory.translated.net https://mc.yandex.ru",
-  "frame-src 'self' https://www.google.com https://docs.google.com https://www.youtube.com",
+  // wss:// (not just https://) is needed separately — Metrika's webvisor session-replay
+  // streams over a websocket, and CSP source expressions don't imply other schemes for
+  // the same host.
+  "connect-src 'self' https://api.fermi.uz https://api.mymemory.translated.net https://mc.yandex.ru wss://mc.yandex.ru",
+  "frame-src 'self' https://www.google.com https://docs.google.com https://www.youtube.com https://mc.yandex.ru",
   "object-src 'none'",
   "base-uri 'self'",
   "frame-ancestors 'self'",
