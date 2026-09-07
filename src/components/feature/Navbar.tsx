@@ -58,6 +58,8 @@ export default function Navbar() {
       // Ishga kiruvchilar uchun bilim baholash testi — alohida (test.fermi.uz) tizimda
       // joylashgan, shuning uchun tashqi havola sifatida (yangi tabda ochiladi).
       { id: -103, title: t("nav.vakansiyaTest"), urlType: "", urlValue: "", href: "https://test.fermi.uz/vakansiya", children: [] },
+      // Masofaviy ta'lim portali (talaba/o'qituvchi kirishi) — alohida tizim.
+      { id: -104, title: t("nav.onlineTalim"), urlType: "", urlValue: "", href: "https://onlinetalim.fermi.uz/", children: [] },
     ],
     [apiMenu, t]
   );
