@@ -192,6 +192,20 @@ function titleFromHtml(html) {
   return (first || "Yangilik").slice(0, 160);
 }
 
+// Telegram's own public preview shows a view count per post (e.g. "1.27K", "399") —
+// parse the abbreviated form into a real number instead of hardcoding 0, so these
+// imported posts get the same "eye icon" view count real CMS articles already have.
+function parseViewsCount(raw) {
+  const text = String(raw || "").trim().toUpperCase();
+  if (!text) return 0;
+  const match = text.match(/^([\d.]+)([KM]?)$/);
+  if (!match) return 0;
+  const value = Number(match[1]);
+  if (!Number.isFinite(value)) return 0;
+  const multiplier = match[2] === "K" ? 1_000 : match[2] === "M" ? 1_000_000 : 1;
+  return Math.round(value * multiplier);
+}
+
 function splitMessageBlocks(html) {
   return String(html)
     .split(/(?=<div class="tgme_widget_message[^"]*\bjs-widget_message\b)/)
@@ -212,6 +226,7 @@ export function parseTelegramChannelHtml(html, username = channelUsername()) {
     if (!textHtml) continue;
 
     const datetime = block.match(/<time[^>]*datetime="([^"]+)"/)?.[1];
+    const seen = parseViewsCount(block.match(/tgme_widget_message_views">([^<]+)</)?.[1]);
     const media = extractMedia(block);
     const documents = extractDocuments(block);
     const content = sanitizePostHtml(textHtml);
@@ -249,7 +264,7 @@ export function parseTelegramChannelHtml(html, username = channelUsername()) {
       isVideo,
       slug: `tg-${messageId}`,
       date: datetime || new Date().toISOString(),
-      seen: 0,
+      seen,
       category: { id: 0, title: "Telegram", slug: "telegram" },
       telegramUrl: `https://t.me/${username}/${messageId}`,
     });
