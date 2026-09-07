@@ -120,7 +120,7 @@ export default function FacultiesNews() {
               </p>
 
               <div className="grid grid-cols-2 gap-2 mb-4">
-                <div className="rounded-xl border border-[#e5e5e5]/80 bg-white/75 backdrop-blur-md px-3 py-2.5">
+                <div className="rounded-xl border border-[#e5e5e5]/80 bg-white/95 px-3 py-2.5">
                   <p className="font-heading text-lg font-bold text-[#0a1158] tabular-nums leading-none">
                     {facultyRows.length}+
                   </p>
@@ -128,7 +128,7 @@ export default function FacultiesNews() {
                     {t("faculties.eyebrow")}
                   </p>
                 </div>
-                <div className="rounded-xl border border-[#e5e5e5]/80 bg-white/75 backdrop-blur-md px-3 py-2.5">
+                <div className="rounded-xl border border-[#e5e5e5]/80 bg-white/95 px-3 py-2.5">
                   <p className="font-heading text-lg font-bold text-[#0a1158] tabular-nums leading-none">
                     {departmentCount || "—"}
                   </p>
@@ -207,7 +207,7 @@ export default function FacultiesNews() {
             <div className="grid sm:grid-cols-2 gap-2.5 h-full content-stretch">
               {rows.slice(0, 6).map((row) => {
                 const cardClass =
-                  "group flex flex-col gap-2 rounded-2xl border border-[#e5e5e5]/80 bg-white/80 backdrop-blur-md p-3.5 md:p-4 hover:border-[#ffd600] hover:shadow-[0_10px_28px_rgba(10,17,88,0.08)] transition-all cursor-pointer h-full min-h-0";
+                  "group flex flex-col gap-2 rounded-2xl border border-[#e5e5e5]/80 bg-white/95 p-3.5 md:p-4 hover:border-[#ffd600] hover:shadow-[0_10px_28px_rgba(10,17,88,0.08)] transition-all cursor-pointer h-full min-h-0";
                 const body = (
                   <>
                     <div className="flex items-start justify-between gap-2">

@@ -38,7 +38,7 @@ export default function Partners() {
               href={p.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 rounded-xl bg-white/75 backdrop-blur-sm border border-[#e5e5e5]/80 px-3 py-2.5 hover:border-[#ffd600] hover:bg-white/90 transition-colors cursor-pointer"
+              className="flex items-center gap-2 rounded-xl bg-white/95 border border-[#e5e5e5]/80 px-3 py-2.5 hover:border-[#ffd600] hover:bg-white transition-colors cursor-pointer"
             >
               <span className="w-8 h-8 rounded-lg bg-white border border-[#e5e5e5] text-[#0a1158] flex items-center justify-center shrink-0">
                 <i className={`${p.icon} text-sm`} />

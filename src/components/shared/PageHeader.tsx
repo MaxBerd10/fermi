@@ -19,7 +19,7 @@ export default function PageHeader({ title, breadcrumb, description, compact }: 
 
       <div className={`section-container relative z-10 ${compact ? "pt-4 pb-4 sm:pt-5 sm:pb-4 md:pt-6 md:pb-5" : "pt-4 pb-6 sm:pt-5 sm:pb-6 md:pt-6 md:pb-8"}`}>
         <nav
-          className="inline-flex flex-wrap items-center gap-2 text-[10px] font-semibold tracking-wide uppercase mb-2.5 px-2.5 py-1 rounded-full bg-white/80 border border-[#e5e5e5]/80 text-[#555555] shadow-sm backdrop-blur-md max-w-full"
+          className="inline-flex flex-wrap items-center gap-2 text-[10px] font-semibold tracking-wide uppercase mb-2.5 px-2.5 py-1 rounded-full bg-white/95 border border-[#e5e5e5]/80 text-[#555555] shadow-sm max-w-full"
           aria-label="Breadcrumb"
         >
           <Link to="/" className="text-[#0a1158] hover:text-[#060a3d] transition-colors cursor-pointer">

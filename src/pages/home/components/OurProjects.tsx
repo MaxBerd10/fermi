@@ -110,7 +110,7 @@ function ProjectCard({ p, liveLabel, soonLabel, soonHint }: {
   );
 
   const cardCls =
-    "group flex flex-col overflow-hidden rounded-2xl bg-white/80 backdrop-blur-md border border-[#e5e5e5]/80 shadow-[0_6px_20px_rgba(10,17,88,0.05)] transition-all";
+    "group flex flex-col overflow-hidden rounded-2xl bg-white/95 border border-[#e5e5e5]/80 shadow-[0_6px_20px_rgba(10,17,88,0.05)] transition-all";
 
   if (p.href) {
     return (

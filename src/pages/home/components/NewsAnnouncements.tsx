@@ -116,7 +116,7 @@ export default function NewsAnnouncements() {
           <Reveal className="lg:col-span-7 h-full">
             <Link
               to={newsHref(featured)}
-              className="group flex flex-col h-full rounded-[1.35rem] overflow-hidden bg-white/80 backdrop-blur-md border border-[#e5e5e5]/80 shadow-[0_12px_40px_rgba(15,23,42,0.06)] cursor-pointer"
+              className="group flex flex-col h-full rounded-[1.35rem] overflow-hidden bg-white/95 border border-[#e5e5e5]/80 shadow-[0_12px_40px_rgba(15,23,42,0.06)] cursor-pointer"
             >
               <div className="aspect-[16/9] overflow-hidden bg-[#e5e5e5] shrink-0">
                 {(() => {
@@ -165,7 +165,7 @@ export default function NewsAnnouncements() {
               <Reveal key={n.id} delay={40 + i * 40} className="flex-1 min-h-0">
                 <Link
                   to={newsHref(n)}
-                  className="group flex gap-3 h-full min-h-[4.5rem] p-3 rounded-2xl bg-white/80 backdrop-blur-md border border-[#e5e5e5]/80 shadow-sm hover:shadow-md hover:border-[#ffd600] transition-all cursor-pointer"
+                  className="group flex gap-3 h-full min-h-[4.5rem] p-3 rounded-2xl bg-white/95 border border-[#e5e5e5]/80 shadow-sm hover:shadow-md hover:border-[#ffd600] transition-all cursor-pointer"
                 >
                   <div className="w-20 h-full min-h-[4.25rem] max-h-24 rounded-xl overflow-hidden bg-[#e5e5e5] shrink-0 self-stretch">
                     {(() => {

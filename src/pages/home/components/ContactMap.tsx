@@ -110,7 +110,7 @@ export default function ContactMap() {
         </Reveal>
 
         <div className="grid lg:grid-cols-2 gap-4 lg:items-stretch">
-          <Reveal className="rounded-2xl bg-white/85 backdrop-blur-md border border-[#e5e5e5]/80 p-4 md:p-5 shadow-sm h-full">
+          <Reveal className="rounded-2xl bg-white/95 border border-[#e5e5e5]/80 p-4 md:p-5 shadow-sm h-full">
             <h3 className="font-heading text-base font-bold text-[#0a0a0a] mb-3">{t("contact.sendMessage")}</h3>
             <form id="fjsti-contact" onSubmit={onSubmit}>
               <div className="grid sm:grid-cols-2 gap-2.5">

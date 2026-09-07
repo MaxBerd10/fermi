@@ -101,7 +101,7 @@ export default function PathFinder() {
         </Reveal>
 
         <Reveal delay={40}>
-          <div className="mb-5 grid sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-[#e5e5e5] border border-[#e5e5e5]/80 rounded-2xl bg-white/80 backdrop-blur-md overflow-hidden">
+          <div className="mb-5 grid sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-[#e5e5e5] border border-[#e5e5e5]/80 rounded-2xl bg-white/95 overflow-hidden">
             {HOW_STEPS.map((key, i) => (
               <div
                 key={key}
@@ -143,7 +143,7 @@ export default function PathFinder() {
         </Reveal>
 
         <Reveal delay={80}>
-          <div className="rounded-2xl bg-white/85 backdrop-blur-md border border-[#e5e5e5]/80 shadow-sm overflow-hidden">
+          <div className="rounded-2xl bg-white/95 border border-[#e5e5e5]/80 shadow-sm overflow-hidden">
             <div className="border-b border-[#e5e5e5]/80 bg-white/50 px-5 md:px-6 py-3.5">
               <div className="flex items-center gap-2 mb-2">
                 {[0, 1, 2].map((i) => (

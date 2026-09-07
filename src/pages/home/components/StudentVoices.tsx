@@ -41,7 +41,7 @@ export default function StudentVoices() {
         <div className="grid lg:grid-cols-12 gap-4 lg:gap-6 items-start">
           <Reveal className="lg:col-span-7">
             <div
-              className="rounded-2xl border border-[#e5e5e5]/80 bg-white/80 backdrop-blur-md p-4 md:p-5"
+              className="rounded-2xl border border-[#e5e5e5]/80 bg-white/95 p-4 md:p-5"
               onMouseEnter={() => setPaused(true)}
               onMouseLeave={() => setPaused(false)}
             >
@@ -80,7 +80,7 @@ export default function StudentVoices() {
           <Reveal delay={40} className="lg:col-span-5">
             <div className="grid grid-cols-2 gap-2">
               {FACTS.map((key) => (
-                <div key={key} className="rounded-xl border border-[#e5e5e5]/80 bg-white/75 backdrop-blur-sm px-3 py-2.5">
+                <div key={key} className="rounded-xl border border-[#e5e5e5]/80 bg-white/95 px-3 py-2.5">
                   <p className="font-heading text-xl font-bold text-[#0a1158] tabular-nums leading-none">
                     {t(`voices.${key}.value`)}
                   </p>

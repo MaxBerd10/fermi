@@ -24,7 +24,7 @@ export default function WhyUs() {
 
         <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-2.5">
           {ITEMS.map((item, i) => (
-            <Reveal key={item.key} delay={i * 40} className="rounded-xl border border-[#e5e5e5]/80 bg-white/75 backdrop-blur-md p-3.5 flex flex-col">
+            <Reveal key={item.key} delay={i * 40} className="rounded-xl border border-[#e5e5e5]/80 bg-white/95 p-3.5 flex flex-col">
               <div className="flex items-start justify-between gap-2">
                 <span className="font-heading text-2xl font-semibold text-[#ffd600] leading-none">
                   {String(i + 1).padStart(2, "0")}
