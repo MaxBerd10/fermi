@@ -145,6 +145,12 @@ export default function NewsAnnouncements() {
                   <span className="text-xs font-semibold text-[#555555] uppercase tracking-wide">
                     {formatShortDate(featured.date, i18n.language)}
                   </span>
+                  {featured.seen > 0 && (
+                    <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#555555]">
+                      <i className="ri-eye-line" aria-hidden />
+                      {featured.seen}
+                    </span>
+                  )}
                 </div>
                 <h3 className="font-heading text-lg md:text-xl font-bold text-[#0a0a0a] leading-snug group-hover:text-[#0a1158] transition-colors">
                   {featured.title}
@@ -185,9 +191,17 @@ export default function NewsAnnouncements() {
                     })()}
                   </div>
                   <div className="min-w-0 flex-1 flex flex-col justify-center py-0.5">
-                    <p className="text-[10px] font-bold uppercase tracking-wide text-[#0a1158] mb-1">
-                      {formatShortDate(n.date, i18n.language)}
-                    </p>
+                    <div className="flex items-center gap-2 mb-1">
+                      <p className="text-[10px] font-bold uppercase tracking-wide text-[#0a1158]">
+                        {formatShortDate(n.date, i18n.language)}
+                      </p>
+                      {n.seen > 0 && (
+                        <span className="inline-flex items-center gap-0.5 text-[10px] font-semibold text-[#555555]">
+                          <i className="ri-eye-line" aria-hidden />
+                          {n.seen}
+                        </span>
+                      )}
+                    </div>
                     <h3 className="font-heading text-sm font-bold text-[#0a0a0a] leading-snug line-clamp-2 group-hover:text-[#0a1158] transition-colors">
                       {n.title}
                     </h3>
