@@ -69,9 +69,12 @@ export function recordHit(rawPath) {
   return true;
 }
 
-function sumLastNDays(n) {
+// Sum of `n` days, starting `offset` days back — offset 0 = the window ending today,
+// offset n = the equal-length window immediately before that one (for "vs last week" deltas).
+function sumWindow(n, offset) {
   let sum = 0;
   const cursor = new Date();
+  cursor.setDate(cursor.getDate() - offset);
   for (let i = 0; i < n; i++) {
     const key = cursor.toISOString().slice(0, 10);
     sum += stats.byDate[key] || 0;
@@ -80,13 +83,18 @@ function sumLastNDays(n) {
   return sum;
 }
 
+function dayKeyOffset(daysAgo) {
+  const d = new Date();
+  d.setDate(d.getDate() - daysAgo);
+  return d.toISOString().slice(0, 10);
+}
+
+const DAILY_SERIES_LENGTH = 30;
+
 export function getStatsSummary() {
   const dailySeries = [];
-  const cursor = new Date();
-  for (let i = 13; i >= 0; i--) {
-    const d = new Date(cursor);
-    d.setDate(cursor.getDate() - i);
-    const key = d.toISOString().slice(0, 10);
+  for (let i = DAILY_SERIES_LENGTH - 1; i >= 0; i--) {
+    const key = dayKeyOffset(i);
     dailySeries.push({ date: key, count: stats.byDate[key] || 0 });
   }
 
@@ -95,11 +103,24 @@ export function getStatsSummary() {
     .slice(0, 10)
     .map(([path, count]) => ({ path, count }));
 
+  const peakDay = dailySeries.reduce(
+    (best, day) => (day.count > best.count ? day : best),
+    { date: dailySeries[0]?.date ?? todayKey(), count: 0 },
+  );
+  const trackedDaysCount = Object.keys(stats.byDate).length || 1;
+  const avgPerDay = Math.round((stats.total / trackedDaysCount) * 10) / 10;
+
   return {
     total: stats.total,
+    distinctPages: Object.keys(stats.byPath).length,
+    avgPerDay,
     today: stats.byDate[todayKey()] || 0,
-    last7Days: sumLastNDays(7),
-    last30Days: sumLastNDays(30),
+    yesterday: stats.byDate[dayKeyOffset(1)] || 0,
+    last7Days: sumWindow(7, 0),
+    previous7Days: sumWindow(7, 7),
+    last30Days: sumWindow(30, 0),
+    previous30Days: sumWindow(30, 30),
+    peakDay,
     dailySeries,
     topPages,
   };

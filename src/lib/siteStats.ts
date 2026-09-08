@@ -3,9 +3,15 @@
 
 export interface SiteStatsSummary {
   total: number;
+  distinctPages: number;
+  avgPerDay: number;
   today: number;
+  yesterday: number;
   last7Days: number;
+  previous7Days: number;
   last30Days: number;
+  previous30Days: number;
+  peakDay: { date: string; count: number };
   dailySeries: { date: string; count: number }[];
   topPages: { path: string; count: number }[];
 }
