@@ -13,7 +13,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { fetchStatsSummary, type SiteStatsSummary } from "@/lib/siteStats";
+import { fetchMonthSummary, fetchStatsSummary, type SiteStatsMonthSummary, type SiteStatsSummary } from "@/lib/siteStats";
 
 const DAY_LABEL = new Intl.DateTimeFormat("uz-UZ", { day: "2-digit", month: "2-digit" });
 const TIME_LABEL = new Intl.DateTimeFormat("uz-UZ", { hour: "2-digit", minute: "2-digit" });
@@ -37,7 +37,7 @@ const DEVICE_META = {
   other: { label: "Boshqa", icon: "ri-device-line" },
 } as const;
 
-type Range = 7 | 30;
+type Range = 7 | 30 | "month";
 
 function parseIsoDate(isoDate: string) {
   const [year, month, day] = isoDate.split("-").map(Number);
@@ -46,6 +46,25 @@ function parseIsoDate(isoDate: string) {
 
 function formatLongDay(date: Date) {
   return `${date.getDate()}-${UZ_MONTHS[date.getMonth()]}`;
+}
+
+function monthKeyOf(date: Date) {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+}
+
+// Every calendar month from the first one tracking has data for, up through the
+// current month — newest first, so the picker opens on "this month" at the top.
+function monthOptions(firstTrackedDate: string): { value: string; label: string }[] {
+  const [firstYear, firstMonth] = firstTrackedDate.split("-").map(Number);
+  const first = new Date(firstYear, (firstMonth || 1) - 1, 1);
+  const now = new Date();
+  const options: { value: string; label: string }[] = [];
+  const cursor = new Date(now.getFullYear(), now.getMonth(), 1);
+  while (cursor >= first) {
+    options.push({ value: monthKeyOf(cursor), label: `${UZ_MONTHS[cursor.getMonth()]} ${cursor.getFullYear()}` });
+    cursor.setMonth(cursor.getMonth() - 1);
+  }
+  return options;
 }
 
 function formatDelta(current: number, previous: number) {
@@ -134,6 +153,9 @@ export default function AdminStatistics() {
   const [data, setData] = useState<SiteStatsSummary | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [range, setRange] = useState<Range>(30);
+  const [selectedMonth, setSelectedMonth] = useState<string>(() => monthKeyOf(new Date()));
+  const [monthData, setMonthData] = useState<SiteStatsMonthSummary | null>(null);
+  const [monthError, setMonthError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
   const [updatedAt, setUpdatedAt] = useState<Date | null>(null);
 
@@ -153,17 +175,42 @@ export default function AdminStatistics() {
 
   useEffect(() => { void load(); }, [load]);
 
+  const loadMonth = useCallback((month: string) => {
+    setMonthError(null);
+    setMonthData(null);
+    fetchMonthSummary(month)
+      .then(setMonthData)
+      .catch((e) => setMonthError(e instanceof Error ? e.message : "Oy statistikasini yuklab bo'lmadi"));
+  }, []);
+
+  useEffect(() => {
+    if (range === "month") loadMonth(selectedMonth);
+  }, [range, selectedMonth, loadMonth]);
+
   const selected = useMemo(() => {
+    if (range === "month") {
+      if (!monthData) return null;
+      const [year, month] = monthData.month.split("-").map(Number);
+      const label = `${UZ_MONTHS[month - 1]} ${year}`;
+      return { current: monthData.total, previous: monthData.previousTotal, series: monthData.dailySeries, label };
+    }
     if (!data) return null;
     return range === 7
       ? { current: data.last7Days, previous: data.previous7Days, series: data.dailySeries.slice(-7), label: "so'nggi 7 kun" }
       : { current: data.last30Days, previous: data.previous30Days, series: data.dailySeries, label: "so'nggi 30 kun" };
-  }, [data, range]);
+  }, [data, range, monthData]);
 
   const activeHour = useMemo(() => {
     if (!data) return null;
     return data.hourlyActivity.reduce((best, hour) => hour.count > best.count ? hour : best, data.hourlyActivity[0]);
   }, [data]);
+
+  // The peak within whichever period is actually on screen — data.peakDay is always
+  // the last-30-days peak, wrong once a specific month or the 7-day view is selected.
+  const selectedPeak = useMemo(() => {
+    if (!selected || selected.series.length === 0) return null;
+    return selected.series.reduce((best, day) => (day.count > best.count ? day : best), selected.series[0]);
+  }, [selected]);
 
   const sourceTotal = data?.trafficSources.reduce((sum, source) => sum + source.count, 0) ?? 0;
   const deviceTotal = data?.devices.reduce((sum, device) => sum + device.count, 0) ?? 0;
@@ -180,7 +227,19 @@ export default function AdminStatistics() {
             <p className="mt-2 max-w-2xl text-sm leading-relaxed text-white/75">FerMI saytiga tashriflar, foydali sahifalar va kirish manbalari shu markazda jamlanadi.</p>
           </div>
           <div className="flex flex-wrap items-center gap-3 lg:justify-end">
-            <div className="inline-flex rounded-xl border border-white/15 bg-white/10 p-1">{([7, 30] as Range[]).map((value) => <button key={value} onClick={() => setRange(value)} className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${range === value ? "bg-white text-primary-800 shadow-sm" : "text-white/70 hover:text-white"}`}>{value} kun</button>)}</div>
+            <div className="inline-flex items-center gap-2">
+              <div className="inline-flex rounded-xl border border-white/15 bg-white/10 p-1">{([7, 30] as Range[]).map((value) => <button key={value} onClick={() => setRange(value)} className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${range === value ? "bg-white text-primary-800 shadow-sm" : "text-white/70 hover:text-white"}`}>{value} kun</button>)}</div>
+              <select
+                value={range === "month" ? selectedMonth : ""}
+                onChange={(e) => { setSelectedMonth(e.target.value); setRange("month"); }}
+                className={`rounded-xl border border-white/15 px-3 py-2 text-xs font-semibold outline-none transition-colors ${range === "month" ? "bg-white text-primary-800" : "bg-white/10 text-white/70"}`}
+              >
+                <option value="" disabled>Oy tanlash</option>
+                {monthOptions(data?.firstTrackedDate ?? monthKeyOf(new Date()) + "-01").map((opt) => (
+                  <option key={opt.value} value={opt.value} className="text-foreground-900">{opt.label}</option>
+                ))}
+              </select>
+            </div>
             {updatedAt && <span className="text-xs text-white/65">Yangilandi: {TIME_LABEL.format(updatedAt)}</span>}
             <button onClick={() => void load(true)} disabled={refreshing} className="inline-flex items-center gap-2 rounded-xl bg-white px-3.5 py-2.5 text-sm font-semibold text-primary-800 transition-transform hover:bg-primary-50 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70">
               <i className={refreshing ? "ri-loader-4-line animate-spin" : "ri-refresh-line"} />
@@ -200,7 +259,7 @@ export default function AdminStatistics() {
 
       {!data && !error && <LoadingState />}
 
-      {data && selected && (
+      {data && (
         <>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <MetricCard label="Bugungi tashriflar" value={data.today} hint="Kecha bilan solishtiriladi" icon="ri-calendar-check-line" delta={{ current: data.today, previous: data.yesterday }} />
@@ -211,31 +270,44 @@ export default function AdminStatistics() {
           <div className="mt-5 grid grid-cols-1 gap-5 xl:grid-cols-[minmax(0,1.75fr)_minmax(340px,0.85fr)]">
             <SectionCard
               title="Tashriflar dinamikasi"
-              subtitle={`${selected.label}dagi sahifa ko'rishlar`}
-              action={<span className="inline-flex items-center gap-1.5 rounded-lg bg-primary-50 px-2.5 py-1.5 text-xs font-semibold text-primary-700"><i className="ri-calendar-line" /> {range} kun</span>}
+              subtitle={selected ? `${selected.label}dagi sahifa ko'rishlar` : undefined}
+              action={<span className="inline-flex items-center gap-1.5 rounded-lg bg-primary-50 px-2.5 py-1.5 text-xs font-semibold text-primary-700"><i className="ri-calendar-line" /> {range === "month" ? (selected?.label ?? "Oy") : `${range} kun`}</span>}
             >
-              <div className="h-72 sm:h-80">
-                <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={selected.series} margin={{ top: 12, right: 4, left: -18, bottom: 0 }}>
-                    <defs>
-                      <linearGradient id="trafficArea" x1="0" x2="0" y1="0" y2="1">
-                        <stop offset="0%" stopColor="#192b72" stopOpacity={0.28} />
-                        <stop offset="95%" stopColor="#192b72" stopOpacity={0.01} />
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid vertical={false} stroke="#e7eaf4" strokeDasharray="3 3" />
-                    <XAxis dataKey="date" tickFormatter={(value) => DAY_LABEL.format(parseIsoDate(value))} axisLine={false} tickLine={false} minTickGap={28} tick={{ fill: "#75809b", fontSize: 11 }} />
-                    <YAxis allowDecimals={false} axisLine={false} tickLine={false} tick={{ fill: "#75809b", fontSize: 11 }} />
-                    <Tooltip cursor={{ stroke: "#b7c1dc", strokeWidth: 1 }} contentStyle={{ border: "1px solid #dfe4f1", borderRadius: 12, boxShadow: "0 10px 25px rgba(16, 31, 89, 0.10)", fontSize: 12 }} labelFormatter={(value) => formatLongDay(parseIsoDate(String(value)))} formatter={(value: number | undefined) => [`${NUMBER.format(value ?? 0)} ta`, "Tashrif"]} />
-                    <Area type="monotone" dataKey="count" stroke="#192b72" strokeWidth={2.5} fill="url(#trafficArea)" activeDot={{ r: 5, fill: "#192b72", stroke: "#fff", strokeWidth: 2 }} />
-                  </AreaChart>
-                </ResponsiveContainer>
-              </div>
-              <div className="mt-4 grid grid-cols-2 gap-3 border-t border-background-200 pt-4 sm:grid-cols-3">
-                <div><div className="text-xs text-foreground-500">Eng yuqori kun</div><div className="mt-1 font-semibold text-foreground-950">{NUMBER.format(data.peakDay.count)} ta <span className="font-normal text-foreground-400">{formatLongDay(parseIsoDate(data.peakDay.date))}</span></div></div>
-                <div><div className="text-xs text-foreground-500">Davr o'zgarishi</div><div className="mt-1"><Delta current={selected.current} previous={selected.previous} /></div></div>
-                <div className="col-span-2 sm:col-span-1"><div className="text-xs text-foreground-500">Kuzatilgan sahifalar</div><div className="mt-1 font-semibold text-foreground-950">{NUMBER.format(data.distinctPages)} ta</div></div>
-              </div>
+              {range === "month" && monthError && (
+                <div className="flex items-center justify-between gap-3 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
+                  <span>{monthError}</span>
+                  <button onClick={() => loadMonth(selectedMonth)} className="font-semibold underline">Qayta urinish</button>
+                </div>
+              )}
+              {range === "month" && !monthError && !monthData && (
+                <div className="h-72 animate-pulse rounded-xl bg-background-100 sm:h-80" />
+              )}
+              {selected && (
+                <>
+                  <div className="h-72 sm:h-80">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <AreaChart data={selected.series} margin={{ top: 12, right: 4, left: -18, bottom: 0 }}>
+                        <defs>
+                          <linearGradient id="trafficArea" x1="0" x2="0" y1="0" y2="1">
+                            <stop offset="0%" stopColor="#192b72" stopOpacity={0.28} />
+                            <stop offset="95%" stopColor="#192b72" stopOpacity={0.01} />
+                          </linearGradient>
+                        </defs>
+                        <CartesianGrid vertical={false} stroke="#e7eaf4" strokeDasharray="3 3" />
+                        <XAxis dataKey="date" tickFormatter={(value) => DAY_LABEL.format(parseIsoDate(value))} axisLine={false} tickLine={false} minTickGap={28} tick={{ fill: "#75809b", fontSize: 11 }} />
+                        <YAxis allowDecimals={false} axisLine={false} tickLine={false} tick={{ fill: "#75809b", fontSize: 11 }} />
+                        <Tooltip cursor={{ stroke: "#b7c1dc", strokeWidth: 1 }} contentStyle={{ border: "1px solid #dfe4f1", borderRadius: 12, boxShadow: "0 10px 25px rgba(16, 31, 89, 0.10)", fontSize: 12 }} labelFormatter={(value) => formatLongDay(parseIsoDate(String(value)))} formatter={(value: number | undefined) => [`${NUMBER.format(value ?? 0)} ta`, "Tashrif"]} />
+                        <Area type="monotone" dataKey="count" stroke="#192b72" strokeWidth={2.5} fill="url(#trafficArea)" activeDot={{ r: 5, fill: "#192b72", stroke: "#fff", strokeWidth: 2 }} />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </div>
+                  <div className="mt-4 grid grid-cols-2 gap-3 border-t border-background-200 pt-4 sm:grid-cols-3">
+                    <div><div className="text-xs text-foreground-500">Eng yuqori kun</div><div className="mt-1 font-semibold text-foreground-950">{selectedPeak ? <>{NUMBER.format(selectedPeak.count)} ta <span className="font-normal text-foreground-400">{formatLongDay(parseIsoDate(selectedPeak.date))}</span></> : "—"}</div></div>
+                    <div><div className="text-xs text-foreground-500">Davr o'zgarishi</div><div className="mt-1"><Delta current={selected.current} previous={selected.previous} /></div></div>
+                    <div className="col-span-2 sm:col-span-1"><div className="text-xs text-foreground-500">Kuzatilgan sahifalar</div><div className="mt-1 font-semibold text-foreground-950">{NUMBER.format(data.distinctPages)} ta</div></div>
+                  </div>
+                </>
+              )}
             </SectionCard>
 
             <SectionCard title="Bugungi faollik" subtitle="Soatlar kesimida tashriflar">

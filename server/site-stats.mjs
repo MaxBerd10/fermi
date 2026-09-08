@@ -157,6 +157,51 @@ const DAILY_SERIES_LENGTH = 30;
 const DEVICE_KEYS = ["desktop", "mobile", "tablet", "other"];
 const SOURCE_KEYS = ["direct", "search", "social", "referral"];
 
+function daysInMonth(year, month) {
+  return new Date(year, month, 0).getDate(); // month is 1-12; day 0 of the next = last day of this one
+}
+
+function shiftMonth(year, month, delta) {
+  const zeroBased = (month - 1) + delta;
+  return { year: year + Math.floor(zeroBased / 12), month: (((zeroBased % 12) + 12) % 12) + 1 };
+}
+
+function sumMonth(year, month) {
+  const numDays = daysInMonth(year, month);
+  let sum = 0;
+  for (let d = 1; d <= numDays; d++) {
+    const key = `${year}-${String(month).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+    sum += stats.byDate[key] || 0;
+  }
+  return sum;
+}
+
+// A specific calendar month (e.g. "an actual August", not just "the last 30 days") —
+// the admin panel's month picker. `stats.byDate` already keeps every day indefinitely,
+// this just wasn't exposed for anything beyond the last DAILY_SERIES_LENGTH days.
+export function getMonthSummary(monthKey) {
+  if (!/^\d{4}-(0[1-9]|1[0-2])$/.test(String(monthKey || ""))) return null;
+  const [year, month] = monthKey.split("-").map(Number);
+  const numDays = daysInMonth(year, month);
+
+  const dailySeries = [];
+  let total = 0;
+  for (let d = 1; d <= numDays; d++) {
+    const key = `${monthKey}-${String(d).padStart(2, "0")}`;
+    const count = stats.byDate[key] || 0;
+    dailySeries.push({ date: key, count });
+    total += count;
+  }
+
+  const previous = shiftMonth(year, month, -1);
+  return {
+    month: monthKey,
+    total,
+    previousTotal: sumMonth(previous.year, previous.month),
+    dailySeries,
+  };
+}
+
 export function getStatsSummary() {
   const dailySeries = [];
   for (let i = DAILY_SERIES_LENGTH - 1; i >= 0; i--) {
@@ -181,8 +226,12 @@ export function getStatsSummary() {
     count: stats.byHour[`${today}-${String(hour).padStart(2, "0")}`] || 0,
   }));
 
+  const trackedDates = Object.keys(stats.byDate).sort();
+
   return {
     total: stats.total,
+    // So the frontend's month picker doesn't offer months from before tracking began.
+    firstTrackedDate: trackedDates[0] ?? today,
     distinctPages: Object.keys(stats.byPath).length,
     avgPerDay,
     today: stats.byDate[todayKey()] || 0,
@@ -247,6 +296,14 @@ export async function handleSiteStatsRequest(request, response) {
   if (requestUrl.pathname === "/site-stats/summary" && request.method === "GET") {
     response.setHeader("Cache-Control", "no-store");
     sendJson(response, 200, getStatsSummary());
+    return true;
+  }
+
+  if (requestUrl.pathname === "/site-stats/month" && request.method === "GET") {
+    const monthSummary = getMonthSummary(requestUrl.searchParams.get("month"));
+    response.setHeader("Cache-Control", "no-store");
+    if (monthSummary) sendJson(response, 200, monthSummary);
+    else sendJson(response, 400, { error: "Invalid or missing ?month=YYYY-MM" });
     return true;
   }
 

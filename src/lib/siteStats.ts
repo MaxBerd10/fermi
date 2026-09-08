@@ -1,8 +1,16 @@
 // Self-hosted page-view tracking — see server/site-stats.mjs. No third-party service;
 // the admin panel's own "Statistika" page reads this back via fetchStatsSummary().
 
+export interface SiteStatsMonthSummary {
+  month: string; // "YYYY-MM"
+  total: number;
+  previousTotal: number;
+  dailySeries: { date: string; count: number }[];
+}
+
 export interface SiteStatsSummary {
   total: number;
+  firstTrackedDate: string; // "YYYY-MM-DD" — earliest month the month picker should offer
   distinctPages: number;
   avgPerDay: number;
   today: number;
@@ -47,5 +55,11 @@ export function recordPageView(path: string) {
 export async function fetchStatsSummary(): Promise<SiteStatsSummary> {
   const res = await fetch("/site-stats/summary");
   if (!res.ok) throw new Error("Statistikani yuklab bo'lmadi");
+  return res.json();
+}
+
+export async function fetchMonthSummary(month: string): Promise<SiteStatsMonthSummary> {
+  const res = await fetch(`/site-stats/month?month=${encodeURIComponent(month)}`);
+  if (!res.ok) throw new Error("Oy statistikasini yuklab bo'lmadi");
   return res.json();
 }
