@@ -5,6 +5,7 @@ import { dirname, extname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { Readable } from "node:stream";
 import { configureTelegramFeed, handleTelegramFeedRequest } from "./telegram-feed.mjs";
+import { handleSiteStatsRequest } from "./site-stats.mjs";
 
 const rootDir = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const distDir = resolve(rootDir, "out");
@@ -82,6 +83,7 @@ const aiRateLimits = new Map();
 const imentorRateLimits = new Map();
 const telegramRateLimits = new Map();
 const proxyRateLimits = new Map();
+const siteStatsRateLimits = new Map();
 
 // Hard daily ceiling on OpenAI calls across ALL visitors combined — independent of
 // per-IP rate limiting, which only slows down a single abuser but does nothing to
@@ -106,21 +108,12 @@ function allowAiBudget() {
 // attributes), so this doesn't need loosening for legitimate use.
 const CONTENT_SECURITY_POLICY = [
   "default-src 'self'",
-  // https://mc.yandex.ru: Yandex.Metrika (visit analytics, see index.html) — its own
-  // tag.js loader script plus the beacon/webvisor requests it sends. The sha256 hash
-  // allowlists ONLY that exact inline snippet (not 'unsafe-inline' generally, which
-  // would reopen the onerror=/onclick= XSS vector the strict script-src closes) — if
-  // that snippet in index.html is ever edited, recompute the hash (the browser's own
-  // CSP-violation console error reports the exact new hash needed).
-  "script-src 'self' https://mc.yandex.ru 'sha256-cx7R3KNkOZlVVQvcNZopJal9AvBCuVoXihLLqgYITBE='",
+  "script-src 'self'",
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com",
   "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com",
   "img-src 'self' data: https:",
-  // wss:// (not just https://) is needed separately — Metrika's webvisor session-replay
-  // streams over a websocket, and CSP source expressions don't imply other schemes for
-  // the same host.
-  "connect-src 'self' https://api.fermi.uz https://api.mymemory.translated.net https://mc.yandex.ru wss://mc.yandex.ru",
-  "frame-src 'self' https://www.google.com https://docs.google.com https://www.youtube.com https://mc.yandex.ru",
+  "connect-src 'self' https://api.fermi.uz https://api.mymemory.translated.net",
+  "frame-src 'self' https://www.google.com https://docs.google.com https://www.youtube.com",
   "object-src 'none'",
   "base-uri 'self'",
   "frame-ancestors 'self'",
@@ -184,6 +177,10 @@ function allowTelegramFeedRequest(request) {
 // hammering it directly through this proxy.
 function allowProxyRequest(request) {
   return allowRateLimit(proxyRateLimits, request, 60_000, 120);
+}
+
+function allowSiteStatsRequest(request) {
+  return allowRateLimit(siteStatsRateLimits, request, 60_000, 60);
 }
 
 async function readRequestBody(request, maxBytes = 100_000) {
@@ -337,6 +334,11 @@ const server = createServer(async (request, response) => {
     if (pathname.startsWith("/telegram-feed")) {
       if (!allowTelegramFeedRequest(request)) return sendJson(response, 429, { error: "Too many requests. Please try again shortly." });
       const handled = await handleTelegramFeedRequest(request, response);
+      if (handled) return;
+    }
+    if (pathname.startsWith("/site-stats/")) {
+      if (!allowSiteStatsRequest(request)) return sendJson(response, 429, { error: "Too many requests. Please try again shortly." });
+      const handled = await handleSiteStatsRequest(request, response);
       if (handled) return;
     }
     if (pathname.startsWith("/v1/") || pathname.startsWith("/uploads/")) {

@@ -1,20 +1,16 @@
 import { useNavigate, type NavigateFunction } from "react-router-dom";
 import { useLocation, useRoutes } from "react-router-dom";
-import { createElement, Suspense, useEffect, useRef } from "react";
+import { createElement, Suspense, useEffect } from "react";
 import routes from "./config";
+import { recordPageView } from "@/lib/siteStats";
 
 let navigateResolver: (navigate: ReturnType<typeof useNavigate>) => void;
 
 declare global {
   interface Window {
     REACT_APP_NAVIGATE: ReturnType<typeof useNavigate>;
-    // Yandex.Metrika's own global, set by the snippet in index.html — undefined if
-    // that script hasn't loaded yet (or was blocked by an ad-blocker).
-    ym?: (counterId: number, action: string, ...args: unknown[]) => void;
   }
 }
-
-const YANDEX_METRIKA_COUNTER_ID = 112354359;
 
 export const navigatePromise = new Promise<NavigateFunction>((resolve) => {
   navigateResolver = resolve;
@@ -36,16 +32,12 @@ export function AppRoutes() {
     navigateResolver(window.REACT_APP_NAVIGATE);
   });
 
-  // The Metrika snippet's own automatic hit only covers the initial full page load —
-  // client-side route changes need their own "hit" call, or everything past the first
-  // page a visitor lands on goes untracked.
-  const isFirstRender = useRef(true);
+  // Every route change is a "page view" — including the very first one, unlike a
+  // typical third-party analytics snippet where the initial hit fires on its own.
+  // Admin's own navigation while managing content isn't a real visit, so it's excluded.
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
-    window.ym?.(YANDEX_METRIKA_COUNTER_ID, "hit", pathname);
+    if (pathname.startsWith("/admin")) return;
+    recordPageView(pathname);
   }, [pathname]);
 
   useEffect(() => {

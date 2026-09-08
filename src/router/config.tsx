@@ -39,6 +39,7 @@ const VerifyEmailPage = lazy(() => import("../pages/auth/verify-email/page"));
 const AdminLayout = lazy(() => import("../admin/AdminLayout"));
 const AdminLoginPage = lazy(() => import("../admin/pages/AdminLoginPage"));
 const AdminDashboard = lazy(() => import("../admin/pages/AdminDashboard"));
+const AdminStatistics = lazy(() => import("../admin/pages/AdminStatistics"));
 const NewsListPage = lazy(() => import("../admin/pages/news/NewsListPage"));
 const NewsFormPage = lazy(() => import("../admin/pages/news/NewsFormPage"));
 const PagesListPage = lazy(() => import("../admin/pages/pages/PagesListPage"));
@@ -110,6 +111,7 @@ const routes: RouteObject[] = [
         element: <AdminLayout />,
         children: [
           { index: true, element: <AdminDashboard /> },
+          { path: "statistics", element: <AdminStatistics /> },
           { path: "news", element: <NewsListPage /> },
           { path: "news/new", element: <NewsFormPage /> },
           { path: "news/:id", element: <NewsFormPage /> },

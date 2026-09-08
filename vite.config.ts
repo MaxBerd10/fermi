@@ -4,6 +4,7 @@ import { resolve } from "node:path";
 import AutoImport from "unplugin-auto-import/vite";
 import { fjstiAiPlugin } from "./server/vite-ai-plugin.mjs";
 import { fjstiTelegramPlugin } from "./server/vite-telegram-plugin.mjs";
+import { fjstiSiteStatsPlugin } from "./server/vite-site-stats-plugin.mjs";
 // import { readdyJsxRuntimeProxyPlugin } from "./vite.jsx-runtime-proxy";
 
 const base = process.env.BASE_PATH || "/";
@@ -29,6 +30,7 @@ export default defineConfig(({ mode }) => {
     // ...proxyPlugins,
     fjstiAiPlugin({ apiKey: openAiKey, model: String(env.OPENAI_MODEL || env.VITE_OPENAI_MODEL || "gpt-4o-mini") }),
     fjstiTelegramPlugin({ apiKey: openAiKey, model: String(env.OPENAI_MODEL || env.VITE_OPENAI_MODEL || "gpt-4o-mini") }),
+    fjstiSiteStatsPlugin(),
     react(),
     AutoImport({
       imports: [

@@ -13,6 +13,7 @@ const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
     label: "",
     items: [
       { to: "/admin", label: "Boshqaruv paneli", icon: "ri-dashboard-line" },
+      { to: "/admin/statistics", label: "Statistika", icon: "ri-bar-chart-2-line" },
       { to: "/admin/menu-tree", label: "Menyu daraxti", icon: "ri-list-check-2" },
       { to: "/admin/users", label: "Foydalanuvchilar", icon: "ri-user-settings-line" },
     ],
