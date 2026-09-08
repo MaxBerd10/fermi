@@ -12,9 +12,34 @@ const statsFilePath = resolve(dataDir, "site-stats.json");
 
 const MAX_PATH_LENGTH = 200;
 const MAX_TRACKED_PATHS = 500; // caps unbounded growth from bogus/scanner traffic
+const UZBEKISTAN_TIME_ZONE = "Asia/Tashkent";
+const TASHKENT_DATE_PARTS = new Intl.DateTimeFormat("en-CA", {
+  timeZone: UZBEKISTAN_TIME_ZONE,
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+  hour: "2-digit",
+  hourCycle: "h23",
+});
 
 function emptyStats() {
-  return { total: 0, byDate: {}, byPath: {} };
+  return {
+    total: 0,
+    byDate: {},
+    byPath: {},
+    byHour: {},
+    byDevice: {},
+    bySource: {},
+  };
+}
+
+function numericMap(value) {
+  if (!value || typeof value !== "object") return {};
+  return Object.fromEntries(
+    Object.entries(value)
+      .filter(([, count]) => Number.isFinite(Number(count)) && Number(count) > 0)
+      .map(([key, count]) => [key, Number(count)]),
+  );
 }
 
 function loadStats() {
@@ -23,8 +48,11 @@ function loadStats() {
     const parsed = JSON.parse(raw);
     return {
       total: Number(parsed.total) || 0,
-      byDate: parsed.byDate && typeof parsed.byDate === "object" ? parsed.byDate : {},
-      byPath: parsed.byPath && typeof parsed.byPath === "object" ? parsed.byPath : {},
+      byDate: numericMap(parsed.byDate),
+      byPath: numericMap(parsed.byPath),
+      byHour: numericMap(parsed.byHour),
+      byDevice: numericMap(parsed.byDevice),
+      bySource: numericMap(parsed.bySource),
     };
   } catch {
     return emptyStats();
@@ -42,8 +70,21 @@ function persist() {
   }
 }
 
-function todayKey() {
-  return new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"
+function tashkentParts(date = new Date()) {
+  return Object.fromEntries(
+    TASHKENT_DATE_PARTS.formatToParts(date)
+      .filter((part) => part.type !== "literal")
+      .map((part) => [part.type, part.value]),
+  );
+}
+
+function todayKey(date = new Date()) {
+  const parts = tashkentParts(date);
+  return `${parts.year}-${parts.month}-${parts.day}`;
+}
+
+function tashkentHour(date = new Date()) {
+  return tashkentParts(date).hour;
 }
 
 function normalizePath(rawPath) {
@@ -52,13 +93,41 @@ function normalizePath(rawPath) {
   return trimmed.slice(0, MAX_PATH_LENGTH);
 }
 
-export function recordHit(rawPath) {
+function deviceFromUserAgent(userAgent) {
+  const ua = String(userAgent || "").toLowerCase();
+  if (!ua) return "other";
+  if (/ipad|tablet|kindle|silk\//.test(ua)) return "tablet";
+  if (/mobi|android|iphone|ipod/.test(ua)) return "mobile";
+  return "desktop";
+}
+
+function sourceFromReferer(referer) {
+  const value = String(referer || "").toLowerCase();
+  // Empty (typed URL, bookmark, most apps) or the site linking to itself (a full
+  // reload from one fermi.uz page to another) both mean "nothing external sent them" —
+  // neither is a real referral.
+  if (!value || value.includes("fermi.uz")) return "direct";
+  if (/google\.|bing\.|yandex\.|yahoo\.|duckduckgo\.|search\.brave\.com/.test(value)) return "search";
+  if (/telegram\.|t\.me|instagram\.|facebook\.|fb\.com|youtube\.|linkedin\.|tiktok\.|twitter\.|x\.com/.test(value)) return "social";
+  return "referral";
+}
+
+export function recordHit(rawPath, requestMeta = {}) {
   const path = normalizePath(rawPath);
   if (!path) return false;
 
   stats.total += 1;
   const date = todayKey();
   stats.byDate[date] = (stats.byDate[date] || 0) + 1;
+
+  const hourKey = `${date}-${tashkentHour()}`;
+  stats.byHour[hourKey] = (stats.byHour[hourKey] || 0) + 1;
+
+  const device = deviceFromUserAgent(requestMeta.userAgent);
+  stats.byDevice[device] = (stats.byDevice[device] || 0) + 1;
+
+  const source = sourceFromReferer(requestMeta.referer);
+  stats.bySource[source] = (stats.bySource[source] || 0) + 1;
 
   const alreadyTracked = Object.prototype.hasOwnProperty.call(stats.byPath, path);
   if (alreadyTracked || Object.keys(stats.byPath).length < MAX_TRACKED_PATHS) {
@@ -73,23 +142,20 @@ export function recordHit(rawPath) {
 // offset n = the equal-length window immediately before that one (for "vs last week" deltas).
 function sumWindow(n, offset) {
   let sum = 0;
-  const cursor = new Date();
-  cursor.setDate(cursor.getDate() - offset);
   for (let i = 0; i < n; i++) {
-    const key = cursor.toISOString().slice(0, 10);
+    const key = dayKeyOffset(offset + i);
     sum += stats.byDate[key] || 0;
-    cursor.setDate(cursor.getDate() - 1);
   }
   return sum;
 }
 
 function dayKeyOffset(daysAgo) {
-  const d = new Date();
-  d.setDate(d.getDate() - daysAgo);
-  return d.toISOString().slice(0, 10);
+  return todayKey(new Date(Date.now() - daysAgo * 86_400_000));
 }
 
 const DAILY_SERIES_LENGTH = 30;
+const DEVICE_KEYS = ["desktop", "mobile", "tablet", "other"];
+const SOURCE_KEYS = ["direct", "search", "social", "referral"];
 
 export function getStatsSummary() {
   const dailySeries = [];
@@ -109,6 +175,11 @@ export function getStatsSummary() {
   );
   const trackedDaysCount = Object.keys(stats.byDate).length || 1;
   const avgPerDay = Math.round((stats.total / trackedDaysCount) * 10) / 10;
+  const today = todayKey();
+  const hourlyActivity = Array.from({ length: 24 }, (_, hour) => ({
+    hour: String(hour).padStart(2, "0"),
+    count: stats.byHour[`${today}-${String(hour).padStart(2, "0")}`] || 0,
+  }));
 
   return {
     total: stats.total,
@@ -123,6 +194,9 @@ export function getStatsSummary() {
     peakDay,
     dailySeries,
     topPages,
+    hourlyActivity,
+    devices: DEVICE_KEYS.map((key) => ({ key, count: stats.byDevice[key] || 0 })),
+    trafficSources: SOURCE_KEYS.map((key) => ({ key, count: stats.bySource[key] || 0 })),
   };
 }
 
@@ -151,7 +225,13 @@ export async function handleSiteStatsRequest(request, response) {
     try {
       const raw = await readRequestBody(request);
       const body = raw.length ? JSON.parse(raw.toString("utf8")) : {};
-      const ok = recordHit(body.path);
+      const ok = recordHit(body.path, {
+        userAgent: request.headers["user-agent"],
+        // From the client's own document.referrer (see src/lib/siteStats.ts), not the
+        // HTTP Referer header on this request — that header is always fermi.uz itself,
+        // since this POST is same-origin regardless of how the visitor actually arrived.
+        referer: body.referrer,
+      });
       if (ok) {
         response.statusCode = 204;
         response.end();
