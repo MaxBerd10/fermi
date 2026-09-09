@@ -126,7 +126,7 @@ export default function NewsAnnouncements() {
                       src={featuredImg}
                       alt={featured.title}
                       className={`w-full h-full group-hover:scale-[1.03] transition-transform duration-500 ${
-                        featured.hasDocument ? "object-contain p-8 bg-white" : "object-cover object-top"
+                        featured.hasDocument || featured.isVideo ? "object-contain p-8 bg-white" : "object-cover object-top"
                       }`}
                       loading="lazy"
                     />
@@ -180,7 +180,7 @@ export default function NewsAnnouncements() {
                         <img
                           src={thumbImg}
                           alt=""
-                          className={`w-full h-full ${n.hasDocument ? "object-contain p-2 bg-white" : "object-cover object-top"}`}
+                          className={`w-full h-full ${n.hasDocument || n.isVideo ? "object-contain p-2 bg-white" : "object-cover object-top"}`}
                           loading="lazy"
                         />
                       ) : (
