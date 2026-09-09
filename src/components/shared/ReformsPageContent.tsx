@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import PdfDocumentViewer from "@/components/shared/PdfDocumentViewer";
 
 export default function ReformsPageContent({ pdfUrl }: { pdfUrl?: string | null }) {
   const { t } = useTranslation();
@@ -24,18 +25,7 @@ export default function ReformsPageContent({ pdfUrl }: { pdfUrl?: string | null 
 
       {pdfUrl && (
         <div className="cms-reforms-pdf">
-          <a
-            href={pdfUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="cms-reforms-pdf__download"
-          >
-            <i className="ri-file-pdf-line" />
-            {t("reforms.downloadFlayer")}
-          </a>
-          <div className="cms-reforms-pdf__frame">
-            <iframe src={pdfUrl} title={t("reforms.pdfTitle")} className="cms-reforms-pdf__iframe" />
-          </div>
+          <PdfDocumentViewer pdfUrl={pdfUrl} title={t("reforms.pdfTitle")} />
         </div>
       )}
     </div>

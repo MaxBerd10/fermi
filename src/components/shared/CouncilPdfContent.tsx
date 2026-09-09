@@ -1,5 +1,11 @@
-import { useTranslation } from "react-i18next";
+import PdfDocumentViewer from "@/components/shared/PdfDocumentViewer";
 
+// Was its own standalone <iframe src={pdfUrl}> (always the direct/native renderer,
+// no gview option) — the same "Password required" failure PdfDocumentViewer's default
+// was reverted away from (see its own comment) applied here too, with no toggle
+// available to work around it. Delegating to PdfDocumentViewer gets the same safe
+// gview-by-default behavior (plus the alternate-viewer toggle) for every page that
+// used this component, instead of maintaining two slightly different PDF embeds.
 export default function CouncilPdfContent({
   pdfUrl,
   title,
@@ -9,22 +15,5 @@ export default function CouncilPdfContent({
   title?: string;
   compact?: boolean;
 }) {
-  const { t } = useTranslation();
-
-  return (
-    <div className={`cms-council-pdf${compact ? " cms-council-pdf--compact" : ""}`}>
-      <a
-        href={pdfUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="cms-council-pdf__download"
-      >
-        <i className="ri-file-pdf-line" aria-hidden />
-        {t("council.downloadPdf")}
-      </a>
-      <div className="cms-council-pdf__frame">
-        <iframe src={pdfUrl} title={title ?? t("council.pdfViewerTitle")} className="cms-council-pdf__iframe" />
-      </div>
-    </div>
-  );
+  return <PdfDocumentViewer pdfUrl={pdfUrl} title={title} compact={compact} />;
 }
