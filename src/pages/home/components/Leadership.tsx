@@ -36,7 +36,45 @@ export default function Leadership() {
       });
   }, []);
 
-  if (!rector) return null;
+  // Skeleton instead of `return null` — same CLS reasoning as NewsAnnouncements.tsx.
+  if (!rector) {
+    return (
+      <section className="relative py-4 md:py-5 bg-[#0a1158] overflow-hidden" aria-hidden="true">
+        <div className="section-container relative z-10">
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-4">
+            <div className="max-w-2xl space-y-2">
+              <div className="h-3 w-28 rounded-full bg-white/10 animate-pulse" />
+              <div className="h-6 w-56 rounded-md bg-white/10 animate-pulse" />
+            </div>
+            <div className="h-8 w-32 rounded-full bg-white/10 animate-pulse" />
+          </div>
+
+          <div className="border border-white/10">
+            <div className="grid lg:grid-cols-12 gap-0">
+              <div className="lg:col-span-5 min-h-[220px] sm:min-h-[260px] lg:min-h-[320px] bg-white/5 animate-pulse" />
+              <div className="lg:col-span-7 min-h-[220px] sm:min-h-[260px] lg:min-h-[320px] p-4 md:p-5 space-y-3">
+                <div className="h-3 w-24 rounded-full bg-white/10 animate-pulse" />
+                <div className="h-6 w-2/3 rounded-md bg-white/10 animate-pulse" />
+                <div className="h-3.5 w-1/2 rounded-md bg-white/10 animate-pulse" />
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/10 border border-white/10">
+            {Array.from({ length: 4 }, (_, i) => (
+              <div key={i} className="flex items-center gap-3 px-3 py-3 h-full bg-[#0a1158]">
+                <div className="w-11 h-11 rounded-full bg-white/10 animate-pulse shrink-0" />
+                <div className="flex-1 space-y-1.5">
+                  <div className="h-3 w-3/4 rounded-md bg-white/10 animate-pulse" />
+                  <div className="h-3 w-1/2 rounded-md bg-white/10 animate-pulse" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   const highlights = [
     t("leadership.highlight1"),

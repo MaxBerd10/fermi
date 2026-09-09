@@ -32,7 +32,27 @@ export default function About() {
     });
   }, []);
 
-  if (!about) return null;
+  // Skeleton instead of `return null` — same CLS reasoning as NewsAnnouncements.tsx:
+  // this section always has content, so treating "not loaded yet" as "still loading"
+  // and reserving its real shape avoids a jump when getHomeData() resolves.
+  if (!about) {
+    return (
+      <section className="py-5 md:py-6 bg-transparent overflow-hidden border-t border-[#e5e5e5]/60" aria-hidden="true">
+        <div className="section-container grid lg:grid-cols-12 gap-5 lg:gap-8 lg:items-stretch">
+          <div className="lg:col-span-5 flex flex-col justify-start space-y-3">
+            <div className="h-3 w-32 rounded-full bg-[#e5e5e5] animate-pulse" />
+            <div className="h-6 w-3/4 rounded-md bg-[#e5e5e5] animate-pulse" />
+            <div className="h-3.5 w-full rounded-md bg-[#e5e5e5] animate-pulse" />
+            <div className="h-3.5 w-11/12 rounded-md bg-[#e5e5e5] animate-pulse" />
+            <div className="h-3.5 w-4/5 rounded-md bg-[#e5e5e5] animate-pulse" />
+          </div>
+          <div className="lg:col-span-7 w-full">
+            <div className="w-full aspect-[16/10] rounded-2xl bg-[#e5e5e5] animate-pulse" />
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   const fullText = stripHtml(about.content);
   const maxLen = 720;

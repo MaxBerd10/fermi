@@ -82,7 +82,55 @@ export default function NewsAnnouncements() {
     };
   }, [i18n.language]);
 
-  if (news.length === 0) return null;
+  // A skeleton, not `return null`, while news.length is still 0 (either genuinely
+  // loading, or briefly before the first paint() call resolves) — this section
+  // realistically never stays empty (both CMS and Telegram feed the institute
+  // actively uses), so treating "empty" as "still loading" is safe. Rendering
+  // nothing here reserved zero height, so everything below it (About, Gallery,
+  // Leadership, OurProjects, Footer) jumped down the moment real content arrived —
+  // a large, real layout shift a Lighthouse audit caught (CLS regression). This
+  // skeleton mirrors the real grid's shape/sizes so that jump doesn't happen.
+  if (news.length === 0) {
+    return (
+      <section className="py-5 md:py-6 bg-transparent" aria-hidden="true">
+        <div className="section-container">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-2 mb-4">
+            <div className="space-y-2">
+              <div className="h-3 w-24 rounded-full bg-[#e5e5e5] animate-pulse" />
+              <div className="h-6 w-48 rounded-md bg-[#e5e5e5] animate-pulse" />
+            </div>
+            <div className="h-9 w-28 rounded-full bg-[#e5e5e5] animate-pulse" />
+          </div>
+
+          <div className="grid lg:grid-cols-12 gap-4 lg:gap-5 lg:items-stretch">
+            <div className="lg:col-span-7 h-full rounded-[1.35rem] overflow-hidden bg-white/95 border border-[#e5e5e5]/80">
+              <div className="aspect-[16/9] bg-[#e5e5e5] animate-pulse" />
+              <div className="p-4 md:p-5 space-y-3">
+                <div className="h-4 w-24 rounded-full bg-[#e5e5e5] animate-pulse" />
+                <div className="h-5 w-4/5 rounded-md bg-[#e5e5e5] animate-pulse" />
+                <div className="h-4 w-full rounded-md bg-[#e5e5e5] animate-pulse" />
+              </div>
+            </div>
+
+            <div className="lg:col-span-5 flex flex-col gap-2.5 h-full">
+              {Array.from({ length: 5 }, (_, i) => (
+                <div
+                  key={i}
+                  className="flex gap-3 h-full min-h-[4.5rem] p-3 rounded-2xl bg-white/95 border border-[#e5e5e5]/80"
+                >
+                  <div className="w-20 h-full min-h-[4.25rem] max-h-24 rounded-xl bg-[#e5e5e5] animate-pulse shrink-0" />
+                  <div className="flex-1 space-y-2 py-1">
+                    <div className="h-3.5 w-full rounded-md bg-[#e5e5e5] animate-pulse" />
+                    <div className="h-3.5 w-2/3 rounded-md bg-[#e5e5e5] animate-pulse" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   // Text-only announcements are still shown in the list, but the large card
   // should always prefer a usable image so it never renders as a blank block.

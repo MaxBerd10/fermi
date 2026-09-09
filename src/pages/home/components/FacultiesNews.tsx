@@ -59,7 +59,37 @@ export default function FacultiesNews() {
     });
   }, []);
 
-  if (faculties.length === 0) return null;
+  // Skeleton instead of `return null` — same CLS reasoning as NewsAnnouncements.tsx.
+  if (faculties.length === 0) {
+    return (
+      <section className="py-5 md:py-6 bg-transparent overflow-hidden border-t border-[#e5e5e5]/60" aria-hidden="true">
+        <div className="section-container relative z-10">
+          <div className="grid lg:grid-cols-12 gap-5 lg:gap-6 lg:items-stretch">
+            <div className="lg:col-span-4 h-full flex flex-col gap-4">
+              <div className="space-y-2.5">
+                <div className="h-3 w-24 rounded-full bg-[#e5e5e5] animate-pulse" />
+                <div className="h-6 w-3/4 rounded-md bg-[#e5e5e5] animate-pulse" />
+                <div className="h-3.5 w-full rounded-md bg-[#e5e5e5] animate-pulse" />
+                <div className="h-3.5 w-4/5 rounded-md bg-[#e5e5e5] animate-pulse" />
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <div className="h-14 rounded-xl bg-[#e5e5e5] animate-pulse" />
+                <div className="h-14 rounded-xl bg-[#e5e5e5] animate-pulse" />
+              </div>
+              <div className="h-10 w-32 rounded-full bg-[#e5e5e5] animate-pulse" />
+            </div>
+            <div className="lg:col-span-8 h-full">
+              <div className="grid sm:grid-cols-2 gap-2.5 h-full content-stretch">
+                {Array.from({ length: 6 }, (_, i) => (
+                  <div key={i} className="h-24 rounded-2xl bg-[#e5e5e5] animate-pulse" />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   const facultyRows = faculties.slice(0, 4);
   const rows: Row[] = facultyRows.map((f, i) => ({
