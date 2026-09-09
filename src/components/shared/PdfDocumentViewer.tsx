@@ -17,13 +17,15 @@ export default function PdfDocumentViewer({
   interactive?: boolean;
 }) {
   const { t } = useTranslation();
-  // Default to the browser's own PDF renderer, not Google's gview proxy: gview has to
-  // download the entire document server-side before it can show anything, while a
-  // direct <iframe src={pdfUrl}> lets the browser use HTTP range requests (the uploads
-  // location already serves `accept-ranges: bytes`) to paint the first page almost
-  // immediately even for a large multi-page scan. gview stays one click away via the
-  // switch button below, for the rare browser that can't render a PDF inline.
-  const [useDirect, setUseDirect] = useState(true);
+  // Reverted to gview as the default (see git history for the direct-iframe attempt):
+  // some documents on this site are saved with an owner/permissions password (common
+  // from "export as read-only" in Word etc.) — gview apparently ignores that and
+  // renders them fine, but a browser's native PDF viewer treats it the same as a real
+  // open-password and blocks the whole document behind a "Password required" prompt.
+  // That's a worse failure than gview's slower load, and there's no reliable way to
+  // detect it from here (cross-origin iframe content can't be inspected) and
+  // auto-fall-back — so direct mode stays available via the switch button, not default.
+  const [useDirect, setUseDirect] = useState(false);
 
   const embedSrc = useMemo(
     () => (useDirect ? `${pdfUrl}#toolbar=1&navpanes=0&view=FitH` : buildGviewUrl(pdfUrl)),
