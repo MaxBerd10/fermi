@@ -8,6 +8,7 @@ import { configureTelegramFeed, handleTelegramFeedRequest } from "./telegram-fee
 import { handleSiteStatsRequest } from "./site-stats.mjs";
 import { startTelegramMediaCache, handleTelegramMediaRequest } from "./telegram-media-cache.mjs";
 import { handleImageProxyRequest } from "./image-proxy.mjs";
+import { handlePdfCheckRequest } from "./pdf-check.mjs";
 
 const rootDir = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const distDir = resolve(rootDir, "out");
@@ -87,6 +88,7 @@ const imentorRateLimits = new Map();
 const telegramRateLimits = new Map();
 const telegramMediaRateLimits = new Map();
 const imageProxyRateLimits = new Map();
+const pdfCheckRateLimits = new Map();
 const proxyRateLimits = new Map();
 const siteStatsRateLimits = new Map();
 
@@ -191,6 +193,10 @@ function allowTelegramMediaRequest(request) {
 // already-resized telegram-media route above.
 function allowImageProxyRequest(request) {
   return allowRateLimit(imageProxyRateLimits, request, 60_000, 180);
+}
+
+function allowPdfCheckRequest(request) {
+  return allowRateLimit(pdfCheckRateLimits, request, 60_000, 60);
 }
 
 // General ceiling on the pass-through to the real backend API/DB — loose enough
@@ -370,6 +376,11 @@ const server = createServer(async (request, response) => {
     if (pathname.startsWith("/img-cache")) {
       if (!allowImageProxyRequest(request)) return sendJson(response, 429, { error: "Too many requests. Please try again shortly." });
       const handled = await handleImageProxyRequest(request, response);
+      if (handled) return;
+    }
+    if (pathname.startsWith("/pdf-check")) {
+      if (!allowPdfCheckRequest(request)) return sendJson(response, 429, { error: "Too many requests. Please try again shortly." });
+      const handled = await handlePdfCheckRequest(request, response);
       if (handled) return;
     }
     if (pathname.startsWith("/v1/") || pathname.startsWith("/uploads/")) {

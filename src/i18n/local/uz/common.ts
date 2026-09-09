@@ -455,6 +455,7 @@ export default {
   "journal.openPdfNewTab": "PDF ni yangi oynada ochish",
   "journal.pdfClickToView": "PDF ni toʻliq koʻrish uchun bosing",
   "journal.pdfAltViewer": "Boshqa koʻrish rejimi",
+  "journal.pdfPreparing": "Hujjat tayyorlanmoqda…",
   "journal.about.title": "Klinik va profilaktik tibbiyot jurnali (JCPM)",
   "journal.about.lead": "JCPM — Oʻzbekiston va xorijiy mualliflarning ilmiy maqolalarini nashr etadigan, OAK roʻyxatidagi va Scopus indekslangan xalqaro retsenziyalanadigan jurnal. Jurnal jamoat salomatligi, klinik va profilaktik tibbiyot, epidemiologiya hamda tibbiy taʻlim sohalaridagi zamonaviy tadqiqotlarni qamrab oladi.",
   "journal.about.statName": "Jurnal nomi",

@@ -7,6 +7,7 @@ import { fjstiTelegramPlugin } from "./server/vite-telegram-plugin.mjs";
 import { fjstiSiteStatsPlugin } from "./server/vite-site-stats-plugin.mjs";
 import { fjstiTelegramMediaPlugin } from "./server/vite-telegram-media-plugin.mjs";
 import { fjstiImageProxyPlugin } from "./server/vite-image-proxy-plugin.mjs";
+import { fjstiPdfCheckPlugin } from "./server/vite-pdf-check-plugin.mjs";
 // import { readdyJsxRuntimeProxyPlugin } from "./vite.jsx-runtime-proxy";
 
 const base = process.env.BASE_PATH || "/";
@@ -35,6 +36,7 @@ export default defineConfig(({ mode }) => {
     fjstiSiteStatsPlugin(),
     fjstiTelegramMediaPlugin(),
     fjstiImageProxyPlugin(),
+    fjstiPdfCheckPlugin(),
     react(),
     AutoImport({
       imports: [

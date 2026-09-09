@@ -455,6 +455,7 @@ export default {
   "journal.openPdfNewTab": "Open PDF in a new tab",
   "journal.pdfClickToView": "Click to view the full PDF",
   "journal.pdfAltViewer": "Alternative viewer",
+  "journal.pdfPreparing": "Preparing document…",
   "journal.about.title": "Journal of Clinical and Preventive Medicine (JCPM)",
   "journal.about.lead": "JCPM is an international peer-reviewed journal listed by the national agency and indexed in Scopus. It publishes research from Uzbek and international authors in public health, clinical and preventive medicine, epidemiology, and medical education.",
   "journal.about.statName": "Journal name",
