@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import KongressHero from "@/components/shared/KongressHero";
+import { optimizedImageUrl } from "@/lib/imageProxy";
 import PdfDocumentViewer from "@/components/shared/PdfDocumentViewer";
 import {
   getKongressHeroConfig,
@@ -85,7 +86,7 @@ function EventBlock({ block }: { block: KongressEventBlock }) {
 
       {block.bannerImage && (
         <figure className="cms-kongress__banner">
-          <img src={block.bannerImage} alt={t(block.titleKey)} loading="lazy" />
+          <img src={optimizedImageUrl(block.bannerImage, 1200)} alt={t(block.titleKey)} loading="lazy" />
         </figure>
       )}
 
@@ -93,7 +94,7 @@ function EventBlock({ block }: { block: KongressEventBlock }) {
         <ul className="cms-kongress__gallery">
           {block.galleryImages.map((src) => (
             <li key={src} className="cms-kongress__gallery-item">
-              <img src={src} alt="" loading="lazy" />
+              <img src={optimizedImageUrl(src, 480)} alt="" loading="lazy" />
             </li>
           ))}
         </ul>
@@ -175,7 +176,7 @@ export default function KongressPageContent({
         <div className="cms-kongress">
           {parsed.heroImage && (
             <figure className="cms-kongress__hero-image">
-              <img src={parsed.heroImage} alt={title} loading="eager" />
+              <img src={optimizedImageUrl(parsed.heroImage, 1200)} alt={title} loading="eager" />
             </figure>
           )}
 

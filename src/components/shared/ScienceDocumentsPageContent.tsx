@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import PdfDocumentViewer from "@/components/shared/PdfDocumentViewer";
 import { parseScienceDocumentsContent, type ScienceDocument } from "@/lib/parseScienceDocumentsContent";
+import { optimizedImageUrl } from "@/lib/imageProxy";
 
 function DocumentRow({
   doc,
@@ -55,7 +56,7 @@ export default function ScienceDocumentsPageContent({
     <div className="cms-science cms-science--documents">
       {parsed.coverImage && (
         <figure className="cms-science__cover">
-          <img src={parsed.coverImage} alt="" loading="lazy" />
+          <img src={optimizedImageUrl(parsed.coverImage, 1200)} alt="" loading="lazy" />
         </figure>
       )}
 

@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import PdfDocumentViewer from "@/components/shared/PdfDocumentViewer";
+import { optimizedImageUrl } from "@/lib/imageProxy";
 import {
   parseCouncilDecisionsContent,
   type CouncilDecisionItem,
@@ -61,7 +62,7 @@ export default function CouncilDecisionsPageContent({
     <div className="cms-science cms-science--decisions">
       {parsed.coverImage && (
         <figure className="cms-science__cover">
-          <img src={parsed.coverImage} alt={t("science.councilCoverAlt")} loading="lazy" />
+          <img src={optimizedImageUrl(parsed.coverImage, 1200)} alt={t("science.councilCoverAlt")} loading="lazy" />
         </figure>
       )}
 

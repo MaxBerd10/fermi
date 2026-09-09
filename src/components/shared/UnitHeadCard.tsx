@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import type { Leader } from "@/types/content";
 import LeaderRichContent from "@/components/shared/LeaderRichContent";
+import { optimizedImageUrl } from "@/lib/imageProxy";
 import {
   cleanPhoneForTel,
   displayLeaderText,
@@ -59,7 +60,7 @@ export default function UnitHeadCard({
       <div className="unit-head__summary">
         <div className="unit-head__portrait">
           {leader.photo && !isDefaultPhoto ? (
-            <img src={leader.photo} alt={leader.name} className="unit-head__photo" loading="lazy" />
+            <img src={optimizedImageUrl(leader.photo, 480)} alt={leader.name} className="unit-head__photo" loading="lazy" />
           ) : (
             <div className="unit-head__photo-placeholder" aria-hidden>
               <i className="ri-user-3-line" />

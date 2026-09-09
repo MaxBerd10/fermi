@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import PdfDocumentViewer from "@/components/shared/PdfDocumentViewer";
+import { optimizedImageUrl } from "@/lib/imageProxy";
 
 function extractJournalCover(html: string): { image: string | null; issueUrl: string | null } {
   const imgMatch = html.match(/<img[^>]+src=["']([^"']+)["']/i);
@@ -28,10 +29,10 @@ export default function ScienceJournalHubContent({
         <figure className="cms-science-journal__cover">
           {issueUrl ? (
             <a href={issueUrl} target="_blank" rel="noopener noreferrer">
-              <img src={image} alt={t("science.journalCoverAlt")} loading="lazy" />
+              <img src={optimizedImageUrl(image, 480)} alt={t("science.journalCoverAlt")} loading="lazy" />
             </a>
           ) : (
-            <img src={image} alt={t("science.journalCoverAlt")} loading="lazy" />
+            <img src={optimizedImageUrl(image, 480)} alt={t("science.journalCoverAlt")} loading="lazy" />
           )}
         </figure>
       )}

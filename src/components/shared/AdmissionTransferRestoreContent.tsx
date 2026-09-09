@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { parseTransferRestore } from "@/lib/parseKochirishContent";
 import AdmissionSupplementaryPdf from "@/components/shared/AdmissionSupplementaryPdf";
+import { optimizedImageUrl } from "@/lib/imageProxy";
 import { getKochirishPdfTitleKey } from "@/lib/kochirishSection";
 
 export default function AdmissionTransferRestoreContent({
@@ -18,7 +19,7 @@ export default function AdmissionTransferRestoreContent({
     <div className="cms-science cms-science--kochirish-restore">
       {content.bannerImage && (
         <figure className="cms-kochirish-restore__banner">
-          <img src={content.bannerImage} alt="" loading="lazy" />
+          <img src={optimizedImageUrl(content.bannerImage, 1200)} alt="" loading="lazy" />
         </figure>
       )}
 

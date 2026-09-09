@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import type { Leader } from "@/types/content";
 import { normalizeCmsOrthography } from "@/lib/normalizeCmsText";
 import LeaderRichContent from "@/components/shared/LeaderRichContent";
+import { optimizedImageUrl } from "@/lib/imageProxy";
 
 function displayText(value: string): string {
   return normalizeCmsOrthography(value.replace(/`/g, "'"));
@@ -70,7 +71,7 @@ export default function LeaderFeaturedProfile({
         <div className="leader-featured__portrait">
           {leader.photo ? (
             <img
-              src={leader.photo}
+              src={optimizedImageUrl(leader.photo, 640)}
               alt={leader.name}
               className="leader-featured__photo"
               loading="eager"

@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { parseOrdinaturaReminder } from "@/lib/parseOrdinaturaContent";
 import { getOrdinaturaPdfTitleKey } from "@/lib/parseOrdinaturaContent";
 import AdmissionSupplementaryPdf from "@/components/shared/AdmissionSupplementaryPdf";
+import { optimizedImageUrl } from "@/lib/imageProxy";
 
 export default function AdmissionOrdinaturaReminderContent({
   html,
@@ -16,7 +17,7 @@ export default function AdmissionOrdinaturaReminderContent({
     <div className="cms-science cms-science--ordinatura-reminder">
       {content.bannerImage && (
         <figure className="cms-ordinatura-reminder__banner">
-          <img src={content.bannerImage} alt="" loading="lazy" />
+          <img src={optimizedImageUrl(content.bannerImage, 1200)} alt="" loading="lazy" />
         </figure>
       )}
 

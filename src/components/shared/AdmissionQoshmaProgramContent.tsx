@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { parseQoshmaProgram } from "@/lib/parseQoshmaContent";
+import { optimizedImageUrl } from "@/lib/imageProxy";
 
 export default function AdmissionQoshmaProgramContent({ html }: { html: string }) {
   const { t } = useTranslation();
@@ -10,7 +11,7 @@ export default function AdmissionQoshmaProgramContent({ html }: { html: string }
     <div className="cms-science cms-science--qoshma-program">
       {content.bannerImage && (
         <figure className="cms-qoshma-program__banner">
-          <img src={content.bannerImage} alt="" loading="lazy" />
+          <img src={optimizedImageUrl(content.bannerImage, 1200)} alt="" loading="lazy" />
         </figure>
       )}
 

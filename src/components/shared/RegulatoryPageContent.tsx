@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import PdfDocumentViewer from "@/components/shared/PdfDocumentViewer";
+import { optimizedImageUrl } from "@/lib/imageProxy";
 import {
   buildEducationLawTitle,
   parseRegulatoryContent,
@@ -132,7 +133,7 @@ export default function RegulatoryPageContent({
 
       {parsed.coverImage && (
         <figure className="cms-regulatory__cover">
-          <img src={parsed.coverImage} alt={t("regulatory.coverAlt")} loading="lazy" />
+          <img src={optimizedImageUrl(parsed.coverImage, 1200)} alt={t("regulatory.coverAlt")} loading="lazy" />
         </figure>
       )}
 

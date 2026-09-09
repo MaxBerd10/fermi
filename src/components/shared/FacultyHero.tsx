@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import type { FacultyPageConfig } from "@/lib/facultySection";
+import { optimizedImageUrl } from "@/lib/imageProxy";
 
 export default function FacultyHero({
   title,
@@ -18,7 +19,7 @@ export default function FacultyHero({
         <div className="faculty-hero__brand">
           {logoUrl && (
             <div className="faculty-hero__logo-wrap">
-              <img src={logoUrl} alt={title} className="faculty-hero__logo" loading="eager" />
+              <img src={optimizedImageUrl(logoUrl, 320)} alt={title} className="faculty-hero__logo" loading="eager" />
             </div>
           )}
           <div className="faculty-hero__titles">

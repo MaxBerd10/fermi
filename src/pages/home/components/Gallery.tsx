@@ -5,6 +5,7 @@ import { listGallery } from "@/api/gallery";
 import type { GalleryImage } from "@/types/content";
 import { Reveal } from "@/components/Animation";
 import { CAMPUS_PHOTOS, isHomeSafeImage } from "@/lib/mediaFilter";
+import { optimizedImageUrl } from "@/lib/imageProxy";
 
 type GalleryItem = {
   id: number;
@@ -92,7 +93,7 @@ export default function Gallery() {
                   className="group relative block w-full aspect-[4/3] overflow-hidden rounded-xl bg-background-200 border border-primary-100 cursor-pointer"
                 >
                   <img
-                    src={item.img}
+                    src={optimizedImageUrl(item.img, 480)}
                     alt={item.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"

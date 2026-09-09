@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import PdfDocumentViewer from "@/components/shared/PdfDocumentViewer";
 import { parseNewspaperContent } from "@/lib/parseNewspaperContent";
+import { optimizedImageUrl } from "@/lib/imageProxy";
 import {
   NEWSPAPER_MAIN_SLUG,
   getNewspaperArchiveYear,
@@ -43,7 +44,7 @@ export default function NewspaperPageContent({
 
       {parsed.coverImage && (
         <figure className="cms-newspaper__cover">
-          <img src={parsed.coverImage} alt={t("newspaper.coverAlt")} loading="lazy" />
+          <img src={optimizedImageUrl(parsed.coverImage, 1200)} alt={t("newspaper.coverAlt")} loading="lazy" />
         </figure>
       )}
 

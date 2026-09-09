@@ -13,6 +13,7 @@ import { Reveal } from "@/components/Animation";
 import CertificateGallery from "@/components/shared/CertificateGallery";
 import InstitutSidebar from "@/components/shared/InstitutSidebar";
 import MenuSectionNav from "@/components/shared/MenuSectionNav";
+import { optimizedImageUrl } from "@/lib/imageProxy";
 import NewsSectionNav from "@/components/shared/NewsSectionNav";
 import CouncilSectionNav from "@/components/shared/CouncilSectionNav";
 import JournalSectionNav from "@/components/shared/JournalSectionNav";
@@ -472,7 +473,7 @@ export default function BlogPage() {
                       <div className="flex gap-4 p-4 md:p-5 page-card hover:border-primary-200 transition-all">
                         {l.photo && (
                           <img
-                            src={l.photo}
+                            src={optimizedImageUrl(l.photo, 320)}
                             alt={l.name}
                             className="w-20 h-20 rounded-xl object-cover flex-shrink-0 border border-slate-200"
                           />

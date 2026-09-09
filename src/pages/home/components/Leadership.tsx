@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { getLeaders } from "@/api/leaders";
 import type { Leader } from "@/types/content";
 import { Reveal } from "@/components/Animation";
+import { optimizedImageUrl } from "@/lib/imageProxy";
 
 interface LeadershipCard extends Leader {
   href: string;
@@ -68,7 +69,7 @@ export default function Leadership() {
             <div className="leadership-portrait lg:col-span-5 relative min-h-[220px] sm:min-h-[260px] lg:min-h-[320px] bg-[#070d3d]">
               {rector.photo && (
                 <img
-                  src={rector.photo}
+                  src={optimizedImageUrl(rector.photo, 900)}
                   alt={rector.name}
                   width={800}
                   height={1000}
@@ -133,7 +134,7 @@ export default function Leadership() {
                   <div className="w-11 h-11 overflow-hidden flex-shrink-0 bg-white/5 border border-white/15">
                     {p.photo && (
                       <img
-                        src={p.photo}
+                        src={optimizedImageUrl(p.photo, 200)}
                         alt={p.name}
                         width={88}
                         height={88}

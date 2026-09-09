@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import type { Leader } from "@/types/content";
 import LeaderRichContent from "@/components/shared/LeaderRichContent";
+import { optimizedImageUrl } from "@/lib/imageProxy";
 import {
   cleanPhoneForTel,
   displayLeaderText,
@@ -77,7 +78,7 @@ export default function FacultyLeaderCard({
         <div className="faculty-dean__hero">
           <div className="faculty-dean__portrait">
             {leader.photo ? (
-              <img src={leader.photo} alt={leader.name} className="faculty-dean__photo" loading="eager" />
+              <img src={optimizedImageUrl(leader.photo, 640)} alt={leader.name} className="faculty-dean__photo" loading="eager" />
             ) : (
               <div className="faculty-dean__photo-placeholder" aria-hidden>
                 <i className="ri-user-3-line" />
@@ -153,7 +154,7 @@ export default function FacultyLeaderCard({
       <div className="faculty-deputy__header">
         <div className="faculty-deputy__portrait">
           {leader.photo ? (
-            <img src={leader.photo} alt={leader.name} className="faculty-deputy__photo" loading="lazy" />
+            <img src={optimizedImageUrl(leader.photo, 320)} alt={leader.name} className="faculty-deputy__photo" loading="lazy" />
           ) : (
             <div className="faculty-deputy__photo-placeholder" aria-hidden>
               <i className="ri-user-3-line" />

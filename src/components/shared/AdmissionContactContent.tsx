@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import RichContent from "@/components/shared/RichContent";
 import { enhanceAdmissionHtml } from "@/lib/enhanceAdmissionHtml";
+import { optimizedImageUrl } from "@/lib/imageProxy";
 import { parseAdmissionContact } from "@/lib/parseAdmissionContent";
 
 export default function AdmissionContactContent({ html, slug }: { html: string; slug: string }) {
@@ -14,7 +15,7 @@ export default function AdmissionContactContent({ html, slug }: { html: string; 
     <div className="cms-science cms-science--admission-contact">
       {contact.images[0] && (
         <figure className="cms-admission-contact__banner">
-          <img src={contact.images[0].url} alt="" loading="lazy" />
+          <img src={optimizedImageUrl(contact.images[0].url, 1200)} alt="" loading="lazy" />
         </figure>
       )}
 

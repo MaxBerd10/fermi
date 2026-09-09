@@ -7,6 +7,7 @@ import RichContent from "@/components/shared/RichContent";
 import { Reveal } from "@/components/Animation";
 import { FOUNDED_YEAR } from "@/lib/siteConstants";
 import { usePageMeta } from "@/hooks/usePageMeta";
+import { optimizedImageUrl } from "@/lib/imageProxy";
 
 export default function InstitutPage() {
   const { t } = useTranslation();
@@ -146,7 +147,7 @@ export default function InstitutPage() {
               <div className="relative">
                 <div className="rounded-2xl overflow-hidden border border-background-200/80 shadow-sm">
                   <img
-                    src="https://fjsti.uz/uploads/img/fotogallery/2026/Fon-1.jpg"
+                    src={optimizedImageUrl("https://fjsti.uz/uploads/img/fotogallery/2026/Fon-1.jpg", 900)}
                     alt={t("institut.heroImageAlt")}
                     className="w-full h-52 md:h-72 object-cover"
                   />

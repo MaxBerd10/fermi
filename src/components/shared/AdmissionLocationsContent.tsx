@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { parseAdmissionLocations } from "@/lib/parseOrdinaturaContent";
+import { optimizedImageUrl } from "@/lib/imageProxy";
 
 export default function AdmissionLocationsContent({ html }: { html: string }) {
   const { t } = useTranslation();
@@ -10,7 +11,7 @@ export default function AdmissionLocationsContent({ html }: { html: string }) {
     <div className="cms-science cms-science--admission-locations">
       {content.bannerImage && (
         <figure className="cms-admission-locations__banner">
-          <img src={content.bannerImage} alt="" loading="lazy" />
+          <img src={optimizedImageUrl(content.bannerImage, 1200)} alt="" loading="lazy" />
         </figure>
       )}
 

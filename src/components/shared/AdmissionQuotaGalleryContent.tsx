@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import PdfDocumentViewer from "@/components/shared/PdfDocumentViewer";
 import { parseAdmissionImages } from "@/lib/parseAdmissionContent";
+import { optimizedImageUrl } from "@/lib/imageProxy";
 
 export default function AdmissionQuotaGalleryContent({
   html,
@@ -24,7 +25,7 @@ export default function AdmissionQuotaGalleryContent({
         <div className="cms-admission-gallery">
           {images.map((img) => (
             <figure key={img.url} className="cms-admission-gallery__item">
-              <img src={img.url} alt={img.alt || title || ""} loading="lazy" className="cms-admission-gallery__img" />
+              <img src={optimizedImageUrl(img.url, 640)} alt={img.alt || title || ""} loading="lazy" className="cms-admission-gallery__img" />
             </figure>
           ))}
         </div>

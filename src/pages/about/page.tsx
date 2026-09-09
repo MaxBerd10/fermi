@@ -8,6 +8,7 @@ import PageHeader from "@/components/shared/PageHeader";
 import RichContent from "@/components/shared/RichContent";
 import { Reveal } from "@/components/Animation";
 import { LoadingState, ErrorState } from "@/components/shared/LoadingState";
+import { optimizedImageUrl } from "@/lib/imageProxy";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { stripHtml } from "@/lib/html";
 import { normalizeYearLabels } from "@/lib/siteConstants";
@@ -45,7 +46,7 @@ export default function AboutPage() {
           {about.img && (
             <Reveal>
               <img
-                src={about.img}
+                src={optimizedImageUrl(about.img, 900)}
                 alt={displayTitle}
                 className="w-full h-56 md:h-72 object-cover object-center rounded-2xl mb-6 border border-slate-200 shadow-lg"
               />

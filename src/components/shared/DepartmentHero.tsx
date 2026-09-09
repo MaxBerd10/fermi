@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import type { DepartmentTheme } from "@/lib/departmentSection";
+import { optimizedImageUrl } from "@/lib/imageProxy";
 
 export default function DepartmentHero({
   title,
@@ -20,7 +21,7 @@ export default function DepartmentHero({
         <div className="department-hero__brand">
           {logoUrl && (
             <div className="department-hero__logo-wrap">
-              <img src={logoUrl} alt={title} className="department-hero__logo" loading="eager" />
+              <img src={optimizedImageUrl(logoUrl, 320)} alt={title} className="department-hero__logo" loading="eager" />
             </div>
           )}
           <div className="department-hero__titles">

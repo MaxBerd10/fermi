@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import type { TFunction } from "i18next";
 import { useTranslation } from "react-i18next";
 import { parseBuildingGallery, type BuildingPhoto } from "@/lib/parseBuildingGallery";
+import { optimizedImageUrl } from "@/lib/imageProxy";
 
 function resolveCaption(caption: string, t: TFunction): string {
   if (caption.startsWith("buildings.caption.photo|")) {
@@ -81,7 +82,7 @@ export default function BuildingGalleryContent({
                   aria-label={`${caption} — ${t("buildings.viewFull")}`}
                 >
                   <img
-                    src={photo.src}
+                    src={optimizedImageUrl(photo.src, 480)}
                     alt={caption}
                     loading={i < 4 ? "eager" : "lazy"}
                     decoding="async"
@@ -125,7 +126,7 @@ export default function BuildingGalleryContent({
               <i className="ri-close-line" />
             </button>
             <img
-              src={activeSrc}
+              src={optimizedImageUrl(activeSrc, 1600)}
               alt={resolveCaption(activeItem.caption, t)}
               className="cms-buildings-lightbox__img"
             />

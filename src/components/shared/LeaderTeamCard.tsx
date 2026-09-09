@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import type { Leader } from "@/types/content";
 import { normalizeCmsOrthography } from "@/lib/normalizeCmsText";
 import LeaderRichContent from "@/components/shared/LeaderRichContent";
+import { optimizedImageUrl } from "@/lib/imageProxy";
 
 function displayText(value: string): string {
   return normalizeCmsOrthography(value.replace(/`/g, "'"));
@@ -18,7 +19,7 @@ export default function LeaderTeamCard({ leader, defaultOpen = false }: { leader
       <div className="leader-card__main">
         <div className="leader-card__photo-wrap">
           {leader.photo ? (
-            <img src={leader.photo} alt={leader.name} className="leader-card__photo" loading="lazy" />
+            <img src={optimizedImageUrl(leader.photo, 480)} alt={leader.name} className="leader-card__photo" loading="lazy" />
           ) : (
             <div className="leader-card__photo-placeholder" aria-hidden>
               <i className="ri-user-3-line" />

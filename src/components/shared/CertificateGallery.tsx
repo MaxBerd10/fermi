@@ -5,6 +5,7 @@ import {
   parseImageGallery,
   type GalleryVariant,
 } from "@/lib/parseCertificateGallery";
+import { optimizedImageUrl } from "@/lib/imageProxy";
 
 function introKey(variant: GalleryVariant): string {
   if (variant === "diagram") return "structure.intro";
@@ -68,7 +69,7 @@ export default function CertificateGallery({
         >
           <i className="ri-close-line text-2xl" />
         </button>
-        <img src={activeSrc} alt={activeItem.alt} className="cms-cert-lightbox__img" />
+        <img src={optimizedImageUrl(activeSrc, 1600)} alt={activeItem.alt} className="cms-cert-lightbox__img" />
         <p className="cms-cert-lightbox__caption">{activeItem.caption}</p>
         <a
           href={activeSrc}
@@ -105,7 +106,7 @@ export default function CertificateGallery({
             aria-label={`${item.caption} — ${t("certificates.viewFull")}`}
           >
             <img
-              src={item.src}
+              src={optimizedImageUrl(item.src, 1200)}
               alt={item.alt}
               className={imgClass}
               loading="eager"
@@ -144,7 +145,7 @@ export default function CertificateGallery({
                 aria-label={`${cert.caption} — ${t("certificates.viewFull")}`}
               >
                 <img
-                  src={cert.src}
+                  src={optimizedImageUrl(cert.src, 480)}
                   alt={cert.alt}
                   loading={i < 3 ? "eager" : "lazy"}
                   decoding="async"

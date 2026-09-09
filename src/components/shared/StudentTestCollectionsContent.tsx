@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import PdfDocumentViewer from "@/components/shared/PdfDocumentViewer";
 import { getStudentPageMeta } from "@/lib/studentSection";
+import { optimizedImageUrl } from "@/lib/imageProxy";
 import { parseStudentGroupedDocuments, type StudentDocumentLink } from "@/lib/parseBakalavriatStudentContent";
 
 function DocumentRow({
@@ -73,7 +74,7 @@ export default function StudentTestCollectionsContent({
 
       {parsed.coverImage && (
         <figure className="cms-student__cover">
-          <img src={parsed.coverImage} alt="" loading="lazy" />
+          <img src={optimizedImageUrl(parsed.coverImage, 1200)} alt="" loading="lazy" />
         </figure>
       )}
 

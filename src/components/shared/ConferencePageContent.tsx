@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import PdfDocumentViewer from "@/components/shared/PdfDocumentViewer";
 import { parseConferenceContent, type ConferenceItem } from "@/lib/parseConferenceContent";
+import { optimizedImageUrl } from "@/lib/imageProxy";
 
 function ConferenceCard({
   item,
@@ -72,7 +73,7 @@ export default function ConferencePageContent({
     <div className="cms-conference">
       {parsed.coverImage && (
         <figure className="cms-conference__cover">
-          <img src={parsed.coverImage} alt={t("conference.coverAlt")} loading="lazy" />
+          <img src={optimizedImageUrl(parsed.coverImage, 1200)} alt={t("conference.coverAlt")} loading="lazy" />
         </figure>
       )}
 
