@@ -64,9 +64,18 @@ export function extractFirstImageFromHtml(html: string): string | null {
 }
 
 export function getNewsArticleImage(
-  article: Pick<NewsArticle, "img" | "content" | "hasDocument" | "category">,
+  article: Pick<NewsArticle, "img" | "content" | "hasDocument" | "category" | "isVideo">,
   fallbackIndex = 0,
 ): string {
+  // Telegram never generates a video message's own preview thumbnail above ~180x320,
+  // regardless of the video's actual resolution or how it's fetched (the public t.me/s/
+  // page and the Bot API both cap out there — verified directly, not assumed). Stretched
+  // into a news card/hero image, that reads as broken/blurry rather than "just small", so
+  // video posts skip straight to the clean institute-logo placeholder instead of ever
+  // showing that tiny frame. (Downloading the full video to extract a real frame isn't an
+  // option either — these run 50-60MB, well past the Bot API's 20MB download cap.)
+  if (article.isVideo) return DOCUMENT_PLACEHOLDER_IMAGE;
+
   const fromField = article.img?.trim();
   if (fromField) {
     const resolved = resolveNewsImageUrl(fromField);
