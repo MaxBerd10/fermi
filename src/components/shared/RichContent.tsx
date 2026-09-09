@@ -1,6 +1,7 @@
 ﻿import { useMemo } from "react";
 import DOMPurify from "dompurify";
 import { enhanceCmsHtml } from "@/lib/enhanceCmsHtml";
+import { optimizedImageUrl } from "@/lib/imageProxy";
 
 // This renders CKEditor output from CMS admins, but ALSO `article.content` for
 // Telegram-scraped posts (see DetailPage) — HTML pulled from a public channel's
@@ -26,6 +27,18 @@ DOMPurify.addHook("uponSanitizeElement", (node, data) => {
     allowed = false;
   }
   if (!allowed) el.remove();
+});
+
+// Content-embedded photos (CKEditor inserts, gallery grids inside an article body...)
+// are the same unresized CMS originals as everywhere else — route them through the
+// same resize/compress cache. A generous fixed width covers both a full-width single
+// image and a multi-column grid reasonably well without a per-image size hint (which
+// raw HTML from the CMS doesn't carry).
+DOMPurify.addHook("afterSanitizeAttributes", (node) => {
+  if (node.tagName !== "IMG") return;
+  const el = node as unknown as HTMLImageElement;
+  const src = el.getAttribute?.("src");
+  if (src) el.setAttribute("src", optimizedImageUrl(src, 1200));
 });
 
 function sanitizeHtml(html: string): string {
