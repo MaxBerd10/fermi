@@ -237,7 +237,14 @@ export default function Hero() {
                 {t("hero.headlineAfter")}
               </h1>
 
-              <p className="mt-4 text-sm md:text-[0.98rem] text-[#333333] leading-relaxed max-w-xl">
+              {/* Fixed height + line-clamp regardless of which text is showing: the
+                  fallback (shown on first paint) and the real description (arrives
+                  later from getHomeData(), often a very different length) used to
+                  change this paragraph's height when one replaced the other — and
+                  since this row uses items-center, that height change visibly moved
+                  the whole hero-radar widget next to it. This was the single largest
+                  layout-shift source Lighthouse found (~0.237 of a 0.238 CLS total). */}
+              <p className="mt-4 text-sm md:text-[0.98rem] text-[#333333] leading-relaxed max-w-xl line-clamp-3 min-h-[68px] md:min-h-[77px]">
                 {description || t("hero.fallbackDescription")}
               </p>
               <p className="sr-only">{institute}</p>
