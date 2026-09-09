@@ -62,7 +62,7 @@ export default function FacultiesNews() {
   // Skeleton instead of `return null` — same CLS reasoning as NewsAnnouncements.tsx.
   if (faculties.length === 0) {
     return (
-      <section className="py-5 md:py-6 bg-transparent overflow-hidden border-t border-[#e5e5e5]/60" aria-hidden="true">
+      <section className="py-5 md:py-6 bg-transparent overflow-hidden border-t border-[#e5e5e5]/60 lg:min-h-[748px]" aria-hidden="true">
         <div className="section-container relative z-10">
           <div className="grid lg:grid-cols-12 gap-5 lg:gap-6 lg:items-stretch">
             <div className="lg:col-span-4 h-full flex flex-col gap-4">

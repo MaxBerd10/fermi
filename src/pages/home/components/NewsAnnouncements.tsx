@@ -92,7 +92,11 @@ export default function NewsAnnouncements() {
   // skeleton mirrors the real grid's shape/sizes so that jump doesn't happen.
   if (news.length === 0) {
     return (
-      <section className="py-5 md:py-6 bg-transparent" aria-hidden="true">
+      <section className="py-5 md:py-6 bg-transparent lg:min-h-[745px]" aria-hidden="true">
+        {/* lg:min-h matches the real section's measured height at the desktop width
+            Lighthouse tests at (1350px) — the inner placeholders below approximate the
+            real shape, but this outer height is what actually guarantees nothing below
+            this section moves when real content replaces the skeleton. */}
         <div className="section-container">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-2 mb-4">
             <div className="space-y-2">

@@ -39,7 +39,7 @@ export default function Leadership() {
   // Skeleton instead of `return null` — same CLS reasoning as NewsAnnouncements.tsx.
   if (!rector) {
     return (
-      <section className="relative py-4 md:py-5 bg-[#0a1158] overflow-hidden" aria-hidden="true">
+      <section className="relative py-4 md:py-5 bg-[#0a1158] overflow-hidden lg:min-h-[714px]" aria-hidden="true">
         <div className="section-container relative z-10">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-4">
             <div className="max-w-2xl space-y-2">

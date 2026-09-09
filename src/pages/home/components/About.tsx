@@ -37,7 +37,7 @@ export default function About() {
   // and reserving its real shape avoids a jump when getHomeData() resolves.
   if (!about) {
     return (
-      <section className="py-5 md:py-6 bg-transparent overflow-hidden border-t border-[#e5e5e5]/60" aria-hidden="true">
+      <section className="py-5 md:py-6 bg-transparent overflow-hidden border-t border-[#e5e5e5]/60 lg:min-h-[585px]" aria-hidden="true">
         <div className="section-container grid lg:grid-cols-12 gap-5 lg:gap-8 lg:items-stretch">
           <div className="lg:col-span-5 flex flex-col justify-start space-y-3">
             <div className="h-3 w-32 rounded-full bg-[#e5e5e5] animate-pulse" />
