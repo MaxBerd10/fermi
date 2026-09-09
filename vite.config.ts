@@ -92,7 +92,6 @@ export default defineConfig(({ mode }) => {
   build: {
     sourcemap: false,
     outDir: 'out',
-    cssMinify: false,
   },
   resolve: {
     alias: {

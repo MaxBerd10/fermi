@@ -84,13 +84,6 @@ export default {
         lg: "12px",
         md: "8px",
       },
-      container: {
-        center: true,
-        padding: "1rem",
-        screens: {
-          "2xl": "100%",
-        },
-      },
     },
   },
   plugins: [],
