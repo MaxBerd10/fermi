@@ -118,7 +118,10 @@ const CONTENT_SECURITY_POLICY = [
   "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com",
   "img-src 'self' data: https:",
   "connect-src 'self' https://api.fermi.uz https://api.mymemory.translated.net",
-  "frame-src 'self' https://www.google.com https://docs.google.com https://www.youtube.com",
+  // https://api.fermi.uz added for the direct-PDF-viewer iframe (PdfDocumentViewer.tsx) —
+  // without it the browser silently blocks that iframe outright (no console error a
+  // typical user would notice, it just renders as a dead/broken box).
+  "frame-src 'self' https://www.google.com https://docs.google.com https://www.youtube.com https://api.fermi.uz",
   "object-src 'none'",
   "base-uri 'self'",
   "frame-ancestors 'self'",
