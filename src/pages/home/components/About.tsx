@@ -92,16 +92,18 @@ export default function About() {
           </div>
         </Reveal>
 
-        <Reveal delay={80} variant="right" className="lg:col-span-7 w-full h-full min-h-[280px] sm:min-h-[320px]">
-          <div className="relative w-full h-full min-h-[280px] sm:min-h-[320px] overflow-hidden border border-primary-100 rounded-2xl shadow-[0_12px_36px_rgba(10,17,88,0.08)] bg-background-100">
+        <Reveal delay={80} variant="right" className="lg:col-span-7 w-full lg:self-start">
+          {/* A fixed aspect ratio (rather than stretching to match the text column's
+              height, which varies with how long the About text is) keeps this card a
+              consistent, photo-friendly shape — object-cover then crops only a little
+              off the top/bottom of a typical landscape building shot instead of either
+              slicing off its sides (a too-tall box) or leaving empty letterbox bars
+              (object-contain in a mismatched box). */}
+          <div className="relative w-full aspect-[16/10] overflow-hidden border border-primary-100 rounded-2xl shadow-[0_12px_36px_rgba(10,17,88,0.08)] bg-background-100">
             <img
               src={photo}
               alt={about.title}
-              // `object-cover` on a building-facade photo (wide, mostly-flat aspect) cropped
-              // the sides to fill this card's height-driven-by-text-column box, reading as
-              // an unwanted zoom — `contain` keeps the whole photo, letterboxed on the
-              // surrounding bg instead of losing part of the building.
-              className="absolute inset-0 w-full h-full object-contain object-center"
+              className="absolute inset-0 w-full h-full object-cover object-center"
               onError={() => setImgFailed(true)}
             />
             <div className="absolute left-0 bottom-0 bg-primary-950 px-4 py-2.5 flex items-baseline gap-2">
