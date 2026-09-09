@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 import { Readable } from "node:stream";
 import { configureTelegramFeed, handleTelegramFeedRequest } from "./telegram-feed.mjs";
 import { handleSiteStatsRequest } from "./site-stats.mjs";
+import { startTelegramMediaCache, handleTelegramMediaRequest } from "./telegram-media-cache.mjs";
 
 const rootDir = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const distDir = resolve(rootDir, "out");
@@ -60,6 +61,7 @@ const openAiApiKey = decodeSecret(
 );
 const openAiModel = String(process.env.OPENAI_MODEL || "gpt-4o-mini").trim();
 configureTelegramFeed({ apiKey: openAiApiKey, model: openAiModel });
+startTelegramMediaCache();
 
 const mimeTypes = {
   ".css": "text/css; charset=utf-8",
@@ -82,6 +84,7 @@ const pendingRequests = new Map();
 const aiRateLimits = new Map();
 const imentorRateLimits = new Map();
 const telegramRateLimits = new Map();
+const telegramMediaRateLimits = new Map();
 const proxyRateLimits = new Map();
 const siteStatsRateLimits = new Map();
 
@@ -170,6 +173,12 @@ function allowImentorRequest(request) {
 
 function allowTelegramFeedRequest(request) {
   return allowRateLimit(telegramRateLimits, request, 60_000, 60);
+}
+
+// Cached image files — every visitor's news feed loads several of these per page,
+// so this is deliberately looser than the API-shaped limits above.
+function allowTelegramMediaRequest(request) {
+  return allowRateLimit(telegramMediaRateLimits, request, 60_000, 300);
 }
 
 // General ceiling on the pass-through to the real backend API/DB — loose enough
@@ -339,6 +348,11 @@ const server = createServer(async (request, response) => {
     if (pathname.startsWith("/site-stats/")) {
       if (!allowSiteStatsRequest(request)) return sendJson(response, 429, { error: "Too many requests. Please try again shortly." });
       const handled = await handleSiteStatsRequest(request, response);
+      if (handled) return;
+    }
+    if (pathname.startsWith("/telegram-media/")) {
+      if (!allowTelegramMediaRequest(request)) return sendJson(response, 429, { error: "Too many requests. Please try again shortly." });
+      const handled = await handleTelegramMediaRequest(request, response);
       if (handled) return;
     }
     if (pathname.startsWith("/v1/") || pathname.startsWith("/uploads/")) {

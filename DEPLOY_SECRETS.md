@@ -18,6 +18,23 @@ only hold non-secret config.
 Both files already exist in this repo with the right variable names — they're just
 empty/placeholder for `OPENAI_API_KEY_B64`. Fill in the real key:
 
+## TELEGRAM_BOT_TOKEN (high-res Telegram images — server/telegram-media-cache.mjs)
+
+Same rule as above: only in `.env.production.local` on the server, never committed.
+Set it as a single plain line — no base64 needed:
+
+```
+TELEGRAM_BOT_TOKEN=123456789:AA...your-bot-token...
+```
+
+This must be the same bot that's already an admin/member of the institute's Telegram
+channel (the one previously used for the now-disabled post webhook — same token,
+different use: this only long-polls `getUpdates` to download each post's original
+photo/video-thumbnail file, it never creates or touches a CMS post). Without this
+variable set, the site works exactly as before — it just keeps showing the public
+preview page's lower-quality images, logged once at startup as a warning, nothing
+breaks.
+
 ```bash
 node -e "console.log(Buffer.from('sk-...your-new-key...').toString('base64'))"
 ```

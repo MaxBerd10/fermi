@@ -1,6 +1,7 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { cachedMediaUrlFor } from "./telegram-media-cache.mjs";
 
 const DEFAULT_CHANNEL = "ferghana_medical_institute";
 const CACHE_TTL_MS = 60_000;
@@ -153,6 +154,18 @@ function extractMedia(block) {
   return [...new Set(urls)];
 }
 
+// Swaps in the bot-cached full-resolution file for each scraped image, when one has
+// been downloaded (see telegram-media-cache.mjs) — falls back to the scraped preview
+// URL untouched otherwise, so a cache miss never breaks anything, just misses the
+// quality upgrade. A grouped/album post's photos aren't individually addressable from
+// this public preview page, but Telegram delivers them as separate bot updates at
+// consecutive message ids starting at the post's own id — matching the scraped photo
+// order to `messageId, messageId + 1, messageId + 2, ...` is a safe best-effort: any
+// slot that doesn't line up simply keeps its original (already-correct) low-res URL.
+function withCachedMedia(messageId, media) {
+  return media.map((url, index) => cachedMediaUrlFor(messageId + index) || url);
+}
+
 // Documents (PDFs etc.) render as their own card — icon, filename, size — separate
 // from extractMedia's photo background-images. The link only opens that single
 // message in Telegram (the actual file isn't fetchable from this public preview,
@@ -227,7 +240,7 @@ export function parseTelegramChannelHtml(html, username = channelUsername()) {
 
     const datetime = block.match(/<time[^>]*datetime="([^"]+)"/)?.[1];
     const seen = parseViewsCount(block.match(/tgme_widget_message_views">([^<]+)</)?.[1]);
-    const media = extractMedia(block);
+    const media = withCachedMedia(messageId, extractMedia(block));
     const documents = extractDocuments(block);
     const content = sanitizePostHtml(textHtml);
     const extraImages = media
