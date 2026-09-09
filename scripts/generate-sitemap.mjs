@@ -31,7 +31,14 @@ function isIncludable(path) {
 
 function collectMenuHrefs(nodes, out) {
   for (const node of nodes) {
-    if (isIncludable(node.href)) out.add(node.href.split("?")[0]);
+    // A menu node with no urlValue has no real page of its own — it's a pure
+    // dropdown/category parent (top nav headers like "Institut", or a sidebar section
+    // title) that exists only to hold real children. The backend still returns some
+    // href for it anyway (a "/site/" fallback, a Yii2 default-route convention from
+    // before this frontend replaced the PHP-rendered site) — that's not a page,
+    // submitting it to search engines just gives them a 404 to crawl. Still recurse
+    // into children, which do have real urlValue-backed pages.
+    if (node.urlValue && isIncludable(node.href)) out.add(node.href.split("?")[0]);
     if (node.children?.length) collectMenuHrefs(node.children, out);
   }
 }
