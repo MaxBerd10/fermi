@@ -55,17 +55,26 @@ async function resizeAndCache(src, width) {
     return { buffer, contentType: contentType || "application/octet-stream" };
   }
 
-  let pipeline = sharp(buffer).resize({ width, withoutEnlargement: true });
-  let outContentType = contentType;
-  if (contentType.includes("png")) {
-    pipeline = pipeline.png({ compressionLevel: 9 });
+  const resized = sharp(buffer).resize({ width, withoutEnlargement: true });
+  // A PNG with real transparency needs to stay PNG (JPEG has no alpha channel), but a
+  // huge share of "PNG" uploads here are actually plain photos someone exported/saved
+  // as PNG with no alpha at all — PNG's lossless compression barely helps on
+  // photographic detail, so those came out only marginally smaller than the original
+  // (one real example: a 2.1MB opaque PNG stayed ~600KB after just resizing as PNG).
+  // Checking hasAlpha and only keeping PNG when actually needed gets the same ~10-20x
+  // win JPEG sources already get.
+  const needsAlpha = contentType.includes("png") && (await sharp(buffer).metadata()).hasAlpha;
+
+  let pipeline;
+  let outContentType;
+  if (needsAlpha) {
+    pipeline = resized.png({ compressionLevel: 9 });
     outContentType = "image/png";
   } else {
-    // Default to JPEG output — covers jpeg sources (the vast majority here) and any
-    // ambiguous/missing content-type. mozjpeg at quality 85 is visually near-lossless
-    // at the display sizes these are actually shown at, while cutting file size by
-    // roughly 10-20x versus an unresized camera-original.
-    pipeline = pipeline.jpeg({ quality: 85, mozjpeg: true });
+    // Default to JPEG output — covers jpeg sources (the vast majority here), opaque
+    // PNGs (see above), and any ambiguous/missing content-type. mozjpeg at quality 85
+    // is visually near-lossless at the display sizes these are actually shown at.
+    pipeline = resized.jpeg({ quality: 85, mozjpeg: true });
     outContentType = "image/jpeg";
   }
   const out = await pipeline.toBuffer();
