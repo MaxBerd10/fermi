@@ -94,20 +94,17 @@ function largestPhotoSize(photoSizes) {
 async function cacheChannelPost(post) {
   if (!post || typeof post.message_id !== "number") return;
   const hasPhoto = Array.isArray(post.photo) && post.photo.length;
-  const hasVideoThumb = Boolean(post.video?.thumb?.file_id);
-  console.log(
-    `telegram-media-cache: received channel_post ${post.message_id} (photo=${hasPhoto}, video=${hasVideoThumb})`,
-  );
+  console.log(`telegram-media-cache: received channel_post ${post.message_id} (photo=${hasPhoto})`);
+  // Photos only — deliberately NOT video.thumb. Verified against a real post: Telegram
+  // caps a video message's own thumbnail at ~180x320 regardless of the video's actual
+  // resolution, via the Bot API same as everywhere else. That's not an upgrade over
+  // (and can be smaller than) what the public preview page already shows, so caching
+  // it would just stretch a tiny image into the hero-size card and make it blurrier,
+  // not sharper. Video posts keep exactly their pre-existing image handling.
+  if (!hasPhoto) return;
   try {
-    let ok = false;
-    if (hasPhoto) {
-      const largest = largestPhotoSize(post.photo);
-      if (largest?.file_id) ok = await downloadFile(largest.file_id, cachePathFor(post.message_id));
-    } else if (hasVideoThumb) {
-      ok = await downloadFile(post.video.thumb.file_id, cachePathFor(post.message_id));
-    } else {
-      return; // text-only post — nothing to cache
-    }
+    const largest = largestPhotoSize(post.photo);
+    const ok = largest?.file_id ? await downloadFile(largest.file_id, cachePathFor(post.message_id)) : false;
     console.log(`telegram-media-cache: message ${post.message_id} ${ok ? "cached" : "download returned no file"}`);
   } catch (error) {
     console.error(`telegram-media-cache: failed to cache message ${post.message_id}`, error);
