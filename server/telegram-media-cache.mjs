@@ -93,13 +93,22 @@ function largestPhotoSize(photoSizes) {
 
 async function cacheChannelPost(post) {
   if (!post || typeof post.message_id !== "number") return;
+  const hasPhoto = Array.isArray(post.photo) && post.photo.length;
+  const hasVideoThumb = Boolean(post.video?.thumb?.file_id);
+  console.log(
+    `telegram-media-cache: received channel_post ${post.message_id} (photo=${hasPhoto}, video=${hasVideoThumb})`,
+  );
   try {
-    if (Array.isArray(post.photo) && post.photo.length) {
+    let ok = false;
+    if (hasPhoto) {
       const largest = largestPhotoSize(post.photo);
-      if (largest?.file_id) await downloadFile(largest.file_id, cachePathFor(post.message_id));
-    } else if (post.video?.thumb?.file_id) {
-      await downloadFile(post.video.thumb.file_id, cachePathFor(post.message_id));
+      if (largest?.file_id) ok = await downloadFile(largest.file_id, cachePathFor(post.message_id));
+    } else if (hasVideoThumb) {
+      ok = await downloadFile(post.video.thumb.file_id, cachePathFor(post.message_id));
+    } else {
+      return; // text-only post — nothing to cache
     }
+    console.log(`telegram-media-cache: message ${post.message_id} ${ok ? "cached" : "download returned no file"}`);
   } catch (error) {
     console.error(`telegram-media-cache: failed to cache message ${post.message_id}`, error);
   }
@@ -152,6 +161,17 @@ export function startTelegramMediaCache() {
   purgeOldFiles();
   const purgeTimer = setInterval(purgeOldFiles, 24 * 60 * 60 * 1000);
   purgeTimer.unref?.();
+
+  // One-off identity check at startup — confirms the token itself is valid immediately
+  // (rather than only finding out via a later poll failure), and logs which bot this
+  // is so it's easy to check that exact bot is an admin/member of the channel.
+  fetch(`${apiBase()}/getMe`)
+    .then((res) => res.json())
+    .then((data) => {
+      if (data?.ok) console.log(`telegram-media-cache: authenticated as @${data.result.username}`);
+      else console.error("telegram-media-cache: getMe failed — token is likely invalid", data);
+    })
+    .catch((error) => console.error("telegram-media-cache: getMe request failed", error));
 
   (async function loop() {
     while (running) {
