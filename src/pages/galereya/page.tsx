@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { listGallery } from "@/api/gallery";
 import type { GalleryImage } from "@/types/content";
+import { optimizedImageUrl } from "@/lib/imageProxy";
 import { Reveal } from "@/components/Animation";
 import PageHeader from "@/components/shared/PageHeader";
 import NewsSectionLayout from "@/components/shared/NewsSectionLayout";
@@ -50,7 +51,7 @@ export default function GaleryaPage() {
                     className="news-gallery-item group"
                   >
                     <img
-                      src={img.img}
+                      src={optimizedImageUrl(img.img, 480)}
                       alt={img.title || t("gallery.altText")}
                       loading="lazy"
                     />

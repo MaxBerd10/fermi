@@ -6,6 +6,7 @@ import { fjstiAiPlugin } from "./server/vite-ai-plugin.mjs";
 import { fjstiTelegramPlugin } from "./server/vite-telegram-plugin.mjs";
 import { fjstiSiteStatsPlugin } from "./server/vite-site-stats-plugin.mjs";
 import { fjstiTelegramMediaPlugin } from "./server/vite-telegram-media-plugin.mjs";
+import { fjstiImageProxyPlugin } from "./server/vite-image-proxy-plugin.mjs";
 // import { readdyJsxRuntimeProxyPlugin } from "./vite.jsx-runtime-proxy";
 
 const base = process.env.BASE_PATH || "/";
@@ -33,6 +34,7 @@ export default defineConfig(({ mode }) => {
     fjstiTelegramPlugin({ apiKey: openAiKey, model: String(env.OPENAI_MODEL || env.VITE_OPENAI_MODEL || "gpt-4o-mini") }),
     fjstiSiteStatsPlugin(),
     fjstiTelegramMediaPlugin(),
+    fjstiImageProxyPlugin(),
     react(),
     AutoImport({
       imports: [

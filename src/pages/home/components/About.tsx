@@ -7,6 +7,7 @@ import { stripHtml } from "@/lib/html";
 import { FOUNDED_YEAR } from "@/lib/siteConstants";
 import { Reveal } from "@/components/Animation";
 import { CAMPUS_PHOTOS, pickSafeImage } from "@/lib/mediaFilter";
+import { optimizedImageUrl } from "@/lib/imageProxy";
 
 const FALLBACK_IMG = CAMPUS_PHOTOS[0].img;
 
@@ -101,7 +102,7 @@ export default function About() {
               (object-contain in a mismatched box). */}
           <div className="relative w-full aspect-[16/10] overflow-hidden border border-primary-100 rounded-2xl shadow-[0_12px_36px_rgba(10,17,88,0.08)] bg-background-100">
             <img
-              src={photo}
+              src={optimizedImageUrl(photo, 900)}
               alt={about.title}
               className="absolute inset-0 w-full h-full object-cover object-center"
               onError={() => setImgFailed(true)}

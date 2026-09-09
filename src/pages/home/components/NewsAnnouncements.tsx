@@ -11,6 +11,7 @@ import { Reveal } from "@/components/Animation";
 import { mergeNewsByDate } from "@/lib/telegramNews";
 import { localizeTelegramCards } from "@/lib/uzTranslate";
 import { getNewsArticleImage } from "@/lib/newsImages";
+import { optimizedImageUrl } from "@/lib/imageProxy";
 
 function newsHref(article: NewsArticle) {
   return `/detail/${article.slug}?menuId=71`;
@@ -123,7 +124,7 @@ export default function NewsAnnouncements() {
                   const featuredImg = getNewsArticleImage(featured);
                   return featuredImg ? (
                     <img
-                      src={featuredImg}
+                      src={optimizedImageUrl(featuredImg, 900)}
                       alt={featured.title}
                       className={`w-full h-full group-hover:scale-[1.03] transition-transform duration-500 ${
                         featured.hasDocument || featured.isVideo ? "object-contain p-8 bg-white" : "object-cover object-top"
@@ -178,7 +179,7 @@ export default function NewsAnnouncements() {
                       const thumbImg = getNewsArticleImage(n);
                       return thumbImg ? (
                         <img
-                          src={thumbImg}
+                          src={optimizedImageUrl(thumbImg, 200)}
                           alt=""
                           className={`w-full h-full ${n.hasDocument || n.isVideo ? "object-contain p-2 bg-white" : "object-cover object-top"}`}
                           loading="lazy"

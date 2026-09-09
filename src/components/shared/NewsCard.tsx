@@ -5,6 +5,7 @@ import { stripHtml } from "@/lib/html";
 import { formatShortDate } from "@/lib/date";
 import { buildNewsDetailHref, newsCategoryTagStyle, NEWS_DEFAULT_MENU_ID } from "@/lib/newsSection";
 import { getNewsArticleImage } from "@/lib/newsImages";
+import { optimizedImageUrl } from "@/lib/imageProxy";
 import { useMemo, useState, useEffect } from "react";
 
 export default function NewsCard({
@@ -43,7 +44,7 @@ export default function NewsCard({
       <Link to={href} className="news-card__media block overflow-hidden">
         {imgSrc ? (
           <img
-            src={imgSrc}
+            src={optimizedImageUrl(imgSrc, 480)}
             alt={article.title}
             className={`news-card__img${isBannerLike ? " news-card__img--contain" : ""}`}
             loading="lazy"

@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { getFullGallery } from "@/api/gallery";
 import type { GalleryImage } from "@/types/content";
+import { optimizedImageUrl } from "@/lib/imageProxy";
 import { ApiError } from "@/types/api";
 import { Reveal } from "@/components/Animation";
 import PageHeader from "@/components/shared/PageHeader";
@@ -45,7 +46,7 @@ export default function FullGalleryPage() {
       <NewsSectionLayout>
         <Reveal>
           <div className="news-full-gallery">
-            <img src={img.img} alt={img.title || t("gallery.altText")} />
+            <img src={optimizedImageUrl(img.img, 1600)} alt={img.title || t("gallery.altText")} />
           </div>
         </Reveal>
 

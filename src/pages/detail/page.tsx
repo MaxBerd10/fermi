@@ -11,6 +11,7 @@ import { LoadingState, ErrorState } from "@/components/shared/LoadingState";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { stripHtml } from "@/lib/html";
 import { getNewsArticleImage } from "@/lib/newsImages";
+import { optimizedImageUrl } from "@/lib/imageProxy";
 import { formatLongDate } from "@/lib/date";
 import { Reveal } from "@/components/Animation";
 import AiSummaryBlock from "@/components/ai/AiSummaryBlock";
@@ -86,7 +87,7 @@ export default function DetailPage() {
 
               {heroImage && (
                 <div className={`news-article__hero${categorySlug === "telegram" ? " news-article__hero--contain" : ""}`}>
-                  <img src={heroImage} alt={article.title} />
+                  <img src={optimizedImageUrl(heroImage, 1200)} alt={article.title} />
                   {article.isVideo && (
                     <span className="news-article__video-badge" aria-hidden>
                       <i className="ri-play-fill" />

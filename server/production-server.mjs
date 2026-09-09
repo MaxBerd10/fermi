@@ -7,6 +7,7 @@ import { Readable } from "node:stream";
 import { configureTelegramFeed, handleTelegramFeedRequest } from "./telegram-feed.mjs";
 import { handleSiteStatsRequest } from "./site-stats.mjs";
 import { startTelegramMediaCache, handleTelegramMediaRequest } from "./telegram-media-cache.mjs";
+import { handleImageProxyRequest } from "./image-proxy.mjs";
 
 const rootDir = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const distDir = resolve(rootDir, "out");
@@ -85,6 +86,7 @@ const aiRateLimits = new Map();
 const imentorRateLimits = new Map();
 const telegramRateLimits = new Map();
 const telegramMediaRateLimits = new Map();
+const imageProxyRateLimits = new Map();
 const proxyRateLimits = new Map();
 const siteStatsRateLimits = new Map();
 
@@ -179,6 +181,13 @@ function allowTelegramFeedRequest(request) {
 // so this is deliberately looser than the API-shaped limits above.
 function allowTelegramMediaRequest(request) {
   return allowRateLimit(telegramMediaRateLimits, request, 60_000, 300);
+}
+
+// A cache miss here does real work (fetch + sharp resize) — looser than a typical API
+// limit since a page can easily reference a few dozen images, tighter than the
+// already-resized telegram-media route above.
+function allowImageProxyRequest(request) {
+  return allowRateLimit(imageProxyRateLimits, request, 60_000, 180);
 }
 
 // General ceiling on the pass-through to the real backend API/DB — loose enough
@@ -353,6 +362,11 @@ const server = createServer(async (request, response) => {
     if (pathname.startsWith("/telegram-media/")) {
       if (!allowTelegramMediaRequest(request)) return sendJson(response, 429, { error: "Too many requests. Please try again shortly." });
       const handled = await handleTelegramMediaRequest(request, response);
+      if (handled) return;
+    }
+    if (pathname.startsWith("/img-cache")) {
+      if (!allowImageProxyRequest(request)) return sendJson(response, 429, { error: "Too many requests. Please try again shortly." });
+      const handled = await handleImageProxyRequest(request, response);
       if (handled) return;
     }
     if (pathname.startsWith("/v1/") || pathname.startsWith("/uploads/")) {
