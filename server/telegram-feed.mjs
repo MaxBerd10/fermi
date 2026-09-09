@@ -163,6 +163,14 @@ function extractMedia(block) {
 // order to `messageId, messageId + 1, messageId + 2, ...` is a safe best-effort: any
 // slot that doesn't line up simply keeps its original (already-correct) low-res URL.
 function withCachedMedia(messageId, media) {
+  if (media.length === 0) {
+    // The public preview sometimes has no background-image yet for a just-posted
+    // video (Telegram hasn't rendered its preview thumbnail there yet) even though
+    // the bot already has the real poster cached — use it as the sole image rather
+    // than only ever patching existing slots.
+    const cached = cachedMediaUrlFor(messageId);
+    return cached ? [cached] : media;
+  }
   return media.map((url, index) => cachedMediaUrlFor(messageId + index) || url);
 }
 

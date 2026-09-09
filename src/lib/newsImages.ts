@@ -32,6 +32,11 @@ export function resolveNewsImageUrl(src: string): string {
   // this function sees it directly or via a second getNewsArticleImage() pass
   // over an already-enriched article (enrichNewsArticle prefills img).
   if (src.trim() === DOCUMENT_PLACEHOLDER_IMAGE) return DOCUMENT_PLACEHOLDER_IMAGE;
+  // Cached high-res Telegram media (server/telegram-media-cache.mjs) is served by this
+  // frontend's own Node process, not the API/CMS server — leave it relative to fermi.uz
+  // itself instead of prefixing API_ORIGIN below (which would point at api.fermi.uz,
+  // where this route doesn't exist).
+  if (src.trim().startsWith("/telegram-media/")) return src.trim();
   let url = src.trim().replace(/&amp;/g, "&");
 
   if (url.startsWith("//")) url = `https:${url}`;
