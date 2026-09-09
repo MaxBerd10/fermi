@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import type { FacultyDetail } from "@/types/content";
 import FacultyHero from "@/components/shared/FacultyHero";
 import FacultyLeaderCard from "@/components/shared/FacultyLeaderCard";
+import RichContent from "@/components/shared/RichContent";
 import { enhanceFacultyHtml } from "@/lib/enhanceFacultyHtml";
 import { getFacultyPageConfig } from "@/lib/facultySection";
 
@@ -42,9 +43,10 @@ export default function FacultyPageContent({ faculty, slug }: { faculty: Faculty
           <h2 id="faculty-about-heading" className="faculty-page__section-title">
             {t("faculty.aboutTitle")}
           </h2>
-          <article
+          <RichContent
+            html={processedHtml}
+            enhanced={false}
             className="faculty-page__article cms-article cms-article--rich cms-article--menu-section cms-article--fakultet"
-            dangerouslySetInnerHTML={{ __html: processedHtml }}
           />
         </section>
       )}

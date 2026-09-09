@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import type { Page } from "@/types/content";
 import UnitHero from "@/components/shared/UnitHero";
 import UnitHeadCard from "@/components/shared/UnitHeadCard";
+import RichContent from "@/components/shared/RichContent";
 import { enhanceUnitHtml } from "@/lib/enhanceUnitHtml";
 import { getUnitPageConfig } from "@/lib/unitSection";
 
@@ -67,9 +68,10 @@ export default function UnitPageContent({
           <h2 id="unit-about-heading" className="unit-page__section-title">
             {t(config.aboutTitleKey ?? "unit.aboutTitle")}
           </h2>
-          <article
+          <RichContent
+            html={processedHtml}
+            enhanced={false}
             className={`unit-page__article cms-article cms-article--menu-section${config.contentVariant ? ` unit-page__article--${config.contentVariant}` : ""}`}
-            dangerouslySetInnerHTML={{ __html: processedHtml }}
           />
         </section>
       )}

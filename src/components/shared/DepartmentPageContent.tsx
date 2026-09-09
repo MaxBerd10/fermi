@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import type { DepartmentDetail, Leader } from "@/types/content";
 import DepartmentHero from "@/components/shared/DepartmentHero";
 import DepartmentHeadCard from "@/components/shared/DepartmentHeadCard";
+import RichContent from "@/components/shared/RichContent";
 import { enhanceDepartmentHtml } from "@/lib/enhanceDepartmentHtml";
 import { getDepartmentTheme } from "@/lib/departmentSection";
 
@@ -54,9 +55,10 @@ export default function DepartmentPageContent({
           <h2 id="department-about-heading" className="department-page__section-title">
             {t("department.aboutTitle")}
           </h2>
-          <article
+          <RichContent
+            html={processedHtml}
+            enhanced={false}
             className="department-page__article cms-article cms-article--rich cms-article--menu-section cms-article--kafedra"
-            dangerouslySetInnerHTML={{ __html: processedHtml }}
           />
         </section>
       ) : (

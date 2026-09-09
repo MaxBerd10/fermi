@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { enhanceLeaderHtml } from "@/lib/enhanceLeaderHtml";
+import RichContent from "@/components/shared/RichContent";
 
 export default function LeaderRichContent({
   html,
@@ -11,10 +12,5 @@ export default function LeaderRichContent({
   const processed = useMemo(() => enhanceLeaderHtml(html), [html]);
   if (!processed) return null;
 
-  return (
-    <div
-      className={`leader-cms ${className}`.trim()}
-      dangerouslySetInnerHTML={{ __html: processed }}
-    />
-  );
+  return <RichContent html={processed} enhanced={false} className={`leader-cms ${className}`.trim()} />;
 }
