@@ -17,7 +17,13 @@ export default function PdfDocumentViewer({
   interactive?: boolean;
 }) {
   const { t } = useTranslation();
-  const [useDirect, setUseDirect] = useState(false);
+  // Default to the browser's own PDF renderer, not Google's gview proxy: gview has to
+  // download the entire document server-side before it can show anything, while a
+  // direct <iframe src={pdfUrl}> lets the browser use HTTP range requests (the uploads
+  // location already serves `accept-ranges: bytes`) to paint the first page almost
+  // immediately even for a large multi-page scan. gview stays one click away via the
+  // switch button below, for the rare browser that can't render a PDF inline.
+  const [useDirect, setUseDirect] = useState(true);
 
   const embedSrc = useMemo(
     () => (useDirect ? `${pdfUrl}#toolbar=1&navpanes=0&view=FitH` : buildGviewUrl(pdfUrl)),
@@ -40,11 +46,9 @@ export default function PdfDocumentViewer({
           <i className="ri-file-pdf-line" aria-hidden />
           {t("journal.openPdfNewTab")}
         </a>
-        {!useDirect && (
-          <button type="button" className="cms-council-pdf__switch" onClick={() => setUseDirect(true)}>
-            {t("journal.pdfAltViewer")}
-          </button>
-        )}
+        <button type="button" className="cms-council-pdf__switch" onClick={() => setUseDirect((v) => !v)}>
+          {t("journal.pdfAltViewer")}
+        </button>
       </div>
 
       <div className="cms-council-pdf__frame">
