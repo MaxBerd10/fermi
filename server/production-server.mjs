@@ -284,7 +284,10 @@ async function handleImentor(request, response) {
   const requestUrl = new URL(request.url || "/", "http://localhost");
   if (!requestUrl.pathname.startsWith("/imentor-api/v1/external/")) return sendJson(response, 404, { error: "Not found" });
   const upstreamPath = requestUrl.pathname.replace(/^\/imentor-api/, "");
-  const target = new URL(`${upstreamPath}${requestUrl.search}`, imentorBaseUrl);
+  // Concatenate rather than `new URL(path, base)` — the latter treats a leading-slash
+  // path as absolute and drops the base's own path (so ".../api" + "/v1/..." would lose
+  // "/api" and hit the SPA instead of the API).
+  const target = new URL(`${imentorBaseUrl}${upstreamPath}${requestUrl.search}`);
   const isStats = /\/v1\/external\/(tests|keys)\/stats\/$/.test(upstreamPath);
   // Sample-questions/scenarios were previously uncached — every "start test" click hit
   // iMentor's own server directly. iMentor has already shown it can't take much traffic
