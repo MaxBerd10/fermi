@@ -1,9 +1,15 @@
+import { lazy, Suspense } from "react";
 import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import MedicalAtmosphere from "./MedicalAtmosphere";
-import AiChatWidget from "./AiChatWidget";
 import { MenuProvider } from "../../context/MenuContext";
+
+// The chat widget pulls in the AI client and the ~5 KB knowledge base, none of
+// which the first paint needs — most visits never open it. Load it after the
+// page is interactive; the only visible effect is the floating button appearing
+// a beat later.
+const AiChatWidget = lazy(() => import("./AiChatWidget"));
 
 export default function Layout() {
   return (
@@ -17,7 +23,9 @@ export default function Layout() {
           </main>
           <Footer />
         </div>
-        <AiChatWidget />
+        <Suspense fallback={null}>
+          <AiChatWidget />
+        </Suspense>
       </div>
     </MenuProvider>
   );
