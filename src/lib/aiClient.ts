@@ -98,7 +98,7 @@ const FAST_INTENTS: {
   },
   {
     id: "qabul",
-    match: /(qabul|abituriyent|admission|поступл|приёмная комисс|приемная комисс|kirish uchun.*hujjat|qanday hujjat|hujjatlar roʻyxat|hujjatlar ro'yxat|qaysi hujjat|документы для поступл|какие документ)/i,
+    match: /(qabul|abituriyent|admission|поступл|приём|прием|документы для|какие документ|kirish uchun.*hujjat|qanday hujjat|hujjatlar roʻyxat|hujjatlar ro'yxat|qaysi hujjat|topshirish uchun.*hujjat)/i,
     sourceIds: ["qabul-general"],
     reply: {
       uz: "Qabul bosqichlari:\n\n1. Onlayn roʻyxatdan oʻtish — [my.edu.uz](https://my.edu.uz)\n2. Hujjatlar: pasport, diplom, foto, tibbiy maʻlumotnoma\n3. Test sinovlari\n4. Natija va institutda roʻyxatdan oʻtish\n\n[Qabul sahifasi](/qabul) · Call-markaz: +998 95 062-23-45",
@@ -108,16 +108,44 @@ const FAST_INTENTS: {
   },
 ];
 
+// Every quick-reply chip label, in all three languages, mapped to its intent.
+// The chips send their own translated text as the "question", so matching the
+// exact label is the most reliable route — the keyword regexes above are the
+// looser fallback for free-typed questions.
+const CHIP_LABELS: Record<string, string> = {
+  // qabul
+  "qabul hujjatlari": "qabul",
+  "документы для приёма": "qabul",
+  "документы для приема": "qabul",
+  "admission documents": "qabul",
+  // faculties
+  fakultetlar: "faculties",
+  факультеты: "faculties",
+  faculties: "faculties",
+  // hemis
+  hemis: "hemis",
+  // contact
+  "manzil va telefon": "contact",
+  "адрес и телефон": "contact",
+  "address & phone": "contact",
+};
+
 // Even when a keyword matches, questions that ask for a judgement ("which faculty
 // suits me", "what's the difference", "which is better") must still go to the model.
 const NEEDS_MODEL = /(qaysi.*(mos|tanla|yaxshiroq|afzal)|menga mos|menga qaysi|tavsiya|maslahat|farqi nima|farqi qanday|solishtir|qaysi biri (yaxshi|afzal|mos)|which .*(suits|should i|is better)|recommend|compare|difference between|как выбрать|что лучше|посовету|порекоменду|сравни|в ч[её]м разниц|разница между|какой факультет мне)/i;
 
 function tryFastPath(query: string, lang: string): { reply: string; sources: AiSource[] } | null {
   const q = query.trim().toLowerCase();
-  // Long messages are almost never a plain lookup; a judgement word forces the model.
-  if (!q || q.length > 120 || NEEDS_MODEL.test(q)) return null;
 
-  const hits = FAST_INTENTS.filter((i) => i.match.test(q));
+  // Exact chip label → its intent, no other checks needed.
+  const chipIntent = CHIP_LABELS[q];
+
+  // Long messages are almost never a plain lookup; a judgement word forces the model.
+  if (!chipIntent && (!q || q.length > 120 || NEEDS_MODEL.test(q))) return null;
+
+  const hits = chipIntent
+    ? FAST_INTENTS.filter((i) => i.id === chipIntent)
+    : FAST_INTENTS.filter((i) => i.match.test(q));
   if (hits.length !== 1) return null; // none, or ambiguous → let the model decide
 
   const intent = hits[0];
