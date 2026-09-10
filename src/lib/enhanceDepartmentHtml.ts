@@ -12,6 +12,10 @@ export function enhanceDepartmentHtml(html: string, options?: { excludeStaffName
 
   classifyImagesFromStyle(body);
   stripPresentation(body);
+  // Some list items smuggle a section heading in after an <hr> ("… <hr> For students
+  // of the Clinical program:"). Lift that out into its own block before <hr>s are
+  // dropped, so it doesn't get mashed onto the end of the list item.
+  splitListItemsAtHr(body);
   body.querySelectorAll("hr").forEach((hr) => hr.remove());
   unwrapRedundant(body);
   buildStaffCards(body, options?.excludeStaffName);
@@ -207,6 +211,85 @@ function finalizeImages(root: ParentNode) {
     img.removeAttribute("width");
     img.removeAttribute("height");
     img.removeAttribute("data-img-kind");
+  });
+}
+
+function splitListItemsAtHr(root: ParentNode) {
+  // Snapshot first — the tree is rewritten as we go.
+  Array.from(root.querySelectorAll("li")).forEach((li) => {
+    const list = li.parentElement;
+    if (!list || (list.tagName !== "OL" && list.tagName !== "UL")) return;
+    const hr = li.querySelector("hr");
+    if (!hr) return;
+
+    // Collect every node that comes after <hr> within this <li> — following siblings
+    // of the <hr> and of each of its ancestors, up to the <li> itself.
+    const tail: Node[] = [];
+    let cursor: Node | null = hr;
+    while (cursor && cursor !== li) {
+      let sib = cursor.nextSibling;
+      while (sib) {
+        tail.push(sib);
+        sib = sib.nextSibling;
+      }
+      cursor = cursor.parentNode;
+    }
+    hr.remove();
+    tail.forEach((n) => n.parentNode?.removeChild(n));
+
+    const tailText = tail
+      .map((n) => n.textContent || "")
+      .join("")
+      .replace(/ /g, " ")
+      .trim();
+    const tailHasMedia = tail.some(
+      (n) => n.nodeType === 1 && !!(n as Element).querySelector?.("img, table"),
+    );
+    // A bare trailing <hr> (decorative separator between items) — nothing to lift.
+    if (!tailText && !tailHasMedia) {
+      if (!li.textContent?.trim() && !li.querySelector("img")) li.remove();
+      return;
+    }
+
+    const doc = li.ownerDocument!;
+    const frag = doc.createDocumentFragment();
+    const BLOCK = /^(P|DIV|H[1-6]|UL|OL|TABLE|FIGURE|BLOCKQUOTE)$/;
+    tail.forEach((n) => {
+      if (n.nodeType === 3) {
+        const t = (n.textContent || "").trim();
+        if (t) {
+          const p = doc.createElement("p");
+          p.textContent = t;
+          frag.appendChild(p);
+        }
+      } else if (n.nodeType === 1) {
+        const el = n as Element;
+        if (BLOCK.test(el.tagName)) {
+          frag.appendChild(el);
+        } else {
+          const p = doc.createElement("p");
+          p.appendChild(el);
+          frag.appendChild(p);
+        }
+      }
+    });
+
+    // Any <li>s that followed this one belong to a fresh list after the lifted block.
+    const rest: Element[] = [];
+    let sib = li.nextElementSibling;
+    while (sib) {
+      const next = sib.nextElementSibling;
+      rest.push(sib);
+      sib = next;
+    }
+    if (rest.length) {
+      const newList = doc.createElement(list.tagName);
+      rest.forEach((r) => newList.appendChild(r));
+      frag.appendChild(newList);
+    }
+
+    list.after(frag);
+    if (!li.textContent?.trim() && !li.querySelector("img")) li.remove();
   });
 }
 
