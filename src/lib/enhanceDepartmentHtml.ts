@@ -211,9 +211,30 @@ function finalizeImages(root: ParentNode) {
 }
 
 function normalizeLists(root: ParentNode) {
-  root.querySelectorAll("ul").forEach((ul) => ul.classList.add("department-cms-list"));
-  root.querySelectorAll("ol").forEach((ol) => ol.classList.add("department-cms-list", "department-cms-list--ordered"));
-  root.querySelectorAll("li").forEach((li) => li.classList.add("department-cms-item"));
+  root.querySelectorAll("li").forEach((li) => {
+    li.classList.add("department-cms-item");
+
+    // Some language versions wrap the item's text in a lone <p>/<div> (an artefact of
+    // how it was pasted into the CMS), others put it straight in the <li>. Flatten the
+    // wrapper so every version lines up against the number badge the same way.
+    const kids = Array.from(li.children);
+    if (
+      kids.length === 1 &&
+      (kids[0].tagName === "P" || kids[0].tagName === "DIV") &&
+      !kids[0].querySelector("ul, ol, img, table")
+    ) {
+      const wrapper = kids[0];
+      while (wrapper.firstChild) li.insertBefore(wrapper.firstChild, wrapper);
+      wrapper.remove();
+    }
+  });
+
+  // In a department article every list is an enumeration (subjects taught, duties,
+  // publications). Render them all with the same numbered style regardless of whether
+  // that language's editor happened to use <ul> or <ol>.
+  root.querySelectorAll("ul, ol").forEach((list) => {
+    list.classList.add("department-cms-list", "department-cms-list--ordered");
+  });
 }
 
 function normalizeParagraphs(root: ParentNode) {
