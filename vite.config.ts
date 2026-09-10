@@ -117,7 +117,7 @@ export default defineConfig(({ mode }) => {
       // works for local dev/preview; the production static build needs iMentor to
       // whitelist the domain, since there's no server to proxy through there).
       "/imentor-api": {
-        target: "https://imentor.devflix.uz",
+        target: "https://imentor.uz",
         changeOrigin: true,
         secure: true,
         headers: imentorApiKey ? { "X-Api-Key": imentorApiKey } : undefined,

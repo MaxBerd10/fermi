@@ -42,7 +42,10 @@ for (const name of [".env.production.local", ".env.local", ".env.production", ".
 
 const port = Number(process.env.PORT || 3001);
 const host = process.env.HOST || "127.0.0.1";
-const imentorBaseUrl = String(process.env.IMENTOR_API_BASE_URL || "https://imentor.devflix.uz/api").replace(/\/$/, "");
+// Must point at the final host directly: imentor.devflix.uz 301-redirects here, and
+// Node's fetch strips the X-Api-Key header on a cross-host redirect, so a request to
+// the old domain always fails auth.
+const imentorBaseUrl = String(process.env.IMENTOR_API_BASE_URL || "https://imentor.uz/api").replace(/\/$/, "");
 const fermiApiBaseUrl = String(process.env.FERMI_API_BASE_URL || "https://api.fermi.uz").replace(/\/$/, "");
 function decodeSecret(raw, encoded) {
   const direct = String(raw || "").trim();
