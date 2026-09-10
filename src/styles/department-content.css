@@ -211,14 +211,24 @@
 .department-cms-item {
   position: relative;
   margin-bottom: 0.5rem;
-  padding: 0.625rem 0.75rem 0.625rem 1.75rem;
+  /* Left gutter must clear the number badge below (its right edge sits at ~2.1rem);
+     the CMS content per language is authored inconsistently — some <li> hold bare
+     inline text, others wrap it in a <div> — so keep a generous, fixed gutter. */
+  padding: 0.625rem 0.875rem 0.625rem 2.75rem;
   border-radius: 0.5rem;
   background: #f8fafc;
   border: 1px solid rgba(10, 17, 88, 0.06);
   font-size: 0.875rem;
   line-height: 1.6;
   color: #334155;
-  text-align: justify;
+  text-align: left;
+}
+
+/* Normalize the wrapper some language versions put inside <li> (<div>/<p>) so the
+   first line always starts on the same baseline as the badge, no extra gap. */
+.department-cms-item > div,
+.department-cms-item > p {
+  margin: 0;
 }
 
 .department-cms-list--ordered .department-cms-item {
@@ -228,8 +238,8 @@
 .department-cms-list--ordered .department-cms-item::before {
   content: counter(dept-counter);
   position: absolute;
-  left: 0.75rem;
-  top: 0.8rem;
+  left: 0.85rem;
+  top: 0.7rem;
   width: 1.25rem;
   height: 1.25rem;
   border-radius: 9999px;
@@ -245,8 +255,8 @@
 .department-cms-list:not(.department-cms-list--ordered) .department-cms-item::before {
   content: "";
   position: absolute;
-  left: 0.875rem;
-  top: 1.125rem;
+  left: 1.15rem;
+  top: 1.05rem;
   width: 0.4rem;
   height: 0.4rem;
   border-radius: 9999px;
