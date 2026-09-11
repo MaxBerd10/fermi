@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { register } from "@/api/auth";
 import { ApiError } from "@/types/api";
@@ -9,8 +9,7 @@ const inputClass = "page-input focus:ring-2 focus:ring-[#0a1158]/15";
 
 export default function SignupPage() {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "loading" | "error" | "sent">("idle");
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const [generalError, setGeneralError] = useState("");
 
@@ -26,7 +25,7 @@ export default function SignupPage() {
         email: String(fd.get("email")),
         password: String(fd.get("password")),
       });
-      navigate("/");
+      setStatus("sent");
     } catch (err) {
       setStatus("error");
       if (err instanceof ApiError && err.fields) {
@@ -47,43 +46,62 @@ export default function SignupPage() {
           <h1 className="font-heading text-2xl md:text-3xl font-semibold text-foreground-950 tracking-tight mb-1">
             {t("auth.signUp")}
           </h1>
-          <p className="text-sm text-foreground-500 mb-6">{t("auth.signup.subtitle")}</p>
 
-          {generalError && (
-            <div className="mb-4 p-3 rounded-xl bg-accent-50 border border-accent-200 text-sm text-accent-800">{generalError}</div>
+          {status === "sent" ? (
+            <>
+              <p className="text-sm text-foreground-500 mb-6">{t("auth.signup.subtitle")}</p>
+              <div className="p-3 rounded-xl bg-secondary-50 border border-secondary-200 text-sm text-secondary-800">
+                {t("auth.signup.verificationSent")}
+              </div>
+              <div className="mt-6 text-sm text-center">
+                <Link to="/kirish" className="text-primary-600 hover:text-primary-700 font-medium transition-colors">
+                  {t("auth.login.submit")}
+                </Link>
+              </div>
+            </>
+          ) : (
+            <>
+              <p className="text-sm text-foreground-500 mb-6">{t("auth.signup.subtitle")}</p>
+
+              {generalError && (
+                <div className="mb-4 p-3 rounded-xl bg-accent-50 border border-accent-200 text-sm text-accent-800">
+                  {generalError}
+                </div>
+              )}
+
+              <form onSubmit={onSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-foreground-700 mb-1.5">{t("auth.usernameLabel")}</label>
+                  <input name="username" required className={inputClass} />
+                  {errors.username && <p className="text-xs text-accent-700 mt-1">{errors.username[0]}</p>}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-foreground-700 mb-1.5">{t("contact.email")}</label>
+                  <input name="email" type="email" required className={inputClass} />
+                  {errors.email && <p className="text-xs text-accent-700 mt-1">{errors.email[0]}</p>}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-foreground-700 mb-1.5">{t("auth.passwordLabel")}</label>
+                  <input name="password" type="password" required minLength={8} className={inputClass} />
+                  {errors.password && <p className="text-xs text-accent-700 mt-1">{errors.password[0]}</p>}
+                </div>
+                <button
+                  type="submit"
+                  disabled={status === "loading"}
+                  className="w-full h-11 rounded-xl bg-primary-500 hover:bg-primary-600 text-background-50 text-sm font-semibold cursor-pointer disabled:opacity-60 transition-colors"
+                >
+                  {status === "loading" ? t("contact.sending") : t("auth.signUp")}
+                </button>
+              </form>
+
+              <div className="mt-6 text-sm text-center">
+                <span className="text-foreground-500">{t("auth.haveAccount")} </span>
+                <Link to="/kirish" className="text-primary-600 hover:text-primary-700 font-medium transition-colors">
+                  {t("auth.login.submit")}
+                </Link>
+              </div>
+            </>
           )}
-
-          <form onSubmit={onSubmit} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-foreground-700 mb-1.5">{t("auth.usernameLabel")}</label>
-              <input name="username" required className={inputClass} />
-              {errors.username && <p className="text-xs text-accent-700 mt-1">{errors.username[0]}</p>}
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-foreground-700 mb-1.5">{t("contact.email")}</label>
-              <input name="email" type="email" required className={inputClass} />
-              {errors.email && <p className="text-xs text-accent-700 mt-1">{errors.email[0]}</p>}
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-foreground-700 mb-1.5">{t("auth.passwordLabel")}</label>
-              <input name="password" type="password" required minLength={8} className={inputClass} />
-              {errors.password && <p className="text-xs text-accent-700 mt-1">{errors.password[0]}</p>}
-            </div>
-            <button
-              type="submit"
-              disabled={status === "loading"}
-              className="w-full h-11 rounded-xl bg-primary-500 hover:bg-primary-600 text-background-50 text-sm font-semibold cursor-pointer disabled:opacity-60 transition-colors"
-            >
-              {status === "loading" ? t("contact.sending") : t("auth.signUp")}
-            </button>
-          </form>
-
-          <div className="mt-6 text-sm text-center">
-            <span className="text-foreground-500">{t("auth.haveAccount")} </span>
-            <Link to="/kirish" className="text-primary-600 hover:text-primary-700 font-medium transition-colors">
-              {t("auth.login.submit")}
-            </Link>
-          </div>
         </div>
       </Reveal>
     </div>

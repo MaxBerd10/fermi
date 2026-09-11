@@ -1355,6 +1355,7 @@ export default {
   "auth.signUp": "Регистрация",
   "auth.signup.subtitle": "Создайте новый аккаунт",
   "auth.signup.error": "Ошибка при регистрации.",
+  "auth.signup.verificationSent": "Мы отправили ссылку для подтверждения на вашу электронную почту. Перейдите по ссылке, чтобы войти в систему.",
   "auth.haveAccount": "Уже есть аккаунт?",
   "auth.resetPassword.title": "Восстановление пароля",
   "auth.resetPassword.newPasswordPrompt": "Введите новый пароль",

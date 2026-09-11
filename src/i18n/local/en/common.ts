@@ -1355,6 +1355,7 @@ export default {
   "auth.signUp": "Sign up",
   "auth.signup.subtitle": "Create a new account",
   "auth.signup.error": "There was an error signing up.",
+  "auth.signup.verificationSent": "We've sent a verification link to your email. Click it to activate your account and sign in.",
   "auth.haveAccount": "Already have an account?",
   "auth.resetPassword.title": "Reset password",
   "auth.resetPassword.newPasswordPrompt": "Enter your new password",

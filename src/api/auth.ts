@@ -8,10 +8,13 @@ interface AuthResult {
   user: AuthUser;
 }
 
+// Registration no longer signs the account straight in — the backend creates
+// it inactive and emails a verification link (closing an open self-registration
+// hole where anyone could mint an unlimited number of working accounts with no
+// email ownership check at all). The account only starts working, and tokens
+// are only issued, once verifyEmail() below succeeds.
 export async function register(input: RegisterInput) {
-  const { data } = await apiClient.post<AuthResult>("auth/register", input);
-  setTokens(data.accessToken, data.refreshToken);
-  return data.user;
+  await apiClient.post<{ verificationRequired: true }>("auth/register", input);
 }
 
 export async function login(input: LoginInput) {

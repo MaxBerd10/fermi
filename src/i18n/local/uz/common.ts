@@ -1355,6 +1355,7 @@ export default {
   "auth.signUp": "Roʻyxatdan oʻtish",
   "auth.signup.subtitle": "Yangi hisob yarating",
   "auth.signup.error": "Roʻyxatdan oʻtishda xatolik yuz berdi.",
+  "auth.signup.verificationSent": "Hisobingizni faollashtirish uchun elektron pochtangizga havola yubordik. Havolani bosib, tizimga kiring.",
   "auth.haveAccount": "Hisobingiz bormi?",
   "auth.resetPassword.title": "Parolni tiklash",
   "auth.resetPassword.newPasswordPrompt": "Yangi parolingizni kiriting",
