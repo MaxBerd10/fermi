@@ -11,6 +11,10 @@ export function enhanceDepartmentHtml(html: string, options?: { excludeStaffName
   const body = doc.body;
 
   classifyImagesFromStyle(body);
+  // Content pasted straight out of a PDF viewer's text layer survives as a run of
+  // invisible, absolutely-positioned single-character <div>s ("S" "I" "D" "D" …).
+  // Must run before stripPresentation() removes the style attribute this depends on.
+  collapsePdfTextLayerArtifacts(body);
   stripPresentation(body);
   // Some list items smuggle a section heading in after an <hr> ("… <hr> For students
   // of the Clinical program:"). Lift that out into its own block before <hr>s are
@@ -67,8 +71,67 @@ function classifyImagesFromStyle(root: ParentNode) {
   });
 }
 
+// A PDF viewer's text layer overlays one invisible, absolutely-positioned <div> per
+// character/word on top of the rendered page so text can be selected — signature:
+// position:absolute plus color:transparent. Selecting text there and pasting it into
+// the CMS carries that whole fragment-per-character structure along, which then
+// renders as one character per line (each <div> is block-level once its style is
+// stripped). Detect runs of 2+ such siblings and collapse them into one text run.
+function isPdfTextLayerFragment(el: Element): boolean {
+  const style = el.getAttribute("style") ?? "";
+  return /position\s*:\s*absolute/i.test(style) && /color\s*:\s*transparent/i.test(style);
+}
+
+function collapsePdfTextLayerArtifacts(root: Element) {
+  const containers = [root, ...Array.from(root.querySelectorAll("*"))];
+  containers.forEach((container) => {
+    const nodes = Array.from(container.childNodes);
+    let i = 0;
+    while (i < nodes.length) {
+      const start = nodes[i];
+      if (!(start instanceof Element) || !isPdfTextLayerFragment(start)) {
+        i++;
+        continue;
+      }
+      // A run is fragment elements optionally interleaved with whitespace-only text
+      // nodes (the "\r\n" between them in the source) — absorb those too, so no blank
+      // lines are left behind once the fragments collapse into one line.
+      const runNodes: Node[] = [start];
+      const fragmentTexts: string[] = [start.textContent || ""];
+      let j = i + 1;
+      while (j < nodes.length) {
+        const next = nodes[j];
+        if (next instanceof Element && isPdfTextLayerFragment(next)) {
+          runNodes.push(next);
+          fragmentTexts.push(next.textContent || "");
+          j++;
+        } else if (next.nodeType === Node.TEXT_NODE && !(next.textContent || "").trim()) {
+          runNodes.push(next);
+          j++;
+        } else {
+          break;
+        }
+      }
+      if (fragmentTexts.length >= 2) {
+        const p = container.ownerDocument!.createElement("p");
+        p.textContent = fragmentTexts.join("");
+        runNodes[0].parentNode?.insertBefore(p, runNodes[0]);
+        runNodes.forEach((n) => n.parentNode?.removeChild(n));
+      }
+      i = j;
+    }
+  });
+}
+
 function stripPresentation(root: ParentNode) {
   root.querySelectorAll("[style]").forEach((el) => el.removeAttribute("style"));
+  // CMS content is sometimes pasted straight from an external page (ChatGPT, a PDF
+  // viewer's own site chrome) rather than typed — that carries the source's own
+  // classes (e.g. Tailwind's "flex"/"flex-col") along for the ride. Since fermi.uz's
+  // frontend uses Tailwind too, those foreign classes actually apply and scramble the
+  // layout. Every class we want on the rendered output is added by this file itself,
+  // further down the pipeline, so it's safe to strip all incoming classes here.
+  root.querySelectorAll("[class]").forEach((el) => el.removeAttribute("class"));
   root.querySelectorAll("font").forEach((font) => {
     const span = font.ownerDocument!.createElement("span");
     span.innerHTML = font.innerHTML;
