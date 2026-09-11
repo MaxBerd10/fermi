@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { listVideo } from "@/api/video";
@@ -9,6 +9,30 @@ import NewsSectionLayout from "@/components/shared/NewsSectionLayout";
 import NewsPagination from "@/components/shared/NewsPagination";
 import { LoadingState } from "@/components/shared/LoadingState";
 import { usePageMeta } from "@/hooks/usePageMeta";
+
+// preload="metadata" alone isn't enough in every browser to paint a first-frame
+// thumbnail — some just show a blank/black box until playback starts. Seeking a
+// hair into the clip once metadata is ready forces the browser to decode and
+// paint that frame, which is what actually produces a visible thumbnail.
+function VideoCard({ src }: { src: string }) {
+  const ref = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = ref.current;
+    if (!video) return;
+    const onLoadedMetadata = () => {
+      try {
+        video.currentTime = 0.1;
+      } catch {
+        // ignore — some browsers throw if the media isn't seekable yet
+      }
+    };
+    video.addEventListener("loadedmetadata", onLoadedMetadata);
+    return () => video.removeEventListener("loadedmetadata", onLoadedMetadata);
+  }, []);
+
+  return <video ref={ref} src={src} controls preload="metadata" className="w-full h-full object-cover" />;
+}
 
 export default function VideoPage() {
   const { t } = useTranslation();
@@ -52,12 +76,7 @@ export default function VideoPage() {
                         allowFullScreen
                       />
                     ) : v.video ? (
-                      <video
-                        src={v.video}
-                        controls
-                        preload="metadata"
-                        className="w-full h-full object-cover"
-                      />
+                      <VideoCard src={v.video} />
                     ) : null}
                   </div>
                 ))}
