@@ -123,6 +123,10 @@ const CONTENT_SECURITY_POLICY = [
   "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com",
   "img-src 'self' data: https:",
   "connect-src 'self' https://api.fermi.uz https://api.mymemory.translated.net",
+  // <video>/<audio> have no separate CSP directive by default — they fall back to
+  // default-src 'self', which silently blocks the api.fermi.uz-hosted video files used
+  // on /video (no console-visible error, they just never load or play).
+  "media-src 'self' https://api.fermi.uz",
   // https://api.fermi.uz added for the direct-PDF-viewer iframe (PdfDocumentViewer.tsx) —
   // without it the browser silently blocks that iframe outright (no console error a
   // typical user would notice, it just renders as a dead/broken box).
