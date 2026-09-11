@@ -52,7 +52,12 @@ function classifyImagesFromStyle(root: ParentNode) {
     const src = (img.getAttribute("src") ?? "").toLowerCase();
     const { w, h } = readInlineDimensions(img);
 
-    if (/logo|gerb|emblem/.test(src) || (w >= 280 && h > 0 && h <= w * 0.85)) {
+    // Aspect ratio alone can't tell a logo from a photo — both are typically landscape.
+    // The CMS editor's default insertion width splits them cleanly in practice: real
+    // logos/department icons land around 240-300px, while regular content photos default
+    // to ~460px. Bound the width so this fallback only catches the logo-sized cluster —
+    // without it, ~40% of all department photos were getting crushed into a 7rem logo box.
+    if (/logo|gerb|emblem/.test(src) || (w > 0 && w <= 320 && h > 0 && h <= w * 0.85)) {
       img.dataset.imgKind = "logo";
       return;
     }
