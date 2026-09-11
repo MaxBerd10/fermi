@@ -52,7 +52,12 @@ export default function VideoPage() {
                         allowFullScreen
                       />
                     ) : v.video ? (
-                      <video src={v.video} controls className="w-full h-full object-cover" />
+                      <video
+                        src={v.video}
+                        controls
+                        preload="metadata"
+                        className="w-full h-full object-cover"
+                      />
                     ) : null}
                   </div>
                 ))}
