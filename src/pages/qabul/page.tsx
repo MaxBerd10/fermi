@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { getRegions, getDistricts, getQuarters, getConnectLeaders } from "@/api/lookups";
 import { submitQabul } from "@/api/forms";
@@ -117,6 +118,13 @@ export default function QabulPage() {
             <i className="ri-phone-line text-base text-[#0a1158]" />
             {t("qabul.callCenter")}
           </a>
+          <Link
+            to="/qabul-natijalari"
+            className="inline-flex items-center gap-2 h-11 px-5 rounded-full bg-white/85 border border-[#e5e5e5] text-[#0a0a0a] text-sm font-semibold hover:border-[#0a1158] cursor-pointer transition-colors"
+          >
+            <i className="ri-file-list-3-line text-base text-[#0a1158]" />
+            Test natijalari
+          </Link>
         </div>
       </div>
 
